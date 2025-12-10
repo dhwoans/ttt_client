@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(10px + 0.3vw);
+  font-family: "Roboto Slab", sans-serif;
+  line-height: 1.5;
+
+  color: #ebe7ef;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: radial-gradient(
+      circle at top,
+      rgba(241, 210, 70, 0.98),
+      rgba(250, 176, 103, 0.87)
+    ),
+    url("../assets/bg-pattern-dark.png");
+  background-repeat: repeat;
+  background-size: 100% 100%, 30% 30%, 100% 100%;
+  min-height: 130rem;
+}
+
+header {
+  text-align: center;
+}
+
+header img {
+  width: 8rem;
+  object-fit: contain;
+  margin: 3rem auto 1rem auto;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+}
+
+h1 {
+  font-family: "Caprasimo", cursive;
+  font-size: 3rem;
+  margin: 0 auto 3rem auto;
+  color: #3f3b00;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  outline: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-size: 1rem !important;
+  font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 24;
+}

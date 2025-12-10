@@ -1,0 +1,159 @@
+/* ========================================================= */
+/* 컨테이너 스타일 */
+/* ========================================================= */
+.room-container {
+  max-width: 50rem; /* 너비 확장 */
+  min-height: 45rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  background: linear-gradient(#383624, #282617);
+  border-radius: 1rem;
+  border: 0.25rem solid black;
+  box-shadow: 5px 5px black;
+  position: relative;
+  display: flex; /* 내부 요소 정렬을 위해 flex 사용 */
+  flex-direction: column;
+}
+
+/* ========================================================= */
+/* 방 목록 (ul) 스타일 */
+/* ========================================================= */
+.room-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+
+  flex-grow: 1;
+  overflow-y: auto;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* ========================================================= */
+/* 각 방 항목 스타일 */
+/* ========================================================= */
+.room-list li {
+  padding: 0.25rem 0;
+}
+
+/* ========================================================= */
+/* 방 버튼 스타일 */
+/* ========================================================= */
+.room-list .room-btn {
+  width: 99%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  background-color: white;
+  border-radius: 1rem;
+  color: #3f3b00;
+  transition: background-color 0.2s, border-color 0.2s;
+  border-radius: 1rem;
+  border: 0.25rem solid black;
+  box-shadow: 5px 5px black;
+}
+
+.room-list .room-btn:hover {
+  background-color: #f8c031;
+}
+
+.room-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #3f3b00;
+}
+
+.room-count {
+  font-size: 0.9rem;
+  color: #f8c031;
+}
+
+/* 꽉 찬 방 스타일 */
+.room-list li.full .room-btn {
+  background-color: #ff0101;
+  border-color: #000000;
+  box-shadow: 5px 5px black;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.room-list li.full .room-btn:hover {
+  background-color: #8b000040;
+}
+
+/* ========================================================= */
+/* 방 생성 버튼 컨테이너
+/* ========================================================= */
+.btn-container {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+  text-align: center;
+  border-top: 0.25rem solid #000000;
+}
+
+.btn-container button {
+  cursor: pointer;
+  font-family: "Caprasimo", cursive;
+  font-size: 1rem;
+  border-radius: 1rem;
+  border: 0.25rem solid black;
+  box-shadow: 5px 5px black;
+}
+.btn-container button#makeRoom {
+  flex-grow: 9;
+  background: #f8c031;
+}
+
+.btn-container button#reload {
+  flex-grow: 1;
+  background: white;
+}
+
+.btn-container button#reload span {
+  font-size: 2rem;
+}
+
+.btn-container button#makeRoom:hover {
+  background: #ff0000;
+  color: white;
+}
+/* ========================================================= */
+/* 방 목록이 없을때 */
+/* ========================================================= */
+
+.empty-lobby-message {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  text-align: center;
+  padding: 3rem 0;
+  margin-top: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.empty-lobby-message h1 {
+  font-size: 3rem;
+  margin: 0;
+  color: #383624;
+}
+
+.empty-lobby-message img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 20%;
+  height: 20%;
+
+  transform: translate(-50%, -50%);
+}
