@@ -39,8 +39,11 @@ function addRepeatEffect($element, effectName) {
   };
 }
 export function removeRepeat($element) {
-  manager.get($element)();
+  if (manager.has($element)) {
+    manager.get($element)();
+  }
 }
+
 function initEffect($element) {
   const allAnimateClasses = Array.from($element.classList).filter((c) =>
     c.startsWith("animate__")

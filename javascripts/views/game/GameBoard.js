@@ -1,4 +1,5 @@
 import { effectrepeat, removeRepeat } from "../../temp/effect.js";
+import tictactoe from "/assets/Tic_Tac_Toe.gif";
 class GameBoard {
   constructor(selector, logs, sender) {
     this.element = selector;
@@ -11,7 +12,7 @@ class GameBoard {
   }
   #rendering() {
     const $image = document.createElement("img");
-    $image.src = "/assets/Tic_Tac_Toe.gif";
+    $image.src = tictactoe;
     this.$exitBtn.innerHTML = "나가기";
     this.$readyBtn.innerHTML = "준비";
 

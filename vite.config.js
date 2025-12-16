@@ -1,17 +1,39 @@
 import { defineConfig } from "vite";
-import { resolve } from "path";
+import  path  from "path";
+import { fileURLToPath } from "url";
+import imagemin from "vite-plugin-imagemin";
+import imageminGifsicle from "imagemin-gifsicle";
+import imageminJpegtran from "imagemin-jpegtran";
+import imageminOptipng from "imagemin-optipng";
+import imageminSvgo from "imagemin-svgo";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.resolve(path.dirname(__filename));
 
 export default defineConfig({
-  root: resolve(__dirname),
+  plugins: [
+    imagemin({
+      filter: /\.(jpg|jpeg|png|gif|svg)$/i,
+
+      plugins: {
+        jpeg: imageminJpegtran(),
+        png: imageminOptipng(),
+        gif: imageminGifsicle(),
+        svg: imageminSvgo(),
+      },
+    }),
+  ],
+
+  root: path.resolve(__dirname),
 
   build: {
-    outDir: resolve(__dirname, "dist"),
+    outDir: path.resolve(__dirname, "dist"),
 
     rollupOptions: {
       input: {
-        lobby: resolve(__dirname, "lobby.html"),
-        game: resolve(__dirname, "game.html"),
-        notFound: resolve(__dirname, "404.html"),
+        lobby: path.resolve(__dirname, "lobby.html"),
+        game: path.resolve(__dirname, "game.html"),
+        notFound: path.resolve(__dirname, "404.html"),
       },
     },
   },

@@ -23,9 +23,7 @@ class GameConnection {
   handleOpen() {
     const data = {
       type: "JOIN",
-      //url로 직접치고 들어오면 막힘
-      roomId: sessionStorage.getItem("roomId"),
-      nickname: getUserNickname(),
+      message: [sessionStorage.getItem("roomId"), getUserNickname()],
       sender: getUserId(),
     };
     this.sendMessage(data);
@@ -63,7 +61,7 @@ class GameConnection {
       } else if (data.type === "GAME_OVER") {
         this.reciever.handleGameOver(data);
       } else if (data.type === "RESET") {
-        this.reciever.handleReset(data)
+        this.reciever.handleReset(data);
       }
     });
   }

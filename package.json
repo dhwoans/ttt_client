@@ -1,5 +1,6 @@
 {
   "name": "vanilla",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "vite.config.js",
@@ -12,6 +13,14 @@
   "license": "ISC",
   "dependencies": {
     "eslint": "^9.39.1",
-    "vite": "^7.2.7"
+    "imagemin": "^9.0.1",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^8.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^11.0.1",
+    "imagemin-webp": "^8.0.0",
+    "socket.io-client": "^4.8.1",
+    "vite": "^7.2.7",
+    "vite-plugin-imagemin": "^0.6.1"
   }
 }

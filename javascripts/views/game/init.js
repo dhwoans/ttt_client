@@ -1,3 +1,4 @@
+
 import Player from "./Player.js";
 import gameBoard from "./GameBoard.js";
 import Logs from "./Logs.js";
@@ -27,7 +28,7 @@ const initGame = () => {
 
   const reciever = new Reciever(logs, modal, player, board);
 
-  const socket = new GameConnection("wss://backend:8080", reciever);
+  const socket = new GameConnection("wss://dhwoans.shop/ws", reciever);
   sender.connectSocket(socket);
   socket.connect();
 

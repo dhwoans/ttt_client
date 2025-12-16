@@ -18,8 +18,8 @@ export const createRoom = async () => {
     const data = await response.json();
     console.log("방생성 완료", data);
     if (data.success) {
-      sessionStorage.setItem("roomId", data.roomId);
-      window.location.href = `/room/${data.roomId}`;
+      sessionStorage.setItem("roomId", data.message);
+      window.location.href = `/room/${data.message}`;
     } else {
       alert("방 생성에 실패했습니다.");
     }
@@ -30,15 +30,12 @@ export const createRoom = async () => {
 };
 export const checkRoom = async (roomId) => {
   try {
-    const response = await fetch(
-      `/api/room?roomId=${roomId}`,
-      {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`/api/room?roomId=${roomId}`, {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     const data = await response.json();
     if (!data.success) {
