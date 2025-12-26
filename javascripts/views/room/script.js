@@ -1,5 +1,7 @@
 import Lobby from "./Lobby.js";
 
+import LobbySocket from "./LobbySocket.js";
+
 function initializeSessionId() {
   let userId = sessionStorage.getItem("userId");
 
@@ -18,3 +20,5 @@ function initializeSessionId() {
 initializeSessionId();
 console.log(sessionStorage.getItem("userId"));
 const lobby = new Lobby();
+const websocket = new LobbySocket(lobby);
+window.lobbyWebsocket = websocket;

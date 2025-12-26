@@ -11,16 +11,6 @@ class Recever {
     //일단 404로 보냄
     window.location.href = "/error";
   }
-  handleInfo(data) {
-    if (data.message === "O" || data.message === "X") {
-      setSymbol(data.message);
-      this.player.rendering("player1");
-      this.logs.socketConnection();
-    } else {
-      this.logs.socketDisConnection();
-    }
-  }
-
   handleMove(data) {
     const { type, message, sender } = data;
     const [nickname, move] = message;
@@ -30,7 +20,6 @@ class Recever {
     this.logs.update([type, moveMessage, sender]);
     this.logs.setInfo([x, y]);
     this.board.updateBoard();
-    // 게임 오버 렌더링
   }
 
   handleChat(data) {
@@ -38,10 +27,11 @@ class Recever {
     this.logs.update([type, message, sender]);
   }
   handleJoin(data) {
-    const { type, userId, nickname } = data;
+    const { type, message, sender } = data;
+    const [userId, isReady] = message;
     if (!this.player.hasUser(userId)) {
-      this.player.rendering(userId, nickname);
-      const sendMessage = `${nickname}이/가 입장했습니다.👋👋👋`;
+      this.player.rendering(userId, sender, isReady === "true");
+      const sendMessage = `${sender}이/가 입장했습니다.👋👋👋`;
       this.logs.update([type, sendMessage, "system"]);
     }
     this.logs.socketConnection();
@@ -60,9 +50,10 @@ class Recever {
     this.player.highlight(userId, status);
   }
   handleGameStart(data) {
+    console.log(data);
     const { type, message, sender } = data;
     this.player.removeAllhighlight();
-    const { playerId, nickname } = message;
+    const [playerId] = message;
     if (!this.board.status) {
       this.board.status = true;
       this.board.renderingGameBoard();

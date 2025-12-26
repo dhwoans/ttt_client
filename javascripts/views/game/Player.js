@@ -7,7 +7,7 @@ class Player {
     this.user = new Set(); // 중복 렌더링 검사
   }
 
-  rendering(userId, nickname) {
+  rendering(userId, nickname, isReady) {
     this.user.add(userId);
     const $player = document.createElement("li");
     const $avatar = document.createElement("span");
@@ -24,6 +24,7 @@ class Player {
     $player.appendChild($nickname);
 
     this.element.appendChild($player);
+    this.highlight(userId, isReady);
   }
   hasUser(userId) {
     return this.user.has(userId);

@@ -12,7 +12,7 @@ class Sender {
       message: [this.roomId, 3 * x + y],
       sender: getUserNickname(),
     };
-    this.socket.sendMessage(data);
+    this.socket.sendMessage("MOVE", data);
   }
   handleChat(message) {
     const data = {
@@ -20,7 +20,7 @@ class Sender {
       message: [this.roomId, message],
       sender: getUserNickname(),
     };
-    this.socket.sendMessage(data);
+    this.socket.sendMessage("CHAT", data);
   }
   handleReady(status) {
     const data = {
@@ -28,23 +28,23 @@ class Sender {
       message: [this.roomId, status],
       sender: getUserNickname(),
     };
-    this.socket.sendMessage(data);
+    this.socket.sendMessage("READY", data);
   }
   handleLeave() {
     const data = {
       type: "LEAVE",
-      message: this.roomId,
+      message: [this.roomId],
       sender: getUserNickname(),
     };
-    this.socket.sendMessage(data);
+    this.socket.sendMessage("LEAVE", data);
   }
   handleReset() {
     const data = {
       type: "RESET",
-      message: this.roomId,
+      message: [this.roomId],
       sender: getUserNickname(),
     };
-    this.socket.sendMessage(data);
+    this.socket.sendMessage("RESET", data);
   }
 }
 

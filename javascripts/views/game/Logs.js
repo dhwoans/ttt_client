@@ -46,8 +46,7 @@ arrow_forward_ios
     if (this.$input.value === "") {
       this.$input.focus();
     } else {
-      const roomId = sessionStorage.getItem("roomId");
-      this.sender.handleChat(roomId, this.$input.value);
+      this.sender.handleChat(this.$input.value);
       this.$input.value = "";
     }
   }
@@ -63,6 +62,7 @@ arrow_forward_ios
   get moves() {
     return this.infos;
   }
+
   update([type, message, sender]) {
     const li = document.createElement("li");
     const chat = document.createElement("p");

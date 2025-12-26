@@ -1,4 +1,3 @@
-
 import Player from "./Player.js";
 import gameBoard from "./GameBoard.js";
 import Logs from "./Logs.js";
@@ -10,6 +9,8 @@ import GameConnection from "./Websocket.js";
 import Reciever from "./SocketReceiver.js";
 import Sender from "./SocketSender.js";
 
+import { io } from "socket.io-client";
+
 const initGame = () => {
   const $gameBoard = document.getElementById("game-board");
   const $logs = document.getElementById("messages-container");
@@ -20,7 +21,7 @@ const initGame = () => {
   $logs.innerHTML = "";
 
   const sender = new Sender();
-  const goback = new EixtModal(sender);
+  const exitModal = new EixtModal(sender);
   const player = new Player(sender);
   const modal = new GameOverModal(sender);
   const logs = new Logs($logs, sender);
@@ -28,9 +29,8 @@ const initGame = () => {
 
   const reciever = new Reciever(logs, modal, player, board);
 
-  const socket = new GameConnection("wss://dhwoans.shop/ws", reciever);
+  const socket = new GameConnection("/game", reciever);
   sender.connectSocket(socket);
-  socket.connect();
 
   window.addEventListener("beforeunload", function () {
     sender.handleLeave();

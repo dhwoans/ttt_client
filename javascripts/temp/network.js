@@ -3,7 +3,7 @@ import { getUserNickname, getUserId } from "./gameInfo.js";
 /* ========================================================= */
 /* API 통신 관리 */
 /* ========================================================= */
-export const createRoom = async () => {
+export const createRoom = async (userId) => {
   try {
     const response = await fetch("/api/room", {
       method: "POST",
@@ -11,14 +11,14 @@ export const createRoom = async () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        userId: getUserId(),
+        userId: userId,
         nickname: getUserNickname(),
       }),
     });
     const data = await response.json();
-    console.log("방생성 완료", data);
     if (data.success) {
       sessionStorage.setItem("roomId", data.message);
+      window.lobbyWebsocket.disconnect();
       window.location.href = `/room/${data.message}`;
     } else {
       alert("방 생성에 실패했습니다.");
