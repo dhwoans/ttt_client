@@ -1,5 +1,5 @@
-import { getRandomAnimalEmoji } from "../../temp/randomAvatar.js";
-import { effectOnce, effectrepeat, removeRepeat } from "../../temp/effect.js";
+import { getRandomAnimalEmoji } from "../../util/randomAvatar.js";
+import { effectOnce, effectrepeat, removeRepeat } from "../../util/effect.js";
 class Player {
   constructor(sender) {
     this.sender = sender;

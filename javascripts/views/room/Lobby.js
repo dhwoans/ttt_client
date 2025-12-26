@@ -1,5 +1,5 @@
-import { createRoom, getRoomList } from "../../temp/network.js";
-import { effectrepeat, removeRepeat } from "../../temp/effect.js";
+import { createRoom, getRoomList } from "../../util/network.js";
+import { effectrepeat, removeRepeat } from "../../util/effect.js";
 import emptyFricGif from "/assets/empty_fric.gif";
 class Lobby {
   constructor() {

@@ -1,4 +1,4 @@
-import { effectrepeat, removeRepeat } from "../../temp/effect.js";
+import { effectrepeat, removeRepeat } from "../../util/effect.js";
 import tictactoe from "/assets/Tic_Tac_Toe.gif";
 class GameBoard {
   constructor(selector, logs, sender) {

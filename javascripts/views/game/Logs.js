@@ -1,4 +1,4 @@
-import { getUserNickname } from "../../temp/gameInfo.js";
+import { getUserNickname } from "../../util/gameInfo.js";
 class Logs {
   constructor(selector, sender) {
     this.element = selector;

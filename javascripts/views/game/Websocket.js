@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
-import { getUserId, getUserNickname } from "../../temp/gameInfo.js";
+import { getUserId, getUserNickname } from "../../util/gameInfo.js";
+import { GAME_EVENTS } from "../../util/socketEvent.js";
 class GameConnection {
   constructor(url, reciever) {
     this.reciever = reciever;
@@ -38,30 +39,44 @@ class GameConnection {
       this.connected = false;
     });
   }
+  // if (data.type === "MOVE") {
+  //   this.reciever.handleMove(data);
+  // } else if (data.type === "INFO") {
+  //   this.reciever.handleInfo(data);
+  // } else if (data.type === "CHAT") {
+  //   this.reciever.handleChat(data);
+  // } else if (data.type === "JOIN") {
+  //   this.reciever.handleJoin(data);
+  // } else if (data.type === "LEAVE") {
+  //   this.reciever.handleLeave(data);
+  // } else if (data.type === "READY") {
+  //   this.reciever.handleReady(data);
+  // } else if (data.type === "PLAYING") {
+  //   this.reciever.handleGameStart(data);
+  // } else if (data.type === "ERROR") {
+  //   this.reciever.handleError(data);
+  // } else if (data.type === "GAME_OVER") {
+  //   this.reciever.handleGameOver(data);
+  // } else if (data.type === "RESET") {
+  //   this.reciever.handleReset(data);
+  // }
 
   //reciever
   handleMessage() {
-    this.socket.on("CHAT", (data) => {
-      this.reciever.handleChat(data);
+    GAME_EVENTS.forEach(({ name, handler, log }) => {
+      this.socket.on(name, (data) => {
+        if (log) {
+          console.log(`${name} 수신:`, JSON.stringify(data));
+        }
+
+        // 해당 메서드 확인 후 실행
+        if (this.reciever[handler]) {
+          this.reciever[handler](data);
+        } else {
+          console.error(`Handler ${handler}가 reciever에 정의되지 않음.`);
+        }
+      });
     });
-    this.socket.on("JOIN", (data) => {
-      console.log("join 수신 ", JSON.stringify(data));
-      this.reciever.handleJoin(data);
-    });
-    this.socket.on("LEAVE", (data) => {
-      this.reciever.handleLeave(data);
-    });
-    this.socket.on("READY", (data) => {
-      console.log("READY 수신 ", JSON.stringify(data));
-      this.reciever.handleReady(data);
-    });
-    this.socket.on("GAME_START", (data) => {
-      this.reciever.handleGameStart(data);
-    });
-    this.socket.on("MOVE", (data) => {
-      this.reciever.handleMove(data);
-    });
-    
   }
   //sender
   sendMessage(event, dataObject) {
