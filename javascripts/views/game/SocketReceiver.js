@@ -50,6 +50,7 @@ class Recever {
     this.player.highlight(userId, status);
   }
   handlePlaying(data) {
+    sessionStorage.setItem("PLAYING", true);
     console.log(data);
     const { type, message, sender } = data;
     this.player.removeAllhighlight();

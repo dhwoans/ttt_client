@@ -38,14 +38,6 @@ class Sender {
     };
     this.socket.sendMessage("LEAVE", data);
   }
-  handleReset() {
-    const data = {
-      type: "RESET",
-      message: [this.roomId],
-      sender: getUserNickname(),
-    };
-    this.socket.sendMessage("RESET", data);
-  }
 }
 
 export default Sender;
