@@ -1,4 +1,3 @@
-import initGame from "./init.js";
 import dance_fricGIF from "/assets/Dance_fric.gif";
 import loose_fricGIF from "/assets/loose_fric.gif";
 class GameOverModal {
@@ -25,10 +24,7 @@ class GameOverModal {
 
     restartBtn.addEventListener("click", () => this.handleRestartBtn());
     exitBtn.addEventListener("click", () => {
-      this.gameOverElement.close();
-      this.sender.handleLeave();
-      window.sessionStorage.removeItem("roomId");
-      window.location.href = "/";
+      this.#exit();
     });
 
     this.gameOverElement.appendChild(h2);
@@ -40,7 +36,14 @@ class GameOverModal {
     document.body.appendChild(this.gameOverElement);
     this.gameOverElement.showModal();
     // 자동나가기
-    this.autoExit();
+    this.autoExitTimer = this.autoExit(5000);
+  }
+  #exit() {
+    this.sender.handleLeave();
+    this.gameOverElement.close();
+    sessionStorage.removeItem("PLAYING");
+    window.sessionStorage.removeItem("roomId");
+    window.location.href = "/";
   }
   checkWinner(playerId, h2, img) {
     let result = "무승부";
@@ -52,20 +55,17 @@ class GameOverModal {
     h2.textContent = result;
   }
   handleRestartBtn() {
+    // 자동종료 타이머 초기화
+    clearTimeout(this.autoExitTimer);
     // 모달 닫기 및 요소 제거
     this.gameOverElement.close();
     document.body.removeChild(this.gameOverElement);
-    // 클라이언트에서 게임 재시작 (렌더링 초기화)
-    initGame(this.sender);
+
   }
-  autoExit() {
-    setTimeout(() => {
-      this.gameOverElement.close();
-      document.body.removeChild(this.gameOverElement);
-      this.sender.handleLeave();
-      window.sessionStorage.removeItem("roomId");
-      window.location.href = "/";
-    }, 5000);
+  autoExit(time) {
+    return setTimeout(() => {
+      this.#exit();
+    }, time);
   }
 }
 

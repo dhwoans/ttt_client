@@ -7,10 +7,16 @@ class Logs {
     this.$btn = document.createElement("button");
     this.$status = document.createElement("div");
     this.$log = document.createElement("ol");
-    this.#rendering();
     this.infos = [];
   }
-  #rendering() {
+  initState() {
+    this.element.innerHTML = "";
+    this.infos = [];
+  }
+  rendering() {
+    //상태초기화
+    this.initState();
+    // UI 렌더링
     const $sendCotainer = document.createElement("div");
 
     this.$status.id = "status";

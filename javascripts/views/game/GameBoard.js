@@ -7,15 +7,18 @@ class GameBoard {
     this.$exitBtn = document.createElement("button");
     this.$readyBtn = document.createElement("button");
     this.sender = sender;
-
-    this.#rendering();
   }
 
-  #rendering() {
+  rendering() {
     this.isPlaying = sessionStorage.getItem("PLAYING") ?? false;
+    console.log(this.isPlaying);
+
     if (this.isPlaying) {
       this.renderingGameBoard();
     } else {
+      this.element.innerHTML = "";
+      this.$exitBtn = document.createElement("button");
+      this.$readyBtn = document.createElement("button");
       const $image = document.createElement("img");
       $image.src = tictactoe;
       this.$exitBtn.innerHTML = "나가기";
@@ -31,6 +34,7 @@ class GameBoard {
       this.element.appendChild(this.$exitBtn);
     }
   }
+
   renderingGameBoard() {
     this.element.innerHTML = "";
     for (let x = 0; x < 3; x++) {

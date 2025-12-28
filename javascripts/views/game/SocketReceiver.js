@@ -1,5 +1,3 @@
-import initGame from "./init.js";
-
 class Recever {
   constructor(logs, modal, player, board) {
     (this.logs = logs),
@@ -50,18 +48,17 @@ class Recever {
     this.player.highlight(userId, status);
   }
   handlePlaying(data) {
-    sessionStorage.setItem("PLAYING", true);
     console.log(data);
     const { type, message, sender } = data;
-    this.player.removeAllhighlight();
-    const [playerId] = message;
-    if (!this.board.status) {
-      this.board.status = true;
+    if (!sessionStorage.getItem("PLAYING")) {
+      sessionStorage.setItem("PLAYING", true);
       this.board.renderingGameBoard();
       // 시작 알림
       const startMessage = "게임이 시작되었습니다.";
       this.logs.update(["", startMessage, sender]);
     }
+    this.player.removeAllhighlight();
+    const [playerId] = message;
 
     // 이번턴 플레이어 하이트라이트
     this.player.highlight(playerId, true);
@@ -77,11 +74,18 @@ class Recever {
     const [playerId] = message;
     this.player.removeAllhighlight();
     this.modal.rendering(playerId);
+    // 클라이언트에서 게임 재시작 (렌더링 초기화)
+    sessionStorage.removeItem("PLAYING");
+    this.initGame();
   }
-  handleReset(data) {
-    initGame();
-    const { type, message, sender } = data;
-    this.logs.update(["", message, sender]);
+
+  initGame() {
+    this.board.rendering();
+    this.logs.rendering();
+
+    window.addEventListener("beforeunload", function () {
+      sender.handleLeave();
+    });
   }
 }
 

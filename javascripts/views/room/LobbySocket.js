@@ -47,7 +47,6 @@ class LobbySocket {
   }
 
   handlePlayerPlus(data) {
-    // data에 roomId가 포함되어 있다고 가정
     this.lobby.changePlayer(data, 1);
   }
 

@@ -18,6 +18,7 @@ function initializeSessionId() {
 }
 
 initializeSessionId();
+sessionStorage.removeItem("PLAYING");
 console.log(sessionStorage.getItem("userId"));
 const lobby = new Lobby();
 const websocket = new LobbySocket(lobby);
