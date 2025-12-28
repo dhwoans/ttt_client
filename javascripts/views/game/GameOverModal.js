@@ -1,14 +1,20 @@
 import dance_fricGIF from "/assets/Dance_fric.gif";
 import loose_fricGIF from "/assets/loose_fric.gif";
+import JSConfetti from "js-confetti";
 class GameOverModal {
   constructor(sender) {
     this.sender = sender;
     this.gameOverElement = document.createElement("dialog");
     this.gameOverElement.classList.add("exit");
     this.userId = sessionStorage.getItem("userId");
+    this.result = "무승부";
   }
 
   rendering(playerId) {
+    this.checkWinner(playerId);
+    this.#actionConfetti();
+
+    this.gameOverElement.innerHTML = "";
     const h2 = document.createElement("h2");
     const btnContainer = document.createElement("div");
     const img = document.createElement("img");
@@ -18,7 +24,8 @@ class GameOverModal {
     h2.classList.add("result");
     this.gameOverElement.classList.add("game-over");
 
-    this.checkWinner(playerId, h2, img);
+    img.src = this.result === "승리" ? dance_fricGIF : loose_fricGIF;
+    h2.textContent = this.result;
     restartBtn.textContent = "다시하기";
     exitBtn.textContent = "나가기";
 
@@ -36,7 +43,7 @@ class GameOverModal {
     document.body.appendChild(this.gameOverElement);
     this.gameOverElement.showModal();
     // 자동나가기
-    this.autoExitTimer = this.autoExit(5000);
+    this.autoExitTimer = this.#autoExit(5000);
   }
   #exit() {
     this.sender.handleLeave();
@@ -45,27 +52,31 @@ class GameOverModal {
     window.sessionStorage.removeItem("roomId");
     window.location.href = "/";
   }
-  checkWinner(playerId, h2, img) {
-    let result = "무승부";
-    img.src = loose_fricGIF;
-    if ("DRAW" !== playerId) {
-      result = playerId === this.userId ? "승리" : "패배";
-      img.src = playerId === this.userId ? dance_fricGIF : loose_fricGIF;
-    }
-    h2.textContent = result;
+  checkWinner(playerId) {
+    if (playerId === "DRAW") return;
+    this.result = playerId === this.userId ? "승리" : "패배";
   }
+
   handleRestartBtn() {
     // 자동종료 타이머 초기화
     clearTimeout(this.autoExitTimer);
     // 모달 닫기 및 요소 제거
     this.gameOverElement.close();
     document.body.removeChild(this.gameOverElement);
-
   }
-  autoExit(time) {
+  #autoExit(time) {
     return setTimeout(() => {
       this.#exit();
     }, time);
+  }
+  #actionConfetti() {
+    const emoji = this.result == "승리" ? "🐸" : "💩";
+    const jsConfetti = new JSConfetti();
+    jsConfetti.addConfetti({
+      emojis: [emoji],
+      emojiSize: 30,
+      confettiNumber: 50,
+    });
   }
 }
 

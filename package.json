@@ -19,6 +19,7 @@
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^11.0.1",
     "imagemin-webp": "^8.0.0",
+    "js-confetti": "^0.13.1",
     "socket.io-client": "^4.8.1",
     "vite": "^7.2.7",
     "vite-plugin-imagemin": "^0.6.1"
