@@ -4,16 +4,15 @@ export const GAME_EVENTS = [
   { name: "LEAVE", handler: "handleLeave" },
   { name: "READY", handler: "handleReady", log: true },
   { name: "MOVE", handler: "handleMove", log: true },
-  { name: "GAME_START", handler: "handleGameStart", log: true },
-  { name: "PLAYING", handler: "handleGameStart", log: true },
+  { name: "PLAYING", handler: "handlePlaying", log: true },
   { name: "GAME_OVER", handler: "handleGameOver", log: true },
 ];
 
 export const LOBBY_EVENTS = [
-  { name: "connect", handler: "onConnect", log: true },
-  { name: "joinLobby", handler: "onJoinLobby", log: true },
-  { name: "ROOM_CREATE", handler: "onRoomCreate", log: true },
-  { name: "ROOM_REMOVE", handler: "onRoomRemove", log: true },
-  { name: "PLAYER_PLUS", handler: "onPlayerPlus", log: true },
-  { name: "PLAYER_MINUS", handler: "onPlayerMinus", log: true },
+  { name: "connect", handler: "handleConnect", log: true },
+  { name: "joinLobby", handler: "handleJoinLobby", log: true },
+  { name: "ROOM_CREATE", handler: "handleRoomCreate", log: true },
+  { name: "ROOM_REMOVE", handler: "handleRoomRemove", log: true },
+  { name: "PLAYER_PLUS", handler: "handlePlayerPlus", log: true },
+  { name: "PLAYER_MINUS", handler: "handlePlayerMinus", log: true },
 ];

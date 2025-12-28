@@ -1,3 +1,6 @@
+import initGame from "./init.js";
+import dance_fricGIF from "/assets/Dance_fric.gif";
+import loose_fricGIF from "/assets/loose_fric.gif";
 class GameOverModal {
   constructor(sender) {
     this.sender = sender;
@@ -36,25 +39,33 @@ class GameOverModal {
 
     document.body.appendChild(this.gameOverElement);
     this.gameOverElement.showModal();
+    // 자동나가기
+    this.autoExit();
   }
   checkWinner(playerId, h2, img) {
     let result = "무승부";
-    img.src = "../../../assets/loose_fric.gif";
+    img.src = loose_fricGIF;
     if ("DRAW" !== playerId) {
       result = playerId === this.userId ? "승리" : "패배";
-      img.src =
-        playerId === this.userId
-          ? "../../../assets/Dance_fric.gif"
-          : "../../../assets/loose_fric.gif";
+      img.src = playerId === this.userId ? dance_fricGIF : loose_fricGIF;
     }
     h2.textContent = result;
   }
   handleRestartBtn() {
-    // 서버에 초기화 요청
-    this.sender.handleReset();
+    // 모달 닫기 및 요소 제거
     this.gameOverElement.close();
     document.body.removeChild(this.gameOverElement);
-    
+    // 클라이언트에서 게임 재시작 (렌더링 초기화)
+    initGame(this.sender);
+  }
+  autoExit() {
+    setTimeout(() => {
+      this.gameOverElement.close();
+      document.body.removeChild(this.gameOverElement);
+      this.sender.handleLeave();
+      window.sessionStorage.removeItem("roomId");
+      window.location.href = "/";
+    }, 5000);
   }
 }
 

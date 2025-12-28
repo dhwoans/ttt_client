@@ -49,7 +49,7 @@ class Recever {
     const [userId, status] = data.message;
     this.player.highlight(userId, status);
   }
-  handleGameStart(data) {
+  handlePlaying(data) {
     console.log(data);
     const { type, message, sender } = data;
     this.player.removeAllhighlight();
@@ -73,8 +73,9 @@ class Recever {
   }
   handleGameOver(data) {
     const { type, message, sender } = data;
+    const [playerId] = message;
     this.player.removeAllhighlight();
-    this.modal.rendering(message);
+    this.modal.rendering(playerId);
   }
   handleReset(data) {
     initGame();

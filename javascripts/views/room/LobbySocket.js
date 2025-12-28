@@ -28,28 +28,30 @@ class LobbySocket {
   disconnect() {
     this.socket.disconnect();
   }
-  onConnect() {
-    console.log("연결 성공 ID:", this.socket.id);
+  handleConnect() {
+    console.log("서버 연결 성공. ID:", this.socket.id);
     this.socket.emit("joinLobby", this.socket.id);
   }
 
-  onJoinLobby() {
-    console.log("[joinLobby] 서버 신호 수신");
+  handleJoinLobby(data) {
+    // 서버로부터 로비 입장 확인을 받았을 때의 처리
+    console.log("로비 입장 완료");
   }
 
-  onRoomCreate(data) {
+  handleRoomCreate(data) {
     this.lobby.addRoom(data);
   }
 
-  onRoomRemove(data) {
+  handleRoomRemove(data) {
     this.lobby.removeRoom(data);
   }
 
-  onPlayerPlus(data) {
+  handlePlayerPlus(data) {
+    // data에 roomId가 포함되어 있다고 가정
     this.lobby.changePlayer(data, 1);
   }
 
-  onPlayerMinus(data) {
+  handlePlayerMinus(data) {
     this.lobby.changePlayer(data, -1);
   }
 }
