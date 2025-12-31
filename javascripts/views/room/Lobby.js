@@ -4,6 +4,7 @@ import emptyFricGif from "/assets/empty_fric.gif";
 class Lobby {
   constructor() {
     const userId = sessionStorage.getItem("userId");
+    const userNickname = sessionStorage.getItem("nickname");
     this.roomList = [];
     this.$roomContainer = document.getElementById("room-container");
     this.$roomList = document.querySelector(".room-list");
@@ -15,7 +16,7 @@ class Lobby {
     //방만들기 , 초기화 버튼 이벤트
     this.$makeRoomBtn.addEventListener(
       "click",
-      async () => await createRoom(userId)
+      async () => await createRoom(userId, userNickname)
     );
     this.$reloadBtn.addEventListener("click", async () => this.rendering());
     effectrepeat(this.$makeRoomBtn, "pulse");

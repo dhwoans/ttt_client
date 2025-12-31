@@ -1,5 +1,4 @@
 import { io } from "socket.io-client";
-import { getUserId, getUserNickname } from "../../util/gameInfo.js";
 import { GAME_EVENTS } from "../../util/socketEvent.js";
 class GameConnection {
   constructor(url, reciever) {
@@ -7,6 +6,7 @@ class GameConnection {
     this.url = url;
     this.roomId = sessionStorage.getItem("roomId");
     this.userId = sessionStorage.getItem("userId");
+    this.userNickname = sessionStorage.getItem("nickname");
     this.connected = false; // 중복 연결 방지
     this.connect();
     this.handleMessage();
@@ -31,7 +31,7 @@ class GameConnection {
       this.socket.emit("JOIN", {
         type: "JOIN",
         message: [this.roomId, this.userId],
-        sender: getUserNickname(),
+        sender: this.userNickname,
       });
     });
 

@@ -1,16 +1,15 @@
-import { getUserNickname } from "../../util/gameInfo.js";
-
 class Sender {
   connectSocket(socket) {
     this.socket = socket;
     this.roomId = sessionStorage.getItem("roomId");
+    this.userNickname = sessionStorage.getItem("nickname");
   }
 
   handleBoard(x, y) {
     const data = {
       type: "MOVE",
       message: [this.roomId, 3 * x + y],
-      sender: getUserNickname(),
+      sender: this.userNickname,
     };
     this.socket.sendMessage("MOVE", data);
   }
@@ -18,7 +17,7 @@ class Sender {
     const data = {
       type: "CHAT",
       message: [this.roomId, message],
-      sender: getUserNickname(),
+      sender: this.userNickname,
     };
     this.socket.sendMessage("CHAT", data);
   }
@@ -26,7 +25,7 @@ class Sender {
     const data = {
       type: "READY",
       message: [this.roomId, status],
-      sender: getUserNickname(),
+      sender: this.userNickname,
     };
     this.socket.sendMessage("READY", data);
   }
@@ -34,7 +33,7 @@ class Sender {
     const data = {
       type: "LEAVE",
       message: [this.roomId],
-      sender: getUserNickname(),
+      sender: this.userNickname,
     };
     this.socket.sendMessage("LEAVE", data);
   }

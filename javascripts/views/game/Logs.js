@@ -1,4 +1,3 @@
-import { getUserNickname } from "../../util/gameInfo.js";
 class Logs {
   constructor(selector, sender) {
     this.element = selector;
@@ -78,7 +77,7 @@ arrow_forward_ios
       chat.classList.add("system");
       li.appendChild(chat);
     } else if (type === "CHAT") {
-      if (sender !== getUserNickname()) {
+      if (sender !== sessionStorage.getItem("nickname")) {
         li.classList.add("other");
         chat.classList.add("other");
         nickname.textContent = `${sender}`;

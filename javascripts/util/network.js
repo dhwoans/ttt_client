@@ -1,9 +1,7 @@
-import { getUserNickname, getUserId } from "./gameInfo.js";
-
 /* ========================================================= */
 /* API 통신 관리 */
 /* ========================================================= */
-export const createRoom = async (userId) => {
+export const createRoom = async (userId, nickname) => {
   try {
     const response = await fetch("/api/room", {
       method: "POST",
@@ -12,7 +10,7 @@ export const createRoom = async (userId) => {
       },
       body: JSON.stringify({
         userId: userId,
-        nickname: getUserNickname(),
+        nickname: nickname,
       }),
     });
     const data = await response.json();
@@ -57,10 +55,31 @@ export const getRoomList = async () => {
     });
     const data = await response.json();
     if (data.success) {
-      console.log(data.roomList);
+      console.log(`[network] 응답받은 roomlist: ${data.roomList}`);
       return data.roomList;
     }
   } catch (error) {
     console.error("방 불러오기 실패", error);
+  }
+};
+
+export const createUser = async () => {
+  try {
+    const response = await fetch("/api/user", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: userId,
+        nickname: nickname,
+      }),
+    });
+    const data = await response.json();
+    if (data.success) {
+      return data.userId;
+    }
+  } catch (error) {
+    console.error("유저 등록 실패", error);
   }
 };

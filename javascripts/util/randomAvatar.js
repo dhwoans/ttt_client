@@ -1,26 +1,68 @@
-export function getRandomAnimalEmoji() {
-  const animalEmojis = [
-    "🐶",
-    "🐱",
-    "🐭",
-    "🐹",
-    "🐰",
-    "🦊",
-    "🐻",
-    "🦝",
-    "🐨",
-    "🐯",
-    "🦁",
-    "🐮",
-    "🐷",
-    "🐸",
-    "🐵",
-    "🦉",
-    "🐢",
-    "🐬",
-  ];
-  
-  const arrayLength = animalEmojis.length;
-  const randomIndex = Math.floor(Math.random() * arrayLength); 
-  return animalEmojis[randomIndex];
+export const animalList = [
+  ["🐶", "강아지"],
+  ["🐱", "고양이"],
+  ["🐭", "생쥐"],
+  ["🐹", "햄스터"],
+  ["🐰", "토끼"],
+  ["🦊", "여우"],
+  ["🐻", "곰"],
+  ["🦝", "너구리"],
+  ["🐨", "코알라"],
+  ["🐯", "호랑이"],
+  ["🦁", "사자"],
+  ["🐮", "소"],
+  ["🐷", "돼지"],
+  ["🐸", "개구리"],
+  ["🐵", "원숭이"],
+  ["🦉", "부엉이"],
+  ["🐢", "거북이"],
+  ["🐬", "돌고래"],
+];
+export const adjectives = [
+  "행복한",
+  "슬픈",
+  "화난",
+  "지친",
+  "활기찬",
+  "조용한",
+  "시끄러운",
+  "따뜻한",
+  "차가운",
+  "부드러운",
+  "강한",
+  "약한",
+  "빠른",
+  "느린",
+  "밝은",
+  "어두운",
+  "현명한",
+  "용감한",
+  "겸손한",
+  "정직한",
+  "친절한",
+  "엄격한",
+  "귀여운",
+  "멋진",
+  "신비로운",
+  "공정한",
+  "냉철한",
+  "신중한",
+  "논리적인",
+  "객관적인",
+  "분석적인",
+  "통찰력있는",
+  "예리한",
+  "진지한",
+  "사려깊은",
+  "정의로운",
+  "합리적인",
+  "균형잡힌",
+  "엄정한",
+  "철저한",
+];
+
+export function getRandomAdj() {
+  const randomAdj = Math.floor(Math.random() * adjectives.length);
+
+  return adjectives[randomAdj];
 }

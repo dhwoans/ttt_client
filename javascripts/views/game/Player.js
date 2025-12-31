@@ -1,5 +1,5 @@
-import { getRandomAnimalEmoji } from "../../util/randomAvatar.js";
 import { effectOnce, effectrepeat, removeRepeat } from "../../util/effect.js";
+import { animalList } from "../../util/randomAvatar.js";
 class Player {
   constructor(sender) {
     this.sender = sender;
@@ -17,7 +17,7 @@ class Player {
 
     $player.dataset.userId = userId;
     $player.classList.add("player");
-    $avatar.textContent = getRandomAnimalEmoji();
+    $avatar.textContent = animalList[0];
     $nickname.textContent =
       sessionStorage.getItem("userId") === userId ? "나" : nickname;
     $player.appendChild($avatar);

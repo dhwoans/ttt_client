@@ -1,5 +1,7 @@
 import { defineConfig } from "vite";
-import  path  from "path";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import path from "path";
 import { fileURLToPath } from "url";
 import imagemin from "vite-plugin-imagemin";
 import imageminGifsicle from "imagemin-gifsicle";
@@ -12,6 +14,12 @@ const __dirname = path.resolve(path.dirname(__filename));
 
 export default defineConfig({
   plugins: [
+    tailwindcss(),
+    react({
+      babel: {
+        plugins: [["babel-plugin-react-compiler"]],
+      },
+    }),
     imagemin({
       filter: /\.(jpg|jpeg|png|gif|svg)$/i,
 
@@ -31,6 +39,7 @@ export default defineConfig({
 
     rollupOptions: {
       input: {
+        login: path.resolve(__dirname, "login.html"),
         lobby: path.resolve(__dirname, "lobby.html"),
         game: path.resolve(__dirname, "game.html"),
         notFound: path.resolve(__dirname, "404.html"),
