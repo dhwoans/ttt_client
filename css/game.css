@@ -27,15 +27,14 @@
 }
 .player span {
   font-size: calc(1.5rem + 1vw);
-  border: black;
+  border: var(--thick-border);
   margin-right: 1rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: var(--box-shadow);
   border-radius: 100%;
-  background-color: white;
+  background-color: var(--color-white);
 }
 .player small {
-  color: black;
+  color: var(--color-black);
 }
 .player.highlight span {
   background-color: #d021f3;
@@ -57,10 +56,10 @@
   min-height: 40rem;
   margin: 3rem auto;
   padding: 2rem;
-  border-radius: 1rem;
-  background: linear-gradient(#383624, #282617);
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(var(--color-dark-1), var(--color-dark-2));
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
   position: relative;
 }
 
@@ -95,40 +94,40 @@ ol {
   height: 8rem;
   border: none;
   background: linear-gradient(#aca788, #a19d84);
-  color: #3f3b00;
+  color: var(--color-primary);
   font-size: 5rem;
   cursor: pointer;
-  font-family: "Caprasimo", cursive;
+  font-family: var(--font-caprasimo);
   padding: 1rem;
-  border-radius: 0.5rem;
-  border: 0.25rem solid black;
+  border-radius: var(--radius-sm);
+  border: var(--thick-border);
 }
 #game-board img {
   width: 50%;
   height: 50%;
-  border-radius: 1rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border-radius: var(--radius-lg);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 #game-board progress {
   width: 10rem;
   height: 3rem;
   background: transparent;
-  border: 0.25rem solid black;
-  border-radius: 0.7rem;
-  box-shadow: 5px 5px black;
+  border: var(--thick-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow);
 }
 
 #game-board progress::-webkit-progress-bar {
-  background: #282617;
-  border-radius: 0.7rem;
-  box-shadow: 5px 5px black;
+  background: var(--color-dark-2);
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow);
 }
 
 #game-board progress::-webkit-progress-value {
-  background: red;
-  border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
-  box-shadow: 5px 5px black;
+  background: var(--color-danger);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--box-shadow);
 }
 #game-board button.exit {
   padding: 0;
@@ -136,11 +135,11 @@ ol {
   width: 10rem;
   height: 3rem;
   cursor: pointer;
-  background: #e1dec7;
+  background: var(--color-panel);
   font-size: 1rem;
-  border-radius: 0.7rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border-radius: var(--radius-md);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 
 #game-board button.ready {
@@ -149,11 +148,11 @@ ol {
   width: 10rem;
   height: 3rem;
   cursor: pointer;
-  background: #f8c031;
+  background: var(--color-accent);
   font-size: 1rem;
-  border-radius: 0.7rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border-radius: var(--radius-md);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 
 #game-board button.ready.cancel {
@@ -175,14 +174,14 @@ dialog:modal {
   animation: pop-in 0.5s cubic-bezier(0.68, -0.55, 0.65, 0.52) forwards;
 }
 dialog h2.result {
-  color: #fcd256;
+  color: var(--color-accent-2);
   font-size: 2rem;
 }
 dialog.exit {
   width: 30rem;
 }
 dialog.game-over {
-  background: linear-gradient(#383624, #282617);
+  background: linear-gradient(var(--color-dark-1), var(--color-dark-2));
   width: 35rem;
   height: 35rem;
 }
@@ -191,13 +190,13 @@ dialog.game-over img {
   height: 20rem;
 }
 dialog button {
-  background-color: #e1dec7;
+  background-color: var(--color-panel);
   font-weight: bold;
   padding: 1rem;
   margin: 0.5rem;
-  border-radius: 0.7rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border-radius: var(--radius-md);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 
 dialog button:hover {
@@ -213,7 +212,7 @@ dialog button:hover {
   flex: 8;
   overflow-y: auto;
   /* max-width: 20rem; */
-  color: #3f3b00;
+  color: var(--color-primary);
   list-style: none;
 }
 #log::-webkit-scrollbar {
@@ -221,7 +220,7 @@ dialog button:hover {
 }
 
 #log::-webkit-scrollbar-thumb {
-  background-color: #fcd256;
+  background-color: var(--color-accent-2);
   border-radius: 1px;
 }
 
@@ -230,7 +229,7 @@ dialog button:hover {
 }
 #log small {
   margin: auto 0.2rem 0.2rem 0.2rem;
-  color: white;
+  color: var(--color-white);
 }
 #log li {
   padding: 0.2rem;
@@ -243,9 +242,9 @@ dialog button:hover {
 #log li p.me {
   font-weight: bold;
   border-radius: 0.8em 0.8em 0.8em 0;
-  border: 0.2rem solid black;
+  border: 0.2rem solid var(--color-black);
   padding: 0.4em;
-  background-color: #fcd256;
+  background-color: var(--color-accent-2);
   color: #333;
   max-width: 80%;
   padding: 0.4em;
@@ -260,9 +259,9 @@ dialog button:hover {
 #log li.other p {
   font-weight: bold;
   border-radius: 0.8em 0.8em 0 0.8em;
-  border: 0.2rem solid black;
+  border: 0.2rem solid var(--color-black);
   padding: 0.4em;
-  background-color: #aca788;
+  background-color: var(--color-bubble-other);
   max-width: 80%;
   color: #333;
   margin: 0;
@@ -286,27 +285,27 @@ dialog button:hover {
   height: 20rem;
   margin: 3rem auto;
   padding: 2rem;
-  background: linear-gradient(#383624, #282617);
-  border-radius: 1rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  background: linear-gradient(var(--color-dark-1), var(--color-dark-2));
+  border-radius: var(--radius-lg);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 
 #messages-container button {
   width: 4rem;
   border: none;
   margin-left: 1.5rem;
-  background-color: #fcd256;
+  background-color: var(--color-accent-2);
   border-radius: 0.25rem;
-  color: #383624;
+  color: var(--color-dark-1);
   font-size: 0.9rem;
   cursor: pointer;
   border-radius: 0.5rem;
-  border: 0.25rem solid black;
+  border: var(--thick-border);
   transition: color 0.2s;
   padding: 0.5rem 0.25rem 0.5rem 0.25rem;
   text-align: center;
-  box-shadow: 5px 5px black;
+  box-shadow: var(--box-shadow);
 }
 #messages-container input {
   margin: 0;
@@ -316,9 +315,9 @@ dialog button:hover {
   border: none;
   border-radius: 3px;
   padding: 0.5rem;
-  color: white;
+  color: var(--color-white);
   border-radius: 0.5rem;
-  border: 0.25rem solid black;
+  border: var(--thick-border);
   background-color: #46432f;
   text-align: left;
 }
@@ -335,9 +334,6 @@ dialog button:hover {
     transform: translateX(0);
   }
 }
-
-
-
 
 /* Fancy animation for showing the "Game Over" element */
 @keyframes pop-in {

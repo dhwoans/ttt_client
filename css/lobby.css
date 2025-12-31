@@ -6,10 +6,10 @@
   min-height: 45rem;
   margin: 3rem auto;
   padding: 2rem;
-  background: linear-gradient(#383624, #282617);
-  border-radius: 1rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  background: linear-gradient(var(--color-dark-1), var(--color-dark-2));
+  border-radius: var(--radius-lg);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
   position: relative;
   display: flex; /* 내부 요소 정렬을 위해 flex 사용 */
   flex-direction: column;
@@ -48,36 +48,35 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1.5rem;
-  background-color: white;
-  border-radius: 1rem;
-  color: #3f3b00;
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  color: var(--color-primary);
   transition: background-color 0.2s, border-color 0.2s;
-  border-radius: 1rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 
 .room-list .room-btn:hover {
-  background-color: #f8c031;
+  background-color: var(--color-accent);
 }
 
 .room-title {
   margin: 0;
   font-size: 1.1rem;
   font-weight: bold;
-  color: #3f3b00;
+  color: var(--color-primary);
 }
 
 .room-count {
   font-size: 0.9rem;
-  color: #f8c031;
+  color: var(--color-accent);
 }
 
 /* 꽉 찬 방 스타일 */
 .room-list li.full .room-btn {
   background-color: #ff0101;
-  border-color: #000000;
-  box-shadow: 5px 5px black;
+  border-color: var(--color-black);
+  box-shadow: var(--box-shadow);
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -94,25 +93,25 @@
   gap: 1rem;
   padding-top: 1rem;
   text-align: center;
-  border-top: 0.25rem solid #000000;
+  border-top: var(--thick-border);
 }
 
 .btn-container button {
   cursor: pointer;
-  font-family: "Caprasimo", cursive;
+  font-family: var(--font-caprasimo);
   font-size: 1rem;
-  border-radius: 1rem;
-  border: 0.25rem solid black;
-  box-shadow: 5px 5px black;
+  border-radius: var(--radius-lg);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
 }
 .btn-container button#makeRoom {
   flex-grow: 9;
-  background: #f8c031;
+  background: var(--color-accent);
 }
 
 .btn-container button#reload {
   flex-grow: 1;
-  background: white;
+  background: var(--color-white);
 }
 
 .btn-container button#reload span {
@@ -121,7 +120,7 @@
 
 .btn-container button#makeRoom:hover {
   background: #ff0000;
-  color: white;
+  color: var(--color-white);
 }
 /* ========================================================= */
 /* 방 목록이 없을때 */
@@ -144,7 +143,7 @@
 .empty-lobby-message h1 {
   font-size: 3rem;
   margin: 0;
-  color: #383624;
+  color: var(--color-dark-1);
 }
 
 .empty-lobby-message img {

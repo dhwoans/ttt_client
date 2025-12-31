@@ -1,4 +1,41 @@
 @import "tailwindcss";
+@theme {
+  /* Colors */
+  --color-dark-1: #383624;
+  --color-dark-2: #282617;
+  --color-primary: #3f3b00;
+  --color-accent: #f8c031;
+  --color-accent-2: #fcd256;
+  --color-panel: #e1dec7;
+  --color-bubble-other: #aca788;
+  --color-danger: #ff0000;
+  --color-white: #ffffff;
+  --color-black: #000000;
+}
+:root {
+  /* Colors */
+  --color-dark-1: #383624;
+  --color-dark-2: #282617;
+  --color-primary: #3f3b00;
+  --color-accent: #f8c031;
+  --color-accent-2: #fcd256;
+  --color-panel: #e1dec7;
+  --color-bubble-other: #aca788;
+  --color-danger: #ff0000;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Layout */
+  --box-shadow: 5px 5px var(--color-black);
+  --thick-border: 0.25rem solid var(--color-black);
+  --radius-lg: 1rem;
+  --radius-md: 0.7rem;
+  --radius-sm: 0.5rem;
+
+  /* Fonts */
+  --font-caprasimo: "Caprasimo", cursive;
+  --font-roboto-slab: "Roboto Slab", sans-serif;
+}
 
 * {
   box-sizing: border-box;
@@ -6,7 +43,7 @@
 
 html {
   font-size: calc(10px + 0.3vw);
-  font-family: "Roboto Slab", sans-serif;
+  font-family: var(--font-roboto-slab);
   line-height: 1.5;
 
   color: #ebe7ef;
@@ -42,10 +79,10 @@ header img {
 }
 
 h1 {
-  font-family: "Caprasimo", cursive;
+  font-family: var(--font-caprasimo);
   font-size: 3rem;
   margin: 0 auto 3rem auto;
-  color: #3f3b00;
+  color: var(--color-primary);
 }
 
 a {

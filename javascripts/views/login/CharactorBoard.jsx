@@ -53,7 +53,7 @@ export default function CharacterBoard() {
         </button>
 
         <div
-          className={`flex h-32 w-32 items-center justify-center rounded-2xl bg-white text-5xl ${brutalBox}`}
+          className={`flex h-50 w-50 items-center justify-center rounded-full bg-white text-9xl`}
         >
           {animalList[index][0]}
         </div>
@@ -80,14 +80,14 @@ export default function CharacterBoard() {
       <div className="flex flex-col gap-4">
         <button
           onClick={randomIndex}
-          className={`w-full rounded-2xl bg-white py-3 font-bold text-[#383624] ${brutalBtn}`}
+          className={`w-full rounded-2xl bg-white py-3 font-bold text-bg-1 ${brutalBtn}`}
         >
           랜덤 닉네임 생성
         </button>
 
         <button
           onClick={() => console.log("입장 로직")} // handleCreateUser 연결
-          className={`w-full rounded-2xl bg-[#f8c031] py-4 text-xl font-black text-[#383624] hover:bg-[#ff0000] hover:text-white ${brutalBtn}`}
+          className={`w-full rounded-2xl py-4 text-xl font-black text-[#383624] hover:bg-[#ff0000] hover:text-white ${brutalBtn}`}
         >
           이 캐릭터로 입장
         </button>
