@@ -38,56 +38,57 @@ export default function CharacterBoard() {
 
   return (
     <div>
-      <h2 className="mb-8 text-center text-3xl font-bold text-[#f8c031] drop-shadow-md">
+      <h2 className="mb-8 text-center text-3xl font-bold text-accent drop-shadow-md">
         CHARACTER SELECT
       </h2>
 
       <div className="mb-8 flex items-center justify-between gap-4">
+        {/* 이전 버튼 */}
         <button
           onClick={() =>
             setIndex((index + animalList.length - 1) % animalList.length)
           }
-          className={`h-12 w-12 rounded-full bg-white text-2xl font-bold ${brutalBtn}`}
+          className={`h-12 w-12 rounded-full text-2xl border-none font-bold ${brutalBtn}`}
         >
-          {"<"}
+          <span className="material-symbols-outlined">chevron_left</span>
         </button>
-
+        {/* 아바타  */}
         <div
           className={`flex h-50 w-50 items-center justify-center rounded-full bg-white text-9xl`}
         >
           {animalList[index][0]}
         </div>
-
+        {/* 다음 버튼 */}
         <button
           onClick={() => setIndex((index + 1) % animalList.length)}
-          className={`h-12 w-12 rounded-full bg-white text-2xl font-bold ${brutalBtn}`}
+          className={`h-12 w-12 rounded-full text-2xl border-none font-bold ${brutalBtn}`}
         >
-          {">"}
+          <span className="material-symbols-outlined">chevron_right</span>
         </button>
       </div>
 
       {/* 닉네임 입력 */}
-      <div className="mb-8">
+      <div className="mb-8 flex flex-row gap-4 ">
         <input
           type="text"
           value={fullNickname}
           onChange={handleNicknameChange}
-          className={`w-full rounded-2xl px-4 py-3 text-center text-xl font-bold outline-none ${brutalBox}`}
+          className={`basis-4/5 rounded-2xl py-3 text-center text-xl text-black font-bold outline-none bg-white`}
           spellCheck="false"
         />
+        {/* 랜덤 버튼 */}
+        <button
+          onClick={randomIndex}
+          className={`basis-1/5 rounded-2xl py-3 font-bold bg-blue-500 ${brutalBtn}`}
+        >
+          랜덤 생성
+        </button>
       </div>
 
       <div className="flex flex-col gap-4">
         <button
-          onClick={randomIndex}
-          className={`w-full rounded-2xl bg-white py-3 font-bold text-bg-1 ${brutalBtn}`}
-        >
-          랜덤 닉네임 생성
-        </button>
-
-        <button
           onClick={() => console.log("입장 로직")} // handleCreateUser 연결
-          className={`w-full rounded-2xl py-4 text-xl font-black text-[#383624] hover:bg-[#ff0000] hover:text-white ${brutalBtn}`}
+          className={`w-full rounded-2xl py-4 text-xl font-black bg-accent text-dark-1 hover:bg-danger hover:text-white ${brutalBtn}`}
         >
           이 캐릭터로 입장
         </button>
