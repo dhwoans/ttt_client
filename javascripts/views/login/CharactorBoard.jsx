@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { animalList, getRandomAdj } from "../../util/randomAvatar";
+import { createUser } from "../../util/network";
 
 export default function CharacterBoard() {
   const [index, setIndex] = useState(0);
@@ -79,7 +80,7 @@ export default function CharacterBoard() {
         {/* 랜덤 버튼 */}
         <button
           onClick={randomIndex}
-          className={`basis-1/5 rounded-2xl py-3 font-bold bg-blue-500 ${brutalBtn}`}
+          className={`basis-1/5 rounded-2xl py-3 font-bold bg-blue-500 hover-zoom ${brutalBtn}`}
         >
           랜덤 생성
         </button>
@@ -87,8 +88,8 @@ export default function CharacterBoard() {
 
       <div className="flex flex-col gap-4">
         <button
-          onClick={() => console.log("입장 로직")} // handleCreateUser 연결
-          className={`w-full rounded-2xl py-4 text-xl font-black bg-accent text-dark-1 hover:bg-danger hover:text-white ${brutalBtn}`}
+          onClick={() => handleCreateUser()} // handleCreateUser 연결
+          className={`w-full rounded-2xl py-4 text-xl font-black bg-accent text-dark-1 hover-zoom ${brutalBtn}`}
         >
           이 캐릭터로 입장
         </button>
