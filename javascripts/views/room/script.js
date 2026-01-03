@@ -1,3 +1,5 @@
+import WebComponentWrapper from "../../util/WebComponentWrapper.js";
+import EmptyLobbyMessage from "./components/EmptyLobbyMessage.js";
 import Lobby from "./Lobby.js";
 
 import LobbySocket from "./LobbySocket.js";
@@ -23,3 +25,15 @@ console.log(sessionStorage.getItem("userId"));
 const lobby = new Lobby();
 const websocket = new LobbySocket(lobby);
 window.lobbyWebsocket = websocket;
+
+/* ========================================================= */
+/* 커스텀 태그 등록 */
+/* ========================================================= */
+
+// Register as a web component: <empty-message message="..." repeat="3" src="..."></empty-message>
+WebComponentWrapper.register("empty-message", EmptyLobbyMessage, {
+  observedAttributes: ["message", "repeat", "src"],
+  attributeToProp: (n) => n,
+  useShadow: true,
+  styleUrl: "/css/components/empty-message.css",
+});

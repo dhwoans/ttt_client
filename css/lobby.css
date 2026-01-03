@@ -122,37 +122,4 @@
   background: #ff0000;
   color: var(--color-white);
 }
-/* ========================================================= */
-/* 방 목록이 없을때 */
-/* ========================================================= */
 
-.empty-lobby-message {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-
-  text-align: center;
-  padding: 3rem 0;
-  margin-top: 0;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
-}
-
-.empty-lobby-message h1 {
-  font-size: 3rem;
-  margin: 0;
-  color: var(--color-dark-1);
-}
-
-.empty-lobby-message img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  width: 20%;
-  height: 20%;
-
-  transform: translate(-50%, -50%);
-}

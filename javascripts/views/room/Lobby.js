@@ -40,14 +40,7 @@ class Lobby {
     if (this.roomList.length === 0) {
       this.rendered = false;
       this.$roomList.innerHTML = "";
-      this.$roomList.innerHTML = `<div class="empty-lobby-message">
-      <img src="${emptyFricGif}" />
-      <h1>방이 없어요! 방이 없어요!</h1>
-      <h1>방이 없어요! 방이 없어요!</h1>
-      <h1>방이 없어요! 방이 없어요!</h1>
-      <h1>방이 없어요! 방이 없어요!</h1>
-      </div>
-      </div>`;
+      this.$roomList.innerHTML = `<empty-message message="방이 없어요 방이 없어요" repeat="5"></empty-message>`;
       effectrepeat(this.$makeRoomBtn, "pulse");
       removeRepeat(this.$reloadBtn);
       return;
