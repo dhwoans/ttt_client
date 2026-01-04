@@ -1,6 +1,10 @@
 import WebComponentWrapper from "../../util/WebComponentWrapper.js";
 import EmptyLobbyMessage from "./components/EmptyLobbyMessage.js";
+import RoomList from "./components/RoomList.js";
+import RoomItems from "./components/RoomItems.js";
 import Lobby from "./Lobby.js";
+import AudioManager from "./AudioManager.js";
+import BGM from "/assets/BGM.mp3";
 
 import LobbySocket from "./LobbySocket.js";
 
@@ -20,10 +24,12 @@ function initializeSessionId() {
 }
 
 initializeSessionId();
+
 sessionStorage.removeItem("PLAYING");
 console.log(sessionStorage.getItem("userId"));
 const lobby = new Lobby();
 const websocket = new LobbySocket(lobby);
+const audioManager = new AudioManager(BGM);
 window.lobbyWebsocket = websocket;
 
 /* ========================================================= */
@@ -36,4 +42,18 @@ WebComponentWrapper.register("empty-message", EmptyLobbyMessage, {
   attributeToProp: (n) => n,
   useShadow: true,
   styleUrl: "/css/components/empty-message.css",
+});
+
+WebComponentWrapper.register("room-list", RoomList, {
+  observedAttributes: ["list"],
+  attributeToProp: (n) => n,
+  useShadow: true,
+  styleUrl: "/css/components/room-list.css",
+});
+
+WebComponentWrapper.register("room-item", RoomItems, {
+  observedAttributes: ["item"],
+  attributeToProp: (n) => n,
+  useShadow: true,
+  styleUrl: "/css/components/room-list.css",
 });

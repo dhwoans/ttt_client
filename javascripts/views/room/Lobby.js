@@ -5,7 +5,7 @@ class Lobby {
   constructor() {
     const userId = sessionStorage.getItem("userId");
     const userNickname = sessionStorage.getItem("nickname");
-    this.roomList = [];
+    this.roomInfoList = [];
     this.$roomContainer = document.getElementById("room-container");
     this.$roomList = document.querySelector(".room-list");
     this.$makeRoomBtn = document.getElementById("makeRoom");
@@ -26,78 +26,50 @@ class Lobby {
 
   async #getInitRoomList() {
     try {
-      this.roomList = await getRoomList();
+      this.roomInfoList = (await getRoomList()) ?? [];
     } catch (err) {
       console.error(`${this.constructor.name} : ${err}`);
-      this.roomList = [];
+      this.roomInfoList = [];
     } finally {
       this.rendering();
     }
   }
 
   rendering() {
-    if (!this.rendered && this.roomList.length === 0) return;
-    if (this.roomList.length === 0) {
+    if (!this.rendered && this.roomInfoList.length === 0) return;
+    this.$roomList.innerHTML = "";
+    if (this.roomInfoList.length === 0) {
       this.rendered = false;
-      this.$roomList.innerHTML = "";
-      this.$roomList.innerHTML = `<empty-message message="방이 없어요 방이 없어요" repeat="5"></empty-message>`;
+      const emptyMessage = document.createElement("empty-message");
+      emptyMessage.message = "방이 없어요 방이 없어요";
+      emptyMessage.repeat = 5;
+
+      this.$roomList.appendChild(emptyMessage);
       effectrepeat(this.$makeRoomBtn, "pulse");
       removeRepeat(this.$reloadBtn);
       return;
     }
     this.rendered = true;
-    this.$roomList.innerHTML = "";
     removeRepeat(this.$makeRoomBtn);
     effectrepeat(this.$reloadBtn, "pulse");
-    const ul = document.createElement("ul");
-    ul.classList.add("room-list");
-    this.roomList.forEach((item) => {
-      const li = document.createElement("li");
-      const btn = document.createElement("button");
-      const h3 = document.createElement("h3");
-      const small = document.createElement("small");
-      const roomId = item.roomId;
-      const isfull = item.currentPlayers == item.maxPlayers;
 
-      li.classList.add("room-item");
-      btn.classList.add("room-btn");
-      h3.classList.add("room-title");
-
-      h3.textContent = isfull ? "인원 초과" : "방 있음";
-      small.textContent = `${item.currentPlayers} / ${item.maxPlayers}`;
-
-      if (isfull) {
-        li.classList.add("full");
-      }
-      // btn.dataset.roomId = roomId
-      btn.addEventListener("click", () => {
-        if (item.currentPlayers < item.maxPlayers) {
-          sessionStorage.setItem("roomId", roomId);
-          window.lobbyWebsocket.disconnect();
-          window.location.href = `/room/${roomId}`;
-        }
-      });
-
-      btn.append(h3, small);
-      li.append(btn);
-      ul.appendChild(li);
-    });
-
+    const ul = document.createElement("room-list");
+    ul.list = this.roomInfoList;
     this.$roomList.appendChild(ul);
   }
   // 방생성
   addRoom(data) {
-    this.roomList.push(data);
+    this.roomInfoList.push(data);
     this.rendering();
   }
   removeRoom(data) {
-    this.roomList = this.roomList.filter((room) => {
+    this.roomInfoList = this.roomInfoList.filter((room) => {
       room.roomId !== data.roomId;
     });
     this.rendering();
   }
   changePlayer(data, num) {
-    this.roomList.forEach((room) => {
+    this.roomInfoList.forEach((room) => {
       if (room.roomId === data.roomId) {
         room.currentPlayers += num;
       }

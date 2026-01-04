@@ -1,0 +1,52 @@
+
+
+/* ========================================================= */
+/* 각 방 항목 스타일 */
+/* ========================================================= */
+.room-list li {
+  padding: 0.25rem 0;
+}
+
+.room-list .room-btn {
+  width: 99%;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  color: var(--color-primary);
+  transition: background-color 0.2s, border-color 0.2s;
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
+}
+
+.room-list .room-btn:hover {
+  background-color: var(--color-accent);
+}
+
+.room-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.room-count {
+  font-size: 0.9rem;
+  color: var(--color-accent);
+}
+
+/* 꽉 찬 방 스타일 */
+.full {
+  background-color: #ff0101;
+  border-color: var(--color-black);
+  box-shadow: var(--box-shadow);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.room-list li.full .room-btn:hover {
+  background-color: #8b000040;
+}
