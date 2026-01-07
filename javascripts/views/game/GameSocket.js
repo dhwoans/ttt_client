@@ -1,8 +1,8 @@
 import { io } from "socket.io-client";
-import { GAME_EVENTS } from "../../util/socketEvent.js";
-class GameConnection {
-  constructor(url, reciever) {
-    this.reciever = reciever;
+import { eventManager } from "../../util/EventManager.js";
+import { GAME_EVENTS } from "../../util/eventList.js";
+class GameSocket {
+  constructor(url) {
     this.url = url;
     this.roomId = sessionStorage.getItem("roomId");
     this.userId = sessionStorage.getItem("userId");
@@ -39,27 +39,15 @@ class GameConnection {
       this.connected = false;
     });
   }
-  // if (data.type === "MOVE") {
-  //   this.reciever.handleMove(data);
-  // } else if (data.type === "INFO") {
-  //   this.reciever.handleInfo(data);
-  // } else if (data.type === "CHAT") {
-  //   this.reciever.handleChat(data);
-  // } else if (data.type === "JOIN") {
-  //   this.reciever.handleJoin(data);
-  // } else if (data.type === "LEAVE") {
-  //   this.reciever.handleLeave(data);
-  // } else if (data.type === "READY") {
-  //   this.reciever.handleReady(data);
-  // } else if (data.type === "PLAYING") {
-  //   this.reciever.handleGameStart(data);
-  // } else if (data.type === "ERROR") {
-  //   this.reciever.handleError(data);
-  // } else if (data.type === "GAME_OVER") {
-  //   this.reciever.handleGameOver(data);
-  // } else if (data.type === "RESET") {
-  //   this.reciever.handleReset(data);
-  // }
+  // export const GAME_EVENTS = [
+  //   { name: "CHAT", handler: "handleChat", log: true },
+  //   { name: "JOIN", handler: "handleJoin", log: true },
+  //   { name: "LEAVE", handler: "handleLeave" },
+  //   { name: "READY", handler: "handleReady", log: true },
+  //   { name: "MOVE", handler: "handleMove", log: true },
+  //   { name: "PLAYING", handler: "handlePlaying", log: true },
+  //   { name: "GAME_OVER", handler: "handleGameOver", log: true },
+  // ];
 
   //reciever
   handleMessage() {
@@ -68,7 +56,7 @@ class GameConnection {
         if (log) {
           console.log(`${name} 수신:`, JSON.stringify(data));
         }
-
+        
         // 해당 메서드 확인 후 실행
         if (this.reciever[handler]) {
           this.reciever[handler](data);
@@ -95,4 +83,4 @@ class GameConnection {
   handleError() {}
 }
 
-export default GameConnection;
+export const socket = new GameSocket();

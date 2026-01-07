@@ -1,7 +1,7 @@
 import empty_fric from "/assets/empty_fric.gif";
 
 
-class EmptyLobbyMessage {
+class EmptyLobby {
   constructor(props = {}) {
     this.src = props.src || empty_fric;
     this.message = props.message || "404";
@@ -26,13 +26,4 @@ class EmptyLobbyMessage {
   }
 }
 
-
-// <div class="empty-lobby-message">
-//   <img src="/assets/empty_fric.gif" />
-//   <h1>방이 없어요! 방이 없어요!</h1>
-//   <h1>방이 없어요! 방이 없어요!</h1>
-//   <h1>방이 없어요! 방이 없어요!</h1>
-//   <h1>방이 없어요! 방이 없어요!</h1>
-// </div>;
-
-export default EmptyLobbyMessage;
+export default EmptyLobby;

@@ -1,13 +1,13 @@
 import { io } from "socket.io-client";
-import { LOBBY_EVENTS } from "../../util/socketEvent";
+import { eventManager } from "../../util/EventManager";
+import { LOBBY_EVENTS } from "../../util/eventList";
 
 class LobbySocket {
-  constructor(lobby) {
+  constructor() {
     this.socket = io("/lobby", {
       path: "/ws/",
       auth: { userId: sessionStorage.getItem("userId") },
     });
-    this.lobby = lobby;
     this.handleMessage();
   }
   handleMessage() {
@@ -39,6 +39,7 @@ class LobbySocket {
   }
 
   handleRoomCreate(data) {
+    eventManager.emit(LOBBY_EVENTS);
     this.lobby.addRoom(data);
   }
 

@@ -1,22 +1,22 @@
-import { createRoom, getRoomList } from "../../util/network.js";
-import { effectrepeat, removeRepeat } from "../../util/effect.js";
-import emptyFricGif from "/assets/empty_fric.gif";
+import { eventManager } from "../../util/EventManager.js";
+
 class Lobby {
   constructor() {
     const userId = sessionStorage.getItem("userId");
     const userNickname = sessionStorage.getItem("nickname");
     this.roomInfoList = [];
+
     this.$roomContainer = document.getElementById("room-container");
     this.$roomList = document.querySelector(".room-list");
     this.$makeRoomBtn = document.getElementById("makeRoom");
     this.$reloadBtn = document.getElementById("reload");
     this.$userId = document.getElementById("userId");
+    // init state
     this.$userId.textContent = userId;
     this.rendered = false;
     //방만들기 , 초기화 버튼 이벤트
-    this.$makeRoomBtn.addEventListener(
-      "click",
-      async () => await createRoom(userId, userNickname)
+    this.$makeRoomBtn.addEventListener("click", async () =>
+      this.handleCreateRoom()
     );
     this.$reloadBtn.addEventListener("click", async () => this.rendering());
     effectrepeat(this.$makeRoomBtn, "pulse");
@@ -47,17 +47,18 @@ class Lobby {
       this.$roomList.appendChild(emptyMessage);
       effectrepeat(this.$makeRoomBtn, "pulse");
       removeRepeat(this.$reloadBtn);
-      return;
-    }
-    this.rendered = true;
-    removeRepeat(this.$makeRoomBtn);
-    effectrepeat(this.$reloadBtn, "pulse");
+    } else {
+      this.rendered = true;
+      removeRepeat(this.$makeRoomBtn);
+      effectrepeat(this.$reloadBtn, "pulse");
 
-    const ul = document.createElement("room-list");
-    ul.list = this.roomInfoList;
-    this.$roomList.appendChild(ul);
+      const ul = document.createElement("room-list");
+      ul.list = this.roomInfoList;
+      this.$roomList.appendChild(ul);
+    }
   }
-  // 방생성
+  handleCreateRoom() {}
+  // 생성렌더링
   addRoom(data) {
     this.roomInfoList.push(data);
     this.rendering();

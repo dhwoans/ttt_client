@@ -1,8 +1,16 @@
+import { eventManager } from "../../util/EventManager";
+
 class Sender {
   connectSocket(socket) {
     this.socket = socket;
     this.roomId = sessionStorage.getItem("roomId");
     this.userNickname = sessionStorage.getItem("nickname");
+  }
+  setupEventListeners() {
+    eventManager.on("BOARD_UPDATE", (x, y) => this.handleBoard(x, y));
+    eventManager.on("CHAT_UPDATE", (message) => this.handleChat(message));
+    eventManager.on("READY_UPDATE", (status) => this.handleReady(status));
+    eventManager.on("LEAVE", () => this.handleLeave());
   }
 
   handleBoard(x, y) {

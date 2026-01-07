@@ -16,3 +16,10 @@ export const LOBBY_EVENTS = [
   { name: "PLAYER_PLUS", handler: "handlePlayerPlus", log: true },
   { name: "PLAYER_MINUS", handler: "handlePlayerMinus", log: true },
 ];
+
+//socketSender
+
+// eventManager.on("BOARD_UPDATE", (x, y) => this.handleBoard(x, y));
+// eventManager.on("CHAT_UPDATE", (message) => this.handleChat(message));
+// eventManager.on("READY_UPDATE", (status) => this.handleReady(status));
+// eventManager.on("LEAVE", () => this.handleLeave());

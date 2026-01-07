@@ -28,14 +28,13 @@
 
 .btn-container button {
   cursor: pointer;
-  font-family: var(--font-roboto-slab);
-  font-size: 1rem;
+  font-size: 1.6rem;
   color: var(--color-black);
   border-radius: var(--radius-lg);
   border: var(--thick-border);
   box-shadow: var(--box-shadow);
 
-  padding: 0.9rem 1.25rem;
+  padding: 0.3rem 1.25rem;
   min-height: 3.2rem;
   display: inline-flex;
   align-items: center;

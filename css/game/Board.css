@@ -1,0 +1,113 @@
+
+/* ========================================================= */
+/* 게임판 */
+/* ========================================================= */
+
+#game-container {
+  max-width: 40rem;
+  min-height: 40rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(var(--color-dark-1), var(--color-dark-2));
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
+  position: relative;
+}
+
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#game-board {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 3rem 0;
+  padding: 0;
+  flex-direction: column;
+}
+
+#game-board ol {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+#game-board button {
+  width: 8rem;
+  height: 8rem;
+  border: none;
+  background: linear-gradient(#aca788, #a19d84);
+  color: var(--color-primary);
+  font-size: 5rem;
+  cursor: pointer;
+  font-family: var(--font-caprasimo);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  border: var(--thick-border);
+}
+#game-board img {
+  width: 50%;
+  height: 50%;
+  border-radius: var(--radius-lg);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
+}
+#game-board progress {
+  width: 10rem;
+  height: 3rem;
+  background: transparent;
+  border: var(--thick-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow);
+}
+
+#game-board progress::-webkit-progress-bar {
+  background: var(--color-dark-2);
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow);
+}
+
+#game-board progress::-webkit-progress-value {
+  background: var(--color-danger);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--box-shadow);
+}
+#game-board button.exit {
+  padding: 0;
+  font-weight: bold;
+  width: 10rem;
+  height: 3rem;
+  cursor: pointer;
+  background: var(--color-panel);
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
+}
+
+#game-board button.ready {
+  padding: 0;
+  font-weight: bold;
+  width: 10rem;
+  height: 3rem;
+  cursor: pointer;
+  background: var(--color-accent);
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  border: var(--thick-border);
+  box-shadow: var(--box-shadow);
+}
+
+#game-board button.ready.cancel {
+  background: red;
+  color: white;
+}

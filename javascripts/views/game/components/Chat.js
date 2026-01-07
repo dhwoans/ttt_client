@@ -25,9 +25,7 @@ class Logs {
 
     this.$input.tpye = "text";
     this.$input.placeholder = "Type your message";
-    this.$btn.innerHTML = `<span class="material-symbols-outlined">
-arrow_forward_ios
-</span>`;
+    this.$btn.innerHTML = `<span class="material-symbols-outlined">arrow_forward_ios</span>`;
     this.$btn.classList.add("message-btn");
     this.$status.textContent = "Connecting to server...";
     this.$btn.addEventListener("click", () => {

@@ -1,17 +1,14 @@
+import { eventManager } from "../../util/EventManager";
+
 class Recever {
-  constructor(logs, modal, player, board) {
-    (this.logs = logs),
-      (this.modal = modal),
-      (this.player = player),
-      (this.board = board);
-  }
-  handleError(data) {
+  handleError() {
     //일단 404로 보냄
     window.location.href = "/error";
   }
   handleMove(data) {
     const { type, message, sender } = data;
     const [nickname, move] = message;
+
     const x = Math.floor(move / 3);
     const y = move % 3;
     const moveMessage = `${nickname}님이 ${x},${y}에 수를 뒀습니다`;
