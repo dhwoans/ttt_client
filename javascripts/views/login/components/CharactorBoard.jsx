@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { animalList, getRandomAdj } from "../../../util/randomAvatar";
 import { eventManager } from "../../../util/EventManager";
 import { Avator } from "../../commonComponents/avator";
+import { apiManager } from "../../../util/ApiManager";
 
 export default function CharacterBoard() {
+  const [shakeMotion, setShakeMotion] = useState(false);
   const [index, setIndex] = useState(0);
   const [fullNickname, setFullNickname] = useState(() => {
     return `${getRandomAdj()} ${animalList[0][1]}`;
@@ -23,48 +25,48 @@ export default function CharacterBoard() {
   };
 
   const handleCreateUser = async () => {
-    if (!fullNickname.trim()) return alert("닉네임을 확인하세요.");
+    if (!fullNickname.trim()) {
+      setShakeMotion(true);
+      return;
+    }
     if (isCreating) return;
-
-    const randomNum = crypto.randomUUID().toString().slice(0, 4);
-    const finalName = `${fullNickname.trim()}${randomNum}`;
-    const requestId = crypto.randomUUID();
-
     setIsCreating(true);
-
-    // 이벤트 수신
-    eventManager.once(`createUserResult:${requestId}`, (payload) => {
-      setIsCreating(false);
-      if (payload && payload.success) {
-        // 성공 처리: payload.user 등 필요 데이터 사용 가능
-        window.location.href = "/";
-      } else {
-        alert(payload?.error || "유저 생성에 실패했습니다.");
-      }
+    const result = await apiManager.createUser({
+      nickname: fullNickname,
+      profile: animalList[index][0],
     });
 
-    // 유저생성 이벤트 발송
-    eventManager.emit("createUser", { requestId, name: finalName });
+    // 이벤트 수신
+    setIsCreating(false);
+    if (result && result.success) {
+      // 성공 처리: uuId
+      sessionStorage.setItem("userId", result.message);
+      window.location.href = "/";
+    } else {
+      setShakeMotion(true);
+      // alert(result?.message || "유저 생성에 실패했습니다.");
+    }
 
-    // (선택) 타임아웃으로 응답 없을 때 처리
+    // 타임아웃 처리
     setTimeout(() => {
       if (isCreating) {
         setIsCreating(false);
-        eventManager.off(`createUserResult:${requestId}`); // 안전하게 제거
         alert("서버 응답이 없습니다. 다시 시도하세요.");
       }
-      return () => {
-        setIsCreating(false);
-      };
-    }, 1000);
+    }, 5000);
   };
 
+  const shake = "animate__animated animate__shakeX";
   const brutalBox =
     "border-[0.25rem] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
   const brutalBtn = `${brutalBox} active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all`;
 
   return (
-    <div>
+    <div
+      className={`mx-auto my-12 max-w-120 rounded-2xl bg-linear-to-b from-dark-1 to-dark-2 p-8 border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
+    ${shakeMotion ? shake : ""}`}
+      onAnimationEnd={() => setShakeMotion(false)}
+    >
       <h2 className="mb-8 text-center text-3xl font-bold text-accent drop-shadow-md">
         CHARACTER SELECT
       </h2>
@@ -79,8 +81,19 @@ export default function CharacterBoard() {
         >
           <span className="material-symbols-outlined">chevron_left</span>
         </button>
-        {/* 아바타  */}
-        <Avator>{animalList[index][0]}</Avator>
+        <div className="flex flex-col items-center justify-center gap-4">
+          {/* 아바타  */}
+          <Avator onClick={() => randomIndex()}>{animalList[index][0]}</Avator>
+          <input
+            type="text"
+            name="nickname"
+            value={fullNickname}
+            onChange={handleNicknameChange}
+            className={`rounded-2xl w-50 text-center text-lg text-black outline-none py-1 bg-white `}
+            spellCheck="false"
+          />
+        </div>
+
         {/* 다음 버튼 */}
         <button
           onClick={() => setIndex((index + 1) % animalList.length)}
@@ -91,33 +104,16 @@ export default function CharacterBoard() {
       </div>
 
       {/* 닉네임 입력 */}
-      <div className="mb-4 flex flex-row gap-4 ">
-        <input
-          type="textbox"
-          value={fullNickname}
-          onChange={handleNicknameChange}
-          className={`basis-4/5 rounded-4xl text-center text-black outline-none bg-white`}
-          spellCheck="false"
-        />
-        {/* 랜덤 버튼 */}
-        <button
-          onClick={randomIndex}
-          className={`basis-1/5 rounded-2xl py-3 bg-blue-500 hover-zoom ${brutalBtn}`}
-        >
-          랜덤
-        </button>
-      </div>
-      <div className="flex flex-col gap-4">
-        <button
-          onClick={() => handleCreateUser()} // handleCreateUser 연결
-          disabled={isCreating}
-          className={`w-full rounded-2xl py-4 font-black bg-accent text-xl text-dark-1 hover-zoom ${brutalBtn} ${
-            isCreating ? "opacity-60 pointer-events-none" : ""
-          }`}
-        >
-          {isCreating ? "입장 중..." : "이 캐릭터로 입장"}
-        </button>
-      </div>
+
+      <button
+        onClick={() => handleCreateUser()} // handleCreateUser 연결
+        disabled={isCreating}
+        className={`w-full rounded-2xl py-4 font-black bg-accent text-xl text-dark-1 hover-zoom ${brutalBtn} ${
+          isCreating ? "opacity-60 pointer-events-none" : ""
+        }`}
+      >
+        {isCreating ? "입장 중..." : "이 캐릭터로 입장"}
+      </button>
     </div>
   );
 }
