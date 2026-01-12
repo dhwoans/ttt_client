@@ -36,14 +36,5 @@ export default defineConfig({
 
   build: {
     outDir: path.resolve(__dirname, "dist"),
-
-    rollupOptions: {
-      input: {
-        login: path.resolve(__dirname, "login.html"),
-        lobby: path.resolve(__dirname, "lobby.html"),
-        game: path.resolve(__dirname, "game.html"),
-        notFound: path.resolve(__dirname, "404.html"),
-      },
-    },
   },
 });
