@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
-import { animalList, getRandomAdj } from "../../util/randomAvatar";
+import { Avator } from "../../commonComponents/avator";
 
-export default function Header() {
-  return <nav>
-    
-  </nav>;
+export default function nav() {
+  return (
+    <nav className="flex flex-row">
+      <Avator></Avator>
+      <p>네비게이션 바</p>
+    </nav>
+  );
 }
