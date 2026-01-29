@@ -3,11 +3,13 @@
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "vite.config.js",
+  "main": "vite.config.ts",
   "scripts": {
     "dev": "vite",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "vite build"
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "build": "tsc && vite build"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
+    "animate.css": "^4.1.1",
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
@@ -28,15 +31,33 @@
     "imagemin-svgo": "^11.0.1",
     "imagemin-webp": "^8.0.0",
     "js-confetti": "^0.13.1",
+    "lucide-react": "^0.562.0",
+    "motion": "^12.26.1",
+    "msw": "^2.12.7",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-router-dom": "^7.12.0",
     "socket.io-client": "^4.8.1",
     "tailwindcss": "^4.1.18",
     "vite": "^7.2.7",
-    "vite-plugin-imagemin": "^0.6.1"
+    "vite-plugin-imagemin": "^0.6.1",
+    "zustand": "^5.0.10"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.1.2"
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^25.0.9",
+    "@types/socket.io-client": "^1.4.36",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/ui": "^4.0.17",
+    "jsdom": "^27.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

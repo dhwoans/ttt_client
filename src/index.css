@@ -1,6 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Mega:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Lexend+Mega:wght@100..900&display=swap");
 @import "tailwindcss";
 
-:root {
+@theme {
   /* Colors */
   --color-dark-1: #383624;
   --color-dark-2: #282617;
@@ -21,20 +23,20 @@
   --radius-sm: 0.5rem;
 
   /* Fonts */
+  --font-black-han-sans: "Black Han Sans", sans-serif;
+  --font-Lexend-Mega: "Lexend Mega", sans-serif;
   --font-caprasimo: "Caprasimo", cursive;
   --font-roboto-slab: "Roboto Slab", sans-serif;
 }
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 html {
-  font-size: calc(10px + 0.3vw);
-  font-family: var(--font-roboto-slab);
+  font-size: calc(10px + 0.5vw);
+  font-family: var(--font-Lexend-Mega), var(--font-black-han-sans);
   line-height: 1.5;
-
+  height: 100%;
   color: #ebe7ef;
 
   font-synthesis: none;
@@ -45,15 +47,18 @@ html {
 }
 
 body {
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at top,
       rgba(241, 210, 70, 0.98),
       rgba(250, 176, 103, 0.87)
     ),
-    url("../assets/bg-pattern-dark.png");
+    url("/assets/backgrounds/Smiling.png");
   background-repeat: repeat;
-  background-size: 100% 100%, 30% 30%, 100% 100%;
-  min-height: 130rem;
+  background-size:
+    auto,
+    50px 50px;
+  animation: move-pattern 10s linear infinite;
 }
 
 header {
@@ -67,23 +72,111 @@ header img {
   filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
 }
 
-h1 {
-  font-family: var(--font-caprasimo);
-  font-size: 3rem;
-  margin: 0 auto 3rem auto;
-  color: var(--color-primary);
-}
-
 a {
   text-decoration: none;
 }
 
 .material-symbols-outlined {
   font-size: 1rem !important;
-  font-variation-settings: "FILL" 0, "wght" 700, "GRAD" 0, "opsz" 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 700,
+    "GRAD" 0,
+    "opsz" 24;
 }
 @layer components {
   .hover-zoom {
     @apply transition-transform duration-200 hover:scale-110;
   }
+
+  .hover-diagonal-stripes {
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+
+  .hover-diagonal-stripes::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      #fcd34d 0px,
+      #fcd34d 30px,
+      #ffffff 30px,
+      #ffffff 60px
+    );
+    background-size: 85px 85px;
+    animation: barber-pole 1.5s linear infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    border-radius: 1rem;
+  }
+
+  .hover-diagonal-stripes:hover::before {
+    opacity: 1;
+  }
+}
+
+@keyframes barber-pole {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 85px 85px;
+  }
+}
+
+@keyframes move-pattern {
+  from {
+    background-position:
+      0% 0%,
+      0% 0%;
+  }
+  to {
+    background-position:
+      0% 0%,
+      65% 46%;
+  }
+}
+
+.starburst {
+  width: 200px; /* adjust to control the size */
+  aspect-ratio: 1;
+  clip-path: polygon(
+    97.01% 67.04%,
+    85.65% 72.21%,
+    86.02% 84.68%,
+    73.53% 84.79%,
+    68.8% 96.33%,
+    57.35% 91.35%,
+    48.32% 99.97%,
+    39.9% 90.77%,
+    28.14% 94.97%,
+    24.19% 83.13%,
+    11.74% 82.19%,
+    12.94% 69.77%,
+    1.96% 63.85%,
+    8.11% 52.99%,
+    0.48% 43.11%,
+    10.51% 35.69%,
+    7.56% 23.56%,
+    19.75% 20.87%,
+    21.98% 8.59%,
+    34.21% 11.08%,
+    41.25% 0.77%,
+    51.41% 8.02%,
+    62.03% 1.47%,
+    68.36% 12.22%,
+    80.73% 10.56%,
+    82.14% 22.96%,
+    94.11% 26.46%,
+    90.36% 38.37%,
+    99.87% 46.44%,
+    91.6% 55.79%
+  );
 }
