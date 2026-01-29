@@ -7,7 +7,7 @@ export const botList: [string, string, string][] = [
   ["👺", "코주부", "/assets/bots/Goblin.png"],
   ["🤖", "로봇", "/assets/bots/Robot.png"],
   ["💀", "해골", "/assets/bots/Skull.png"],
-  ["😈", "악마", "/assets/bots/Smiling Face with Horns.png"],
+  ["😈", "악마", "/assets/bots/Smiling_Face_with_Horns.png"],
 ];
 
 export const randomBot = () =>{

@@ -1,6 +1,6 @@
 import GameManager from "./GameManager";
 import Player from "./components/Players";
-import Board from "../shared/components/Board";
+import Board from "../Board";
 
 export default function GamePage({ sender, players = [] }) {
   const brutalBox =

@@ -1,14 +1,25 @@
-import { useState, ReactNode } from "react";
-
+import { useState, useEffect, ReactNode } from "react";
+import { animalList } from "../utils/randomAvatar";
+import { botList } from "../utils/randomBot";
 interface AvatarProps {
   size?: "small" | "large";
   onClick?: () => void;
   children?: ReactNode;
   imageSrc?: string;
+  effectOnce?: boolean;
 }
 
-export function Avatar({ size, onClick, children, imageSrc }: AvatarProps) {
+export function Avatar({
+  size,
+  onClick,
+  children,
+  imageSrc,
+  effectOnce,
+}: AvatarProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isRandomizing, setIsRandomizing] = useState(false);
+  const [randomIndex, setRandomIndex] = useState(0);
+  const [hasAnimated, setHasAnimated] = useState(false);
   const hasOnClick = Boolean(onClick);
   const random: string = "❓";
   let wl: string;
@@ -17,6 +28,24 @@ export function Avatar({ size, onClick, children, imageSrc }: AvatarProps) {
   } else {
     wl = "h-50 w-50 text-8xl";
   }
+
+  useEffect(() => {
+    if (effectOnce && !hasAnimated) {
+      setIsRandomizing(true);
+      let count = 0;
+      const interval = setInterval(() => {
+        setRandomIndex(Math.floor(Math.random() * animalList.length));
+        count++;
+        if (count > 15) {
+          clearInterval(interval);
+          setIsRandomizing(false);
+          setHasAnimated(true);
+        }
+      }, 60);
+      return () => clearInterval(interval);
+    }
+  }, [effectOnce, hasAnimated]);
+
   return (
     <>
       <div
@@ -27,7 +56,12 @@ export function Avatar({ size, onClick, children, imageSrc }: AvatarProps) {
         role={hasOnClick ? "button" : undefined}
         tabIndex={hasOnClick ? 0 : undefined}
       >
-        {imageSrc ? (
+        {isRandomizing ? (
+          <img
+            className="w-30 h-30"
+            src={randomIndex > 5 ? animalList[randomIndex][2]:botList[randomIndex][2]}
+          ></img>
+        ) : imageSrc ? (
           <img
             src={imageSrc}
             alt="avatar"

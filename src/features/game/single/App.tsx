@@ -1,5 +1,5 @@
-import GameManager from "./GameManager";
+import GameManager from "../GameManager";
 
-export default function SingleGameApp() {
+export default function GameApp() {
   return <GameManager />;
 }

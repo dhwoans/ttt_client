@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { VersusBanner } from "@/shared/components/VersusBanner";
-import { animalList } from "@/shared/utils/randomAvatar";
+import { VersusBanner } from "@/features/game/VersusBanner";
 
 interface GamePlayerInfo {
   nickname: string;
@@ -13,10 +12,7 @@ interface SingleReadyProps {
   playersInfos: GamePlayerInfo[];
 }
 
-export default function SingleReady({
-  onReady,
-  playersInfos,
-}: SingleReadyProps) {
+export default function Ready({ onReady, playersInfos }: SingleReadyProps) {
   const navigate = useNavigate();
 
   const brutalBox =
@@ -25,16 +21,7 @@ export default function SingleReady({
 
   return (
     <section className="flex flex-col items-center justify-center min-h-screen gap-8 p-8">
-      <VersusBanner
-        left={{
-          name: playersInfos[0].nickname,
-          imageSrc: playersInfos[0].imageSrc,
-        }}
-        right={{
-          name: playersInfos[1].nickname,
-          imageSrc: playersInfos[1].imageSrc,
-        }}
-      />
+      <VersusBanner playersInfos={playersInfos} />
 
       <div className="flex flex-col gap-4">
         <button

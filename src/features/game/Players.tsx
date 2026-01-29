@@ -10,10 +10,15 @@ interface GamePlayerInfo {
 interface PlayersProps {
   playerInfos: GamePlayerInfo[];
   isTurn?: string;
+  botEffectOnce?: boolean;
 }
 
 //턴 알림
-export default function Players({ playerInfos, isTurn = "" }: PlayersProps) {
+export default function Players({
+  playerInfos,
+  isTurn = "",
+  botEffectOnce = false,
+}: PlayersProps) {
   return (
     <ol className="flex flex-row md:flex-col gap-10 md:gap-6">
       {playerInfos.map((player, index) => {
@@ -21,13 +26,14 @@ export default function Players({ playerInfos, isTurn = "" }: PlayersProps) {
           player.nickname === isTurn
             ? "animate__animated animate__bounce animate__infinite"
             : "";
-
         return (
           <li
             key={index}
             className={`flex flex-col items-center gap-1 ${animClass}`}
           >
-            <Avatar size="small">{player.avatar}</Avatar>
+            <Avatar size="small">
+              {player.avatar}
+            </Avatar>
             <p className="text-sm font-semibold text-white">
               {player.nickname}
             </p>

@@ -28,13 +28,15 @@ export default function GameModeGrid() {
   };
 
   const handleMultiMode = () => {
-    // 기존 방 만들기 로직 사용
-    alert("멀티플레이어 모드: 방 목록으로 이동");
+    // http 요청으로 방을 생성한다 or 생성된 방에 참가한다.
+
+    // 멀티플레이 모드로 GameManager에 진입
+    navigate("/game", { state: { mode: "multi" } });
   };
 
   const handleSingleMode = () => {
-    // 싱글 모드는 서버 연결 없이 게임 페이지로 이동
-    navigate("/game/single");
+    // 싱글 모드로 GameManager에 진입
+    navigate("/game/single", { state: { mode: "single" } });
   };
 
   const handleLocalMode = async () => {
@@ -74,247 +76,141 @@ export default function GameModeGrid() {
 
   return (
     <>
-      {/* Bento Grid */}
-      <motion.div
-        className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-3 md:gap-4 w-full"
-        variants={{
-          hidden: { opacity: 0 },
-          show: {
-            opacity: 1,
-            transition: { staggerChildren: 0.08, delayChildren: 0.05 },
-          },
-        }}
-        initial="hidden"
-        animate="show"
-      >
-        {/* 플레이어 정보 카드 */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20, scale: 0.98 },
-            show: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { type: "spring", stiffness: 220, damping: 18 },
-            },
-          }}
-          className="md:col-span-2 md:row-span-2 bg-blue-600 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] p-1 md:p-1.5 flex flex-col items-center justify-center min-h-12 md:min-h-16"
-        >
+      <div className="flex flex-row w-full gap-8">
+        {/* 왼쪽: 플레이어 정보만 */}
+        <motion.div className="flex-1 bg-blue-600 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] p-8 flex flex-col items-center justify-center min-h-[480px]">
           <Avatar size="large">{animalList[Number(index)][0]}</Avatar>
-          <p className="text-xs text-white mt-3">플레이어</p>
-          <p className="text-sm font-bold text-white text-center truncate max-w-full mt-1">
+          <p className="text-2xl text-white mt-6">플레이어</p>
+          <p className="text-2xl font-bold text-white text-center truncate max-w-full mt-3">
             {nickname}
           </p>
         </motion.div>
-
-        {/* 설정 카드 */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20, scale: 0.98 },
-            show: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { type: "spring", stiffness: 220, damping: 18 },
-            },
-          }}
-          onMouseDown={playBeep}
-          onClick={() => setIsSettingsOpen(true)}
-          className="relative bg-yellow-400 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-0.5 md:p-1 flex flex-col items-center justify-center min-h-10 md:min-h-12 group hover-diagonal-stripes"
-        >
-          <img
-            src="/assets/icons/Gear.png"
-            alt="설정 기어"
-            className="h-16 w-16 object/contain mb-2 drop-shadow"
-          />
-          <p className="font-bold text-white">설정</p>
-          <p className="text-xs text-white/70 mt-1">음량 조절</p>
-          <div className="absolute inset-0 z-20 flex items-center justify-center text-black text-2xl md:text-3xl font-extrabold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            설정
-          </div>
-        </motion.div>
-
-        {/* 나가기 카드 */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20, scale: 0.98 },
-            show: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { type: "spring", stiffness: 220, damping: 18 },
-            },
-          }}
-          onMouseDown={playBeep}
-          onClick={handleLogout}
-          className="relative bg-red-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-0.5 md:p-1 flex flex-col items-center justify-center min-h-10 md:min-h-12 group hover-diagonal-stripes"
-        >
-          <img
-            src="/assets/icons/Waving_Hand.png"
-            alt="나가기 손인사"
-            className="h-16 w-16 object-contain mb-2 drop-shadow"
-          />
-          <p className="font-bold text-white">나가기</p>
-          <p className="text-xs text-white/70 mt-1">로그아웃</p>
-          <div className="absolute inset-0 z-20 flex items-center justify-center text-black text-2xl md:text-3xl font-extrabold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            나가기
-          </div>
-        </motion.div>
-
-        {/* 멀티플레이어 모드 - 큰 카드 */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20, scale: 0.98 },
-            show: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { type: "spring", stiffness: 220, damping: 18 },
-            },
-          }}
-          onMouseDown={playBeep}
-          onClick={handleMultiMode}
-          className="
-          relative
-          md:col-span-2 
-          bg-indigo-600 rounded-2xl 
-          border-4 border-black 
-          shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
-          hover:shadow-none 
-          hover:translate-x-1.5 hover:translate-y-1.5 
-          transition-all 
-          cursor-pointer 
-          p-1 md:p-1.5
-          flex flex-row justify-between items-center gap-3
-          min-h-15 md:min-h-18
-          group
-          hover-diagonal-stripes
-        "
-        >
-          <div className="flex flex-col items-center justify-center">
-            <img
-              src="/assets/icons/Busts.png"
-              alt="멀티플레이 아이콘"
-              className="h-24 w-24 object-contain"
-            />
-          </div>
-          <div className="flex flex-col items-start justify-center flex-1">
-            <h3 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              멀티플레이
-            </h3>
-            <p className="text-white/80 text-lg">
-              온라인으로 전 세계 플레이어와 대결하세요
-            </p>
-            <div className="flex gap-2 mt-3">
-              <span className="px-3 py-1 bg-white rounded-lg text-sm font-bold text-indigo-600">
-                온라인
-              </span>
-              <span className="px-3 py-1 bg-white rounded-lg text-sm font-bold text-indigo-600">
-                채팅
-              </span>
-            </div>
-          </div>
-          <div className="absolute inset-0 z-20 flex items-center justify-center text-black text-2xl md:text-3xl font-extrabold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            멀티플레이
-          </div>
-        </motion.div>
-
-        {/* 싱글플레이어 모드 */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20, scale: 0.98 },
-            show: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { type: "spring", stiffness: 220, damping: 18 },
-            },
-          }}
-          onMouseDown={playBeep}
-          onClick={handleSingleMode}
-          className="
-          relative
-          bg-yellow-500 rounded-2xl 
-          border-4 border-black 
-          shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
-          hover:shadow-none 
-          hover:translate-x-1.5 hover:translate-y-1.5 
-          transition-all 
-          cursor-pointer 
-          p-1 md:p-1.5
-          flex flex-col justify-between
-          min-h-15 md:min-h-18
-          group
-          hover-diagonal-stripes
-        "
-        >
-          <div>
-            <img
-              src="/assets/bots/Robot.png"
-              alt="싱글플레이 로봇"
-              className="h-14 w-14 object-contain mb-1 drop-shadow"
-            />
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              싱글플레이
-            </h3>
-            <p className="text-white/80 text-base">
-              AI와 대결하며 실력을 키우세요
-            </p>
-            <div className="mt-4">
-              <span className="px-3 py-1 bg-white rounded-lg text-sm font-bold text-yellow-500">
+        {/* 오른쪽: 2개(싱글/로컬), 1개(멀티), 2개(설정/나가기) 세로 분할 */}
+        <div className="flex flex-col flex-1 gap-6 h-full">
+          {/* 1: 싱글/로컬 */}
+          <div className="flex flex-row gap-6 flex-1">
+            <motion.div
+              onMouseDown={playBeep}
+              onClick={handleSingleMode}
+              className="flex-1 relative bg-yellow-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
+            >
+              <img
+                src="/assets/bots/Robot.png"
+                alt="싱글플레이 로봇"
+                className="h-16 w-16 object-contain mb-2 drop-shadow"
+              />
+              <h3 className="text-2xl font-bold text-white mb-2 transition-opacity duration-200 group-hover:opacity-0">
+                싱글플레이
+              </h3>
+              <span className="px-3 py-1 bg-white rounded-lg text-sm font-bold text-yellow-500 transition-opacity duration-200 group-hover:opacity-0">
                 AI 대전
               </span>
-            </div>
+              {/* Hover overlay: 제목 중앙 표시 */}
+              <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span className="text-3xl font-extrabold text-black drop-shadow-lg">
+                  싱글플레이
+                </span>
+              </div>
+            </motion.div>
+            <motion.div
+              onMouseDown={playBeep}
+              onClick={handleLocalMode}
+              className="flex-1 relative bg-lime-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
+            >
+              <img
+                src="/assets/icons/Bust.png"
+                alt="로컬 모드 아이콘"
+                className="h-16 w-16 object-contain mb-2"
+              />
+              <h3 className="text-xl font-bold text-white mb-1 transition-opacity duration-200 group-hover:opacity-0">
+                로컬 모드
+              </h3>
+              <span className="px-3 py-1 bg-white rounded-lg text-sm font-bold text-lime-600 transition-opacity duration-200 group-hover:opacity-0">
+                오프라인
+              </span>
+              <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span className="text-3xl font-extrabold text-black drop-shadow-lg">
+                  로컬 모드
+                </span>
+              </div>
+            </motion.div>
           </div>
-          <div className="absolute inset-0 z-20 flex items-center justify-center text-black text-2xl md:text-3xl font-extrabold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            싱글플레이
+          {/* 1: 멀티 */}
+          <div className="flex-1 flex items-stretch">
+            <motion.div
+              onMouseDown={playBeep}
+              onClick={handleMultiMode}
+              className="flex-1 relative bg-indigo-600 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center gap-4 h-full group hover-diagonal-stripes"
+            >
+              <img
+                src="/assets/icons/Busts.png"
+                alt="멀티플레이 아이콘"
+                className="h-16 w-16 object-contain"
+              />
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-1 transition-opacity duration-200 group-hover:opacity-0">
+                  멀티플레이
+                </h3>
+                <span className="px-3 py-1 bg-white rounded-lg text-sm font-bold text-indigo-600 transition-opacity duration-200 group-hover:opacity-0">
+                  온라인
+                </span>
+                <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <span className="text-3xl font-extrabold text-black drop-shadow-lg">
+                    멀티플레이
+                  </span>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
-
-        {/* 로컬 모드 */}
-        <motion.div
-          variants={{
-            hidden: { opacity: 0, y: 20, scale: 0.98 },
-            show: {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              transition: { type: "spring", stiffness: 220, damping: 18 },
-            },
-          }}
-          onMouseDown={playBeep}
-          onClick={handleLocalMode}
-          className="
-          relative
-          bg-lime-500 rounded-2xl 
-          border-4 border-black 
-          shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
-          hover:shadow-none 
-          hover:translate-x-1.5 hover:translate-y-1.5 
-          transition-all 
-          cursor-pointer 
-          p-0.5 md:p-1
-          flex flex-col items-center justify-center
-          min-h-9 md:min-h-11
-          group
-          hover-diagonal-stripes
-        "
-        >
-          <img
-            src="/assets/icons/Bust.png"
-            alt="로컬 모드 아이콘"
-            className="h-16 w-16 object-contain mb-1"
-          />
-          <h3 className="text-lg md:text-xl font-bold text-white mb-1">
-            로컬 모드
-          </h3>
-          <p className="text-xs text-white text-center mb-2">오프라인</p>
-          <div className="absolute inset-0 z-20 flex items-center justify-center text-black text-2xl md:text-3xl font-extrabold opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            로컬 모드
+          {/* 1: 설정/나가기 */}
+          <div className="flex flex-row gap-6 flex-1">
+            <motion.div
+              onMouseDown={playBeep}
+              onClick={() => setIsSettingsOpen(true)}
+              className="flex-1 relative bg-yellow-400 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
+            >
+              <img
+                src="/assets/icons/Gear.png"
+                alt="설정 기어"
+                className="h-16 w-16 object-contain mb-2 drop-shadow"
+              />
+              <p className="font-bold text-white transition-opacity duration-200 group-hover:opacity-0">
+                설정
+              </p>
+              <p className="text-xs text-white/70 mt-1 transition-opacity duration-200 group-hover:opacity-0">
+                음량 조절
+              </p>
+              <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span className="text-3xl font-extrabold text-black drop-shadow-lg">
+                  설정
+                </span>
+              </div>
+            </motion.div>
+            <motion.div
+              onMouseDown={playBeep}
+              onClick={handleLogout}
+              className="flex-1 relative bg-red-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
+            >
+              <img
+                src="/assets/icons/Waving_Hand.png"
+                alt="나가기 손인사"
+                className="h-16 w-16 object-contain mb-2 drop-shadow"
+              />
+              <p className="font-bold text-white transition-opacity duration-200 group-hover:opacity-0">
+                나가기
+              </p>
+              <p className="text-xs text-white/70 mt-1 transition-opacity duration-200 group-hover:opacity-0">
+                로그아웃
+              </p>
+              <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                <span className="text-3xl font-extrabold text-black drop-shadow-lg">
+                  나가기
+                </span>
+              </div>
+            </motion.div>
           </div>
-        </motion.div>
-      </motion.div>
-
+        </div>
+      </div>
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}

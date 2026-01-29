@@ -1,5 +1,5 @@
-import Board from "../shared/components/Board";
-import Players from "./components/Players";
+import Board from "../Board";
+import Players from "../Players";
 import GameOverModal from "@/shared/modals/GameOverModal";
 import Countdown from "@/shared/components/Countdown";
 import { useSoloGame } from "../hooks/useSoloGame";
@@ -50,7 +50,11 @@ export default function SoloGamePage({
   return (
     <main className="flex flex-col md:flex-row min-h-screen p-4 md:p-8 items-center md:items-center">
       <div className="w-full md:w-auto mb-6 md:mb-0 md:mr-12 flex flex-col items-center justify-center md:justify-center gap-4">
-        <Players playerInfos={playersInfos} isTurn={!isGameOver && isTurn} />
+        <Players
+          playerInfos={playersInfos}
+          isTurn={!isGameOver && isTurn}
+          botEffectOnce={true}
+        />
         {!isGameOver && (
           <Countdown
             durationMs={10000}

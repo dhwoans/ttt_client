@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Board from "../shared/components/Board";
+import Board from "../Board";
 import Ready from "./components/Ready";
 
 export default function GameManager({ sender }) {
