@@ -30,6 +30,9 @@ export default function GameManager() {
   const location = useLocation();
   const mode = location.state?.mode || "single";
 
+  const [showGameStart, setShowGameStart] = useState(false);
+  const [gameStartDone, setGameStartDone] = useState(false);
+
   // 싱글플레이: 최초 렌더링 시 playersInfos 세팅
   useEffect(() => {
     if (mode === "single" && playersInfos.length === 1) {
@@ -74,9 +77,8 @@ export default function GameManager() {
           timeoutBy: null,
         }),
       );
-    }else{
+    } else {
       //ready 신호 서버로 보내기
-      
     }
   };
 
@@ -85,11 +87,9 @@ export default function GameManager() {
     navigate("/lobby", { replace: true });
   };
 
-  // handleExitCancel도 SoloGamePage로 이동
-
   return (
     <>
-      <Nav></Nav>
+      <Nav />
       {phase === "ready" ? (
         <Ready onReady={handleReady} playersInfos={playersInfos} />
       ) : (

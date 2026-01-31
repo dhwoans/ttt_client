@@ -5,128 +5,145 @@
 ```
 client/
 ├── docs/                          # 📚 문서
-│   ├── FEATURES.md               # 주요 기능 개요
-│   ├── TURN_TIMER.md            # 턴 타이머 명세
-│   └── PROJECT_STRUCTURE.md      # 프로젝트 구조 (현재 파일)
+│   ├── FEATURES.md
+│   ├── TURN_TIMER_v2.md
+│   ├── PROJECT_STRUCTURE.md
+│   ├── CHARACTER_BOARD.md
+│   ├── GAMEMANAGER.md
+│   ├── RECOVERY_MECHANISM.md
+│   ├── NAMING_CONVENTIONS.md
+│   └── DEVELOPMENT_STRATEGY.md
 │
 ├── src/
 │   ├── App.tsx                   # 라우팅 진입점
 │   ├── main.tsx                  # React DOM 마운트
 │   ├── index.css                 # 전역 스타일
+│   ├── vite-env.d.ts             # 타입 환경
 │   │
 │   ├── features/                 # 🎮 주요 기능 모듈
-│   │   ├── auth/                 # 인증
-│   │   │   ├── AuthPage.tsx
-│   │   │   ├── script.tsx
-│   │   │   └── components/
-│   │   │
-│   │   ├── lobby/                # 로비 & 게임 모드 선택
+│   │   ├── auth/
 │   │   │   ├── App.tsx
-│   │   │   ├── main.tsx
+│   │   │   ├── components/
+│   │   │   │   └── CharacterBoard.tsx
+│   │   │   ├── hooks/
+│   │   │   │   └── useCharacterBoard.tsx
+│   │   │   └── __tests__/
+│   │   │       └── useCharacterBoard.test.tsx
+│   │   │
+│   │   ├── lobby/
+│   │   │   ├── App.tsx
 │   │   │   ├── useLobbySocket.tsx
 │   │   │   └── components/
-│   │   │       ├── GameModeGrid.tsx   # 싱글/멀티/로컬 선택
+│   │   │       ├── GameModeGrid.tsx
 │   │   │       ├── LobbyPage.tsx
-│   │   │       ├── Nav.tsx
 │   │   │       ├── RoomItems.tsx
 │   │   │       └── RoomList.tsx
+│   │   │   └── __tests__/
 │   │   │
-│   │   └── game/                 # 🎯 게임 기능 (모드별 분리)
-│   │       ├── single/           # ⭐ 싱글 모드 (AI 대전)
-│   │       │   ├── SingleGameApp.tsx
-│   │       │   ├── SoloGamePage.tsx
-│   │       │   ├── useSoloGame.tsx
-│   │       │   └── components/
-│   │       │       ├── Board.tsx (복사본)
-│   │       │       └── Players.tsx
-│   │       │
-│   │       ├── multi/            # 🌐 멀티 모드 (온라인)
+│   │   └── game/
+│   │       ├── Board.tsx
+│   │       ├── GameManager.tsx
+│   │       ├── GameStartBlocksTransition.tsx
+│   │       ├── Players.tsx
+│   │       ├── Ready.tsx
+│   │       ├── VersusBanner.tsx
+│   │       ├── types.ts
+│   │       ├── hooks/
+│   │       │   ├── useGameSocket.ts
+│   │       │   └── useSoloGame.ts
+│   │       ├── local/
+│   │       ├── multi/
 │   │       │   ├── App.tsx
 │   │       │   ├── GameManager.tsx
 │   │       │   ├── GamePage.tsx
-│   │       │   ├── main.tsx
-│   │       │   ├── useGameSocket.tsx
 │   │       │   └── components/
 │   │       │       ├── Chat.tsx
 │   │       │       ├── DifficultySelector.tsx
 │   │       │       ├── Players.tsx
 │   │       │       ├── Ready.tsx
 │   │       │       └── SpeechBalloon.tsx
-│   │       │
-│   │       ├── local/            # 👥 로컬 모드 (파티 게임)
-│   │       │   ├── LocalHostView.tsx    # 호스트 (큰 화면)
-│   │       │   ├── LocalGuestView.tsx   # 게스트 (컨트롤러)
-│   │       │   └── useLocalGame.tsx     # 로컬 로직
-│   │       │
-│   │       ├── shared/           # 📦 모드 공유 컴포넌트
+│   │       ├── single/
+│   │       │   ├── App.tsx
+│   │       │   ├── SoloGamePage.tsx
 │   │       │   └── components/
-│   │       │       └── Board.tsx        # ✨ 모든 모드에서 사용
-│   │       │
-│   │       ├── hooks/            # 기존 Hooks (마이그레이션 대상)
-│   │       ├── util/             # 기존 유틸
-│   │       └── __tests__/        # 테스트
+│   │       ├── util/
+│   │       │   └── ticTacToeUtils.ts
+│   │       ├── __tests__/
+│   │       │   ├── GameBoard.test.tsx
+│   │       │   └── SoloGame.test.tsx
 │   │
-│   ├── shared/                   # 🔧 전역 공유 리소스
+│   ├── shared/
 │   │   ├── components/
 │   │   │   ├── Avatar.tsx
-│   │   │   ├── Countdown.tsx    # ⏱️ 턴 타이머 컴포넌트
-│   │   │   └── modals/
-│   │   │       ├── AvatorSelectModal.tsx
-│   │   │       ├── ExitModal.tsx
-│   │   │       ├── GameOverModal.tsx
-│   │   │       └── SettingsModal.tsx
-│   │   │
+│   │   │   ├── Countdown.tsx
+│   │   │   ├── Nav.tsx
+│   │   │   └── __tests__/
+│   │   │       ├── AIPlayer.test.ts
+│   │   │       ├── AsyncComponent.test.tsx
+│   │   │       ├── Avatar.test.tsx
+│   │   │       ├── Countdown.test.tsx
+│   │   │       ├── Snapshot.test.tsx
+│   │   │       ├── UserEvents.test.tsx
+│   │   │       └── __snapshots__/
+│   │   ├── hooks/
+│   │   │   ├── useAudioEffect.tsx
+│   │   │   ├── useBackExitModal.ts
+│   │   │   ├── useCountdown.ts
+│   │   │   ├── useGameResult.ts
+│   │   │   ├── usePlayerInfo.ts
+│   │   │   └── useSingleGameStorageManager.ts
+│   │   ├── modals/
+│   │   │   ├── AvatorSelectModal.tsx
+│   │   │   ├── ExitModal.tsx
+│   │   │   ├── GameOverModal.tsx
+│   │   │   └── SettingsModal.tsx
 │   │   ├── utils/
-│   │   │   ├── AIPlayer.ts       # AI 로직
-│   │   │   ├── ApiManager.ts     # API 통신
-│   │   │   ├── AudioManager.ts   # 음성 관리
+│   │   │   ├── AIPlayer.ts
+│   │   │   ├── ApiManager.ts
+│   │   │   ├── AudioManager.ts
+│   │   │   ├── CountdownManager.ts
 │   │   │   ├── EffectManager.ts
-│   │   │   ├── EventManager.ts   # 🔌 Socket 이벤트
 │   │   │   ├── eventList.ts
+│   │   │   ├── EventManager.ts
+│   │   │   ├── playerStorage.ts
 │   │   │   ├── randomAvatar.ts
 │   │   │   ├── randomBot.ts
 │   │   │   └── winning-combinations.ts
-│   │   │
 │   │   ├── stores/
-│   │   │   └── audioStore.ts    # 🎵 음성 상태 (Zustand)
-│   │   │
-│   │   ├── test/
-│   │   │   ├── setup.ts
-│   │   │   ├── test-utils.tsx
-│   │   │   └── utils.test.ts
-│   │   │
-│   │   └── __tests__/
-│   │       ├── AsyncComponent.test.tsx
-│   │       ├── Avatar.test.tsx
-│   │       ├── Snapshot.test.tsx
-│   │       └── UserEvents.test.tsx
+│   │   │   └── audioStore.ts
+│   │   ├── __test__/
+│   │   │   └── aiEngine.test.ts
+│   │   └── test/
+│   │       ├── setup.ts
+│   │       ├── test-utils.tsx
+│   │       └── utils.test.ts
 │   │
 │   └── mock/
-│       ├── browser.ts           # MSW 설정
-│       └── handlers.ts          # Mock API
+│       ├── browser.ts
+│       └── handlers.ts
 │
-├── assets/                       # 🖼️ 정적 리소스
+├── assets/
 │   ├── animals/
 │   ├── animations/
 │   ├── backgrounds/
 │   ├── bots/
 │   ├── icons/
-│   └── sound/
+│   ├── sound/
+│   ├── Chequered Flag.png
+│   ├── favicon.ico
+│   ├── Hand with Fingers Splayed.png
+│   ├── Index Pointing Up.png
 │
 ├── public/
 │   └── mockServiceWorker.js
 │
-├── 📄 설정 파일
-│   ├── package.json
-│   ├── tsconfig.json
-│   ├── tsconfig.node.json
-│   ├── vite.config.ts
-│   ├── vitest.config.ts
-│   └── index.html
-│
-└── 📖 문서
-    ├── README.md
-    └── DEVELOPMENT_STRATEGY.md
+├── package.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+├── vitest.config.ts
+├── index.html
+└── README.md
 ```
 
 ---
@@ -278,6 +295,30 @@ __tests__/
 ### Phase 4: 테스트 강화
 
 - [ ] 테스트 커버리지 70% 목표
+
+---
+
+## ☁️ 배포 및 동시접속자(동접) 설계
+
+본 프로젝트는 AWS Lightsail, DigitalOcean 등 소규모 클라우드 인스턴스 환경에서의 배포를 염두에 두고 설계되었습니다.
+
+### Nginx 리버스 프록시 및 인스턴스 확장 시 동접 처리
+
+- 백엔드 인스턴스를 확장하여, 더많은 동시접속자까지도 처리할 수 있도록 설계했습니다.(이론적으로 2배까지 접속가능)
+ 이를 위해 다음 조건이 충족시켰습니다.
+  - Nginx가 트래픽을 로드밸런싱할 것
+  - Redis를 사용하여  인스턴스 간 일관성 유지
+  - 실제 서비스와 유사한 환경에서 추가적인 부하 테스트로 검증
+
+- **예상 동시접속자(동접) 수**: 20~50명 수준의 소규모 트래픽을 기준으로 개발되었습니다.
+  - 단일 인스턴스(1vCPU, 1~2GB RAM)에서 무리 없이 동작하도록 최적화
+  - 실시간 멀티플레이(웹소켓) 기능은 50명 내외의 동접까지 안정적으로 처리 가능하도록 설계
+- 대규모 트래픽 발생 시에는 인스턴스 스펙 업그레이드 또는 로드밸런싱 구조로 확장 필요
+
+> **참고:**
+>
+> - 개발 및 테스트 환경 기준이며, 실제 서비스 환경에서는 네트워크/서버 성능에 따라 차이가 있을 수 있습니다.
+> - 서버 부하 테스트 및 모니터링을 통해 적정 동접 수를 지속적으로 검증할 것을 권장합니다.
 
 ---
 
