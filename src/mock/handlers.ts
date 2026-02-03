@@ -1,5 +1,13 @@
 import { http, HttpResponse, delay } from "msw";
 
+export const GAME_SERVERS = [
+  { url: "ws://127.0.0.1:9001", users: 2 },
+  { url: "ws://127.0.0.1:9002", users: 0 },
+  { url: "ws://127.0.0.1:9003", users: 1 },
+];
+
+const delayTime = 2000;
+
 export const handlers = [
   // POST /api/user - 사용자 생성
   http.post("/api/user", async ({ request }) => {
@@ -7,7 +15,7 @@ export const handlers = [
     const { nickname, profile } = body;
 
     if (!nickname || !profile) {
-      await delay(2000);
+      await delay(delayTime);
       return HttpResponse.json(
         { success: false, message: "닉네임과 프로필이 필요합니다." },
         { status: 400 },
@@ -23,6 +31,21 @@ export const handlers = [
       { status: 201 },
     );
   }),
+  // GET /api/room - 멀티플레이 서버 입장 정보 요청
+  http.get("/api/room", async () => {
+    // 가장 접속자가 적은 서버 선택
+    const bestServer = GAME_SERVERS.reduce((prev, curr) =>
+      prev.users <= curr.users ? prev : curr,
+    );
+    // 임의의 티켓 생성
+    const ticket = Math.random().toString(36).slice(2, 10);
+    await delay(delayTime);
+    return HttpResponse.json({
+      success: true,
+      gameServerUrl: bestServer.url,
+      ticket,
+    });
+  }),
 
   // POST /api/room - 방 생성
   http.post("/api/room", async ({ request }) => {
@@ -30,7 +53,7 @@ export const handlers = [
     const { userId } = body;
 
     if (!userId) {
-      await delay(2000);
+      await delay(delayTime);
       return HttpResponse.json(
         { success: false, message: "사용자 ID가 필요합니다." },
         { status: 400 },
@@ -38,7 +61,7 @@ export const handlers = [
     }
 
     const roomId = `room-${Date.now()}`;
-    await delay(2000);
+    await delay(delayTime);
     return HttpResponse.json(
       {
         success: true,
@@ -55,7 +78,7 @@ export const handlers = [
 
     if (!roomId) {
       return (async () => {
-        await delay(2000);
+        await delay(delayTime);
         return HttpResponse.json(
           { success: false, message: "roomId가 필요합니다." },
           { status: 400 },
@@ -64,7 +87,7 @@ export const handlers = [
     }
 
     return (async () => {
-      await delay(2000);
+      await delay(delayTime);
       return HttpResponse.json(
         {
           success: true,
@@ -83,7 +106,7 @@ export const handlers = [
   // GET /api/roomList - 방 목록
   http.get("/api/roomList", () => {
     return (async () => {
-      await delay(2000);
+      await delay(delayTime);
       return HttpResponse.json(
         {
           success: true,

@@ -35,7 +35,7 @@ export default function Ready({ onReady, playersInfos }: SingleReadyProps) {
       <div className="flex flex-col gap-4">
         <button
           onClick={handleReadyClick}
-          className={`px-10 py-4 rounded-2xl text-2xl font-black bg-accent text-dark-1 ${brutalBtn}`}
+          className={`px-10 py-4 rounded-2xl text-2xl font-black ${isReady ? "bg-red-500" : "bg-accent"} text-dark-1 ${brutalBtn}`}
         >
           {isReady ? "취소" : "준비"}
         </button>

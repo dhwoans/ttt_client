@@ -1,34 +1,12 @@
+interface JoinRoomResponse {
+  success: boolean;
+  gameServerUrl: string;
+  ticket: string;
+}
+
 /* ========================================================= */
 /* API 통신 관리 */
 /* ========================================================= */
-
-interface CreateRoomResponse {
-  success: boolean;
-  message: string;
-  roomId?: string;
-}
-
-interface CheckRoomResponse {
-  success: boolean;
-  message: string;
-  room?: any;
-}
-
-interface RoomListResponse {
-  success: boolean;
-  rooms: any[];
-}
-
-interface CreateUserResponse {
-  success: boolean;
-  message: string;
-}
-
-interface CreateUserData {
-  nickname: string;
-  profile: string;
-}
-
 class ApiManager {
   private basePath: string;
 
@@ -46,40 +24,10 @@ class ApiManager {
       return null;
     }
   }
-
-  // POST /api/room - 방 생성
-  async createRoom(
-    userId: string,
-    nickname: string,
-  ): Promise<CreateRoomResponse | null> {
-    return await this.request<CreateRoomResponse>("/api/room", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, nickname }),
-    });
-  }
-
-  // GET /api/room - 방 확인
-  async checkRoom(roomId: string): Promise<CheckRoomResponse | null> {
-    return await this.request<CheckRoomResponse>(`/api/room?roomId=${roomId}`, {
+  // GET /api/room - 멀티플레이 서버 입장 정보 요청
+  async joinRoom(): Promise<JoinRoomResponse | null> {
+    return await this.request<JoinRoomResponse>("/api/room", {
       method: "GET",
-    });
-  }
-
-  // GET /api/roomList
-  async getRoomList(): Promise<RoomListResponse | null> {
-    return await this.request<RoomListResponse>("/api/roomList", {
-      method: "GET",
-    });
-  }
-
-  // POST /api/user
-  async createUser(data: CreateUserData): Promise<CreateUserResponse | null> {
-    const { nickname, profile } = data;
-    return this.request<CreateUserResponse>("/api/user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nickname, profile }),
     });
   }
 }
