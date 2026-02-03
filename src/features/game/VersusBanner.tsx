@@ -1,5 +1,6 @@
 import { Avatar } from "../../shared/components/Avatar";
 const loadingImgSrc = "/assets/icons/Hourglass_Not_Done.png";
+const verse = "/assets/icons/verse.png"
 interface SideProps {
   name: string;
   imageSrc?: string;
@@ -22,7 +23,6 @@ export function VersusBanner({
   right,
   sides,
   playersInfos,
-  dividerText = "VS",
   className = "",
 }: VersusBannerProps) {
   // playersInfos가 있으면 우선 사용, 아니면 기존 방식
@@ -55,7 +55,7 @@ export function VersusBanner({
       <Avatar size="large" effectOnce={idx !== 0}>
           <img className="w-30 h-30" src={imageSrc} alt={name} />
       </Avatar>
-      <div className="text-white font-bold text-lg md:text-xl">{name}</div>
+      {/* <div className="text-white font-bold text-lg md:text-xl">{name}</div> */}
     </div>
   );
 
@@ -65,7 +65,7 @@ export function VersusBanner({
         <>
           {renderSide(participants[0], 0)}
           <div className="text-white font-extrabold text-2xl md:text-3xl">
-            {dividerText}
+            <img className="h-30 w-50" src={verse}></img>
           </div>
           <img src={loadingImgSrc} />
         </>
@@ -73,7 +73,7 @@ export function VersusBanner({
         <>
           {renderSide(participants[0], 0)}
           <div className="text-white font-extrabold text-2xl md:text-3xl">
-            {dividerText}
+            <img className="h-30 w-50" src={verse}></img>
           </div>
           {renderSide(participants[1], 1)}
         </>

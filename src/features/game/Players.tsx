@@ -27,13 +27,10 @@ export default function Players({
             ? "animate__animated animate__bounce animate__infinite"
             : "";
         return (
-          <li
-            key={index}
-            className={`flex flex-col items-center gap-1 ${animClass}`}
-          >
-            <Avatar size="small">
-              {player.avatar}
-            </Avatar>
+          <li key={index} className={`flex flex-col items-center gap-1 `}>
+            <div className={animClass}>
+              <Avatar size="small">{player.avatar}</Avatar>
+            </div>
             <p className="text-sm font-semibold text-white">
               {player.nickname}
             </p>

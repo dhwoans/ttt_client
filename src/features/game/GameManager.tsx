@@ -25,7 +25,14 @@ export default function GameManager() {
     imageSrc: animalList[playerInfo.avatarIndex][2],
   };
   const [playersInfos, setPlayersInfos] = useState<GamePlayerInfo[]>([myInfo]);
+  // phase 초기값을 localStorage에서 읽어서 결정
   let initialPhase: "ready" | "playing" = "ready";
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (parsed.phase === "playing") initialPhase = "playing";
+    } catch {}
+  }
   const [phase, setPhase] = useState<"ready" | "playing">(initialPhase);
   const location = useLocation();
   const mode = location.state?.mode || "single";
@@ -79,6 +86,9 @@ export default function GameManager() {
       );
     } else {
       //ready 신호 서버로 보내기
+      useEffect(()=>{
+        
+      },[])
     }
   };
 
