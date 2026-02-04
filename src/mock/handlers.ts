@@ -12,9 +12,9 @@ export const handlers = [
   // POST /api/user - 사용자 생성
   http.post("/api/user", async ({ request }) => {
     const body = (await request.json()) as any;
-    const { nickname, profile } = body;
+    const { nickname, avatar } = body;
 
-    if (!nickname || !profile) {
+    if (!nickname || !avatar) {
       await delay(delayTime);
       return HttpResponse.json(
         { success: false, message: "닉네임과 프로필이 필요합니다." },
@@ -22,7 +22,7 @@ export const handlers = [
       );
     }
 
-    await delay(2000);
+    await delay(delayTime);
     return HttpResponse.json(
       {
         success: true,

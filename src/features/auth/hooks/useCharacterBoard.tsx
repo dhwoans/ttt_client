@@ -1,35 +1,18 @@
 import { useState, useEffect } from "react";
 import { animalList, getRandomAdj } from "@/shared/utils/randomAvatar";
-import { apiManager } from "@/shared/utils/ApiManager";
 import { useNavigate } from "react-router-dom";
 import { useAudio } from "@/shared/hooks/useAudioEffect";
+import { useCreateUser } from "./useCreateUser";
+import {
+  CharacterBoardState,
+  CharacterBoardActions,
+  CharacterBoardInterface,
+} from "../types/characterBoardTypes";
 
-interface CharacterBoardState {
-  index: number;
-  isRandomizing: boolean;
-  fullNickname: string;
-  isCreating: boolean;
-  shakeMotion: boolean;
-  currentAvatar: [string, string, string]; // [emoji, name, imageSrc]
-}
-
-interface CharacterBoardActions {
-  handleAvatarClick: () => void;
-  handleNavigateAvatar: (direction: "prev" | "next") => void;
-  handleNicknameChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleCreateUser: () => Promise<void>;
-  handleAnimationEnd: () => void;
-  playBeep: () => void;
-}
-
-interface CharacterBoardInterface {
-  state: CharacterBoardState;
-  actions: CharacterBoardActions;
-}
-
-export function useCharacterBoard(): CharacterBoardInterface {
+export function useCharacterBoard() {
   const navigate = useNavigate();
   const { playBeep, playTick } = useAudio();
+  const { createUser } = useCreateUser();
 
   const [shakeMotion, setShakeMotion] = useState(false);
   const [index, setIndex] = useState(0);
@@ -88,9 +71,9 @@ export function useCharacterBoard(): CharacterBoardInterface {
     setIsCreating(true);
 
     try {
-      const result = await apiManager.createUser({
+      const result = await createUser({
         nickname: fullNickname,
-        profile: animalList[index][0],
+        avatar: animalList[index][0],
       });
 
       if (result && result.success) {

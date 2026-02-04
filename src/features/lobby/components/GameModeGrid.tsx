@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { Users, User, Home, LogOut, Settings } from "lucide-react";
 import { Avatar } from "@/shared/components/Avatar";
 import { animalList } from "@/shared/utils/randomAvatar";
 import { useAudioStore } from "@/stores/audioStore";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { audioManager } from "@/shared/utils/AudioManager";
-import { apiManager } from "@/shared/utils/ApiManager";
+import { useMultiMode } from "../hooks/useMultiMode";
 
 export default function GameModeGrid() {
   const navigate = useNavigate();
@@ -15,6 +14,7 @@ export default function GameModeGrid() {
   const { sfxMuted } = useAudioStore();
   const index = sessionStorage.getItem("avator") || 3;
   const nickname = sessionStorage.getItem("nickname");
+  const { handleMultiMode } = useMultiMode();
 
   const playBeep = () => {
     if (!sfxMuted) {
@@ -27,45 +27,6 @@ export default function GameModeGrid() {
     navigate("/login", { replace: true });
   };
 
-  const handleMultiMode = async () => {
-    try {
-      const result = await apiManager.joinRoom();
-      if (result && result.success) {
-        console.log("게임 서버 주소:", result.gameServerUrl);
-        console.log("입장 티켓:", result.ticket);
-        let socket: any;
-        if (import.meta.env.VITE_SOCKET_MOCK === "true") {
-          const SocketMock = await import("socket.io-mock");
-          socket = new SocketMock.default();
-          setTimeout(() => {
-            socket.socketClient.emit("roomId", "mock-room-123");
-          }, 500);
-        } else {
-          const { io } = await import("socket.io-client");
-          socket = io(result.gameServerUrl, {
-            query: { ticket: result.ticket },
-            transports: ["websocket"],
-          });
-        }
-        socket.on("connect", () => {
-          console.log("웹소켓 연결 성공:", socket.id);
-        });
-        socket.on("connect_error", (err: any) => {
-          console.error("웹소켓 연결 실패:", err);
-        });
-        socket.on("roomId", (roomId: string) => {
-          console.log("서버에서 받은 roomId:", roomId);
-          navigate(`/game/${roomId}`);
-        });
-      } else {
-        alert("게임 서버 연결에 실패했습니다.");
-      }
-    } catch (error) {
-      console.error("멀티플레이 서버 연결 오류:", error);
-      alert("멀티플레이 서버 연결 중 오류가 발생했습니다.");
-    }
-  };
-
   const handleSingleMode = () => {
     // 싱글 모드로 GameManager에 진입
     navigate("/game/single", { state: { mode: "single" } });
@@ -75,23 +36,11 @@ export default function GameModeGrid() {
     // 로컬 모드는 서버로 방 생성 요청
   };
 
-  // 부유하는 애니메이션 정의
-  const floatingVariants = {
-    float: (index: number) => ({
-      y: [0, -15, 0],
-      transition: {
-        duration: 3 + index * 0.3,
-        repeat: Infinity,
-        ease: "easeInOut",
-      },
-    }),
-  };
-
   return (
     <>
       <div className="flex flex-row w-full gap-8">
         {/* 왼쪽: 플레이어 정보만 */}
-        <motion.div className="flex-1 bg-blue-600 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] p-8 flex flex-col items-center justify-center min-h-[480px]">
+        <motion.div className="flex-1 bg-blue-600 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] p-8 flex flex-col items-center justify-center min-h-120">
           <Avatar size="large">{animalList[Number(index)][0]}</Avatar>
           <p className="text-2xl text-white mt-6">플레이어</p>
           <p className="text-2xl font-bold text-white text-center truncate max-w-full mt-3">

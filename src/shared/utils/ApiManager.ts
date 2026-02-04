@@ -3,7 +3,10 @@ interface JoinRoomResponse {
   gameServerUrl: string;
   ticket: string;
 }
-
+interface CreateUserResponse {
+  success: boolean;
+  message: string;
+}
 /* ========================================================= */
 /* API 통신 관리 */
 /* ========================================================= */
@@ -25,9 +28,20 @@ class ApiManager {
     }
   }
   // GET /api/room - 멀티플레이 서버 입장 정보 요청
+  // 접속가능한 게임서버주소,입장티켓 리턴
   async joinRoom(): Promise<JoinRoomResponse | null> {
     return await this.request<JoinRoomResponse>("/api/room", {
       method: "GET",
+    });
+  }
+  // POST /api/user - 사용자 생성
+  async createUser(userData: { nickname: string; avatar?: string }): Promise<CreateUserResponse | null>{
+    return await this.request("/api/user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
     });
   }
 }
