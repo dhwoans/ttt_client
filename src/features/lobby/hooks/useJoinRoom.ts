@@ -7,29 +7,16 @@ interface JoinRoomResult {
   error?: string;
 }
 
-export function useJoinRoom() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<JoinRoomResult | null>(null);
-
-  const joinRoom = async (...args: any[]) => {
-    setLoading(true);
-    setResult(null);
-    try {
-      const response = await apiManager.joinRoom(...args);
-      const resultObj = { success: true, data: response };
-      setResult(resultObj);
-      return resultObj;
-    } catch (error: any) {
-      const errorObj = {
-        success: false,
-        error: error?.message || "Unknown error",
-      };
-      setResult(errorObj);
-      return errorObj;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return { joinRoom, loading, result };
+export async function useJoinRoom() {
+  try {
+    const response = await apiManager.joinRoom();
+    const resultObj: JoinRoomResult = { success: true, data: response };
+    return resultObj;
+  } catch (error: any) {
+    const errorObj = {
+      success: false,
+      error: error?.message || "Unknown error",
+    };
+    return errorObj;
+  }
 }
