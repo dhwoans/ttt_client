@@ -7,6 +7,7 @@ import { useAudioStore } from "@/stores/audioStore";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { audioManager } from "@/shared/utils/AudioManager";
 import { useMultiMode } from "../hooks/useMultiMode";
+import { toast } from "react-toastify";
 
 export default function GameModeGrid() {
   const navigate = useNavigate();
@@ -29,7 +30,11 @@ export default function GameModeGrid() {
 
   const handleSingleMode = () => {
     // 싱글 모드로 GameManager에 진입
-    navigate("/game/single", { state: { mode: "single" } });
+    toast("🤔 알고리즘 구상 중...");
+    setTimeout(() => {
+      navigate("/game/single", { state: { mode: "single" } });
+    },1500)
+    
   };
 
   const handleLocalMode = async () => {

@@ -20,7 +20,7 @@ export default function App() {
       <ToastContainer
         position="bottom-left"
         autoClose={2000}
-        hideProgressBar={false}
+        hideProgressBar
         newestOnTop
         closeOnClick
         pauseOnFocusLoss
