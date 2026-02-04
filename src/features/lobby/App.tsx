@@ -18,7 +18,7 @@ export default function App() {
   return (
     <>
       <ToastContainer
-        position="top-center"
+        position="bottom-left"
         autoClose={2000}
         hideProgressBar={false}
         newestOnTop
@@ -26,6 +26,7 @@ export default function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        theme="colored"
       />
       <div className="flex items-center justify-center min-h-screen px-4">
         <div className="w-full max-w-6xl">
