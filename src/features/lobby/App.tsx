@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import GameModeGrid from "./components/GameModeGrid";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   const navigate = useNavigate();
@@ -14,10 +16,22 @@ export default function App() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4">
-      <div className="w-full max-w-6xl">
-        <GameModeGrid />
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      <div className="flex items-center justify-center min-h-screen px-4">
+        <div className="w-full max-w-6xl">
+          <GameModeGrid />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
