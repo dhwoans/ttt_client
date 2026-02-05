@@ -9,6 +9,7 @@ export function useMultiMode() {
   const handleMultiMode = useCallback(async () => {
     try {
       const toastId = toast.info("🎟️ 입장 티켓내는 중", { autoClose: false });
+      //api 서버로 게임 서버 요청
       const response = await useJoinRoom();
       if (response && response.success && "data" in response && response.data) {
         sessionStorage.setItem("gameServerUrl", response.data.gameServerUrl);
@@ -19,8 +20,11 @@ export function useMultiMode() {
           autoClose: 1500,
           isLoading: false,
         });
+        //게임서버 연결 요청
+
+        //게임방으로 이동
         setTimeout(() => {
-          navigate("/game/lobby");
+          navigate("/game/", { state: { mode: "multi" } });
         }, 1500);
       } else {
         toast.update(toastId, {

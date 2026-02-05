@@ -1,6 +1,6 @@
-import { Avatar } from "../../shared/components/Avatar";
+import { Avatar } from "../../../shared/components/Avatar";
 const loadingImgSrc = "/assets/icons/Hourglass_Not_Done.png";
-const verse = "/assets/icons/verse.png"
+const verse = "/assets/icons/verse.png";
 interface SideProps {
   name: string;
   imageSrc?: string;
@@ -53,7 +53,7 @@ export function VersusBanner({
   const renderSide = ({ name, imageSrc, emoji }: SideProps, idx: number) => (
     <div className="flex flex-col items-center gap-2">
       <Avatar size="large" effectOnce={idx !== 0}>
-          <img className="w-30 h-30" src={imageSrc} alt={name} />
+        <img className="w-30 h-30" src={imageSrc} alt={name} />
       </Avatar>
       {/* <div className="text-white font-bold text-lg md:text-xl">{name}</div> */}
     </div>

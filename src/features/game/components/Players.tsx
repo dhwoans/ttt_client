@@ -10,14 +10,12 @@ interface GamePlayerInfo {
 interface PlayersProps {
   playerInfos: GamePlayerInfo[];
   isTurn?: string;
-  botEffectOnce?: boolean;
 }
 
 //턴 알림
 export default function Players({
   playerInfos,
   isTurn = "",
-  botEffectOnce = false,
 }: PlayersProps) {
   return (
     <ol className="flex flex-row md:flex-col gap-10 md:gap-6">

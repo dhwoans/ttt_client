@@ -1,3 +1,4 @@
+// 채팅박스 안 메시지 UI
 export default function SpeechBalloon({ type, message, sender }) {
   const isSystem = sender === "system";
   const isCurrentUser = sender === sessionStorage.getItem("nickname");

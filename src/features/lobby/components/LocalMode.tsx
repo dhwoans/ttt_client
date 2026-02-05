@@ -1,0 +1,37 @@
+import { motion } from "motion/react";
+import { useAudioStore } from "@/stores/audioStore";
+import { audioManager } from "@/shared/utils/AudioManager";
+import Badge from "./Badge";
+
+const LocalMode = () => {
+  const { sfxMuted } = useAudioStore();
+  const playBeep = () => {
+    if (!sfxMuted) audioManager.play("beep");
+  };
+  const handleLocalMode = () => {
+    // TODO: 로컬 모드 진입 로직 구현
+  };
+  return (
+    <motion.div
+      onMouseDown={playBeep}
+      onClick={handleLocalMode}
+      className="flex-1 relative bg-lime-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
+    >
+      <img
+        src="/assets/icons/Bust.png"
+        alt="로컬 모드 아이콘"
+        className="h-16 w-16 object-contain mb-2"
+      />
+      <h3 className="text-xl font-bold text-white mb-1 transition-opacity duration-200 group-hover:opacity-0">
+        로컬 모드
+      </h3>
+      <Badge color="text-lime-600">모바일 연동</Badge>
+      <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <span className="text-3xl font-extrabold text-black drop-shadow-lg">
+          로컬 모드
+        </span>
+      </div>
+    </motion.div>
+  );
+};
+export default LocalMode;

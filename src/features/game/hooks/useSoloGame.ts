@@ -62,8 +62,6 @@ export function useSoloGame(playersInfos: GamePlayerInfo[]) {
   }, [gameState]);
 
   // 턴이 바뀔 때마다 시작 시간 저장 (첫 수만)
-  // 첫 수가 두어질 때만 turnStart를 세팅 (이미 구현되어 있으므로 별도 useEffect 불필요)
-
   // 플레이어가 수를 두는 핸들러
   const handleSquare = (row: number, col: number) => {
     if (isGameOver || !isPlayerTurn) return;

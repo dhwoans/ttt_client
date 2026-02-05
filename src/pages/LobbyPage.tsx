@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import GameModeGrid from "./components/GameModeGrid";
+import BentoGrid from "../features/lobby/components/BentoGrid";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function App() {
+export default function LobbyPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,11 +28,11 @@ export default function App() {
         pauseOnHover
         theme="colored"
       />
-      <div className="flex items-center justify-center min-h-screen px-4">
+      <section className=" flex items-center justify-center min-h-screen px-4">
         <div className="w-full max-w-6xl">
-          <GameModeGrid />
+          <BentoGrid />
         </div>
-      </div>
+      </section>
     </>
   );
 }

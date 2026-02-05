@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import SoloGamePage from "./single/SoloGamePage";
-import Ready from "./Ready";
+import SoloGamePage from "../../../pages/SoloGamePage";
+import ReadyPage from "../../../pages/ReadyPage";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
 import { randomBot } from "@/shared/utils/randomBot";
 import { animalList } from "@/shared/utils/randomAvatar";
@@ -51,7 +51,7 @@ export default function GameManager() {
           if (parsed.bot) initialBot = parsed.bot;
         } catch {}
       }
-      let randomBotData;
+      let randomBotData: any;
       if (initialBot) {
         randomBotData = initialBot;
       } else {
@@ -86,9 +86,7 @@ export default function GameManager() {
       );
     } else {
       //ready 신호 서버로 보내기
-      useEffect(()=>{
-        
-      },[])
+      useEffect(() => {}, []);
     }
   };
 
@@ -101,7 +99,7 @@ export default function GameManager() {
     <>
       <Nav />
       {phase === "ready" ? (
-        <Ready onReady={handleReady} playersInfos={playersInfos} />
+        <ReadyPage onReady={handleReady} playersInfos={playersInfos} />
       ) : (
         <SoloGamePage playersInfos={playersInfos} onExit={handleExitConfirm} />
       )}

@@ -1,8 +1,8 @@
-import Board from "../Board";
-import Players from "../Players";
+import Board from "../features/game/components/Board";
+import Players from "../features/game/components/Players";
 import GameOverModal from "@/shared/modals/GameOverModal";
 import Countdown from "@/shared/components/Countdown";
-import { useSoloGame } from "../hooks/useSoloGame";
+import { useSoloGame } from "../features/game/hooks/useSoloGame";
 import ExitModal from "@/shared/modals/ExitModal";
 import { useState, useCallback } from "react";
 import { useBackExitModal } from "@/shared/hooks/useBackExitModal";

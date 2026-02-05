@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { VersusBanner } from "@/features/game/VersusBanner";
+import { VersusBanner } from "@/features/game/components/VersusBanner";
 
 interface GamePlayerInfo {
   nickname: string;
@@ -13,7 +13,7 @@ interface SingleReadyProps {
   playersInfos: GamePlayerInfo[];
 }
 
-export default function Ready({ onReady, playersInfos }: SingleReadyProps) {
+export default function ReadyPage({ onReady, playersInfos }: SingleReadyProps) {
   const navigate = useNavigate();
   const [isReady, setIsReady] = useState(false);
 
