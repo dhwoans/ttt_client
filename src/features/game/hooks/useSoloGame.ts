@@ -20,7 +20,6 @@ interface GamePlayerInfo {
  * - AI 처리
  * - 타임아웃 처리
  */
-
 export function useSoloGame(playersInfos: GamePlayerInfo[]) {
   // 단일 상태 객체로 관리
   const getInitialState = () => {
@@ -61,7 +60,7 @@ export function useSoloGame(playersInfos: GamePlayerInfo[]) {
     localStorage.setItem("singleGameState", JSON.stringify(gameState));
   }, [gameState]);
 
-  // 턴이 바뀔 때마다 시작 시간 저장 (첫 수만)
+  // 턴이 바뀔 때마다 시작 시간 저장 
   // 플레이어가 수를 두는 핸들러
   const handleSquare = (row: number, col: number) => {
     if (isGameOver || !isPlayerTurn) return;

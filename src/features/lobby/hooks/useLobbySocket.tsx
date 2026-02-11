@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import io from "socket.io-client";
 import { eventManager } from "@/shared/utils/EventManager";
 import { LOBBY_EVENTS } from "@/shared/utils/eventList";
-// 구버전
+// 구버전 안쓸지도 모름
 export function useLobbySocket() {
   const socketRef = useRef(null);
 

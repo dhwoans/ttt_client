@@ -21,10 +21,10 @@ export function useMultiMode() {
           isLoading: false,
         });
         //게임서버 연결 요청
-
+        
         //게임방으로 이동
         setTimeout(() => {
-          navigate("/game/", { state: { mode: "multi" } });
+          navigate("/game/123", { state: { mode: "multi" } });
         }, 1500);
       } else {
         toast.update(toastId, {

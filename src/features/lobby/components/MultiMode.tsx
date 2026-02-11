@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/utils/AudioManager";
 import { useMultiMode } from "../hooks/useMultiMode";
-import Badge from "./Badge"
+import Badge from "@/shared/components/Badge";
 
 const MultiMode = () => {
   const { sfxMuted } = useAudioStore();

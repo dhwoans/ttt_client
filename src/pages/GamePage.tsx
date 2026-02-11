@@ -17,7 +17,7 @@ interface SoloGamePageProps {
   playersInfos: GamePlayerInfo[];
   onExit?: () => void;
 }
-export default function SoloGamePage({
+export default function GamePage({
   playersInfos,
   onExit,
 }: SoloGamePageProps) {
@@ -53,7 +53,6 @@ export default function SoloGamePage({
         <Players
           playerInfos={playersInfos}
           isTurn={!isGameOver && isTurn}
-          botEffectOnce={true}
         />
         {!isGameOver && (
           <Countdown

@@ -1,5 +1,5 @@
-import GameManager from "./components/GameManager";
+import Room from "./components/Room";
 
 export default function GameApp() {
-  return <GameManager />;
+  return <Room />;
 }

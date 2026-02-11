@@ -9,7 +9,7 @@ export interface AIEngine {
     opponentSymbol: string,
   ) => Move | null;
 }
-// AI 플레이어 로직
+// 틱택토AI 플레이어 로직
 /**
  * 승리 조합 확인 로직
  */

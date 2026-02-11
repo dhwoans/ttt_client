@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/utils/AudioManager";
 import { toast } from "react-toastify";
-import Badge from "./Badge";
+import Badge from "@/shared/components/Badge";
 
 const SingleMode = () => {
   const navigate = useNavigate();
