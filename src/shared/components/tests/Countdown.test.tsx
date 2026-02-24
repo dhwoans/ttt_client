@@ -1,5 +1,13 @@
 import "@testing-library/jest-dom";
-import { describe, it, expect, vi } from "vitest";
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeAll,
+  afterAll,
+  afterEach,
+} from "vitest";
 import { render, screen, act } from "@testing-library/react";
 import Countdown from "../Countdown";
 

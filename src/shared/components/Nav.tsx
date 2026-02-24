@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/components/Avatar";
-import { animalList } from "@/shared/utils/randomAvatar";
+import { animalList } from "@/shared/constants/randomAvatar";
 import SettingsModal from "@/shared/modals/SettingsModal";
-import { audioManager } from "@/shared/utils/AudioManager";
+import { audioManager } from "@/shared/managers/AudioManager";
 import { useAudioStore } from "@/stores/audioStore";
 
 export default function Nav() {

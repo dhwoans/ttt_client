@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Avatar } from "@/shared/components/Avatar";
-import { animalList } from "@/shared/utils/randomAvatar";
+import { animalList } from "@/shared/constants/randomAvatar";
 
 const PlayerInfo = () => {
   const index = sessionStorage.getItem("avator") || 3;

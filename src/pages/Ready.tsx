@@ -16,7 +16,7 @@ const brutalBox =
   "border-[0.25rem] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
 const brutalBtn = `${brutalBox} hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px] transition-all active:scale-95`;
 
-export default function ReadyPage({ onReady, playersInfos }: SingleReadyProps) {
+export default function Ready({ onReady, playersInfos }: SingleReadyProps) {
   const navigate = useNavigate();
   const [isReady, setIsReady] = useState(false);
 

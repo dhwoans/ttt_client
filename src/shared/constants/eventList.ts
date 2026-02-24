@@ -14,6 +14,7 @@ export const GAME_EVENTS: EventConfig[] = [
   { name: "MOVE", handler: "handleMove", log: true },
   { name: "PLAYING", handler: "handlePlaying", log: true },
   { name: "GAME_OVER", handler: "handleGameOver", log: true },
+  { name: "ROOM_ASSIGNED", handler: "handleRoomAssigned", log: true },
 ];
 
 export const LOBBY_EVENTS: EventConfig[] = [

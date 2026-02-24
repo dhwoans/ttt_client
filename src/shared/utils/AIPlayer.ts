@@ -1,7 +1,7 @@
 import { Board, Move } from "@/features/game/types";
-import { WINNING_COMBINATIONS } from "./winning-combinations";
-
-
+import { WINNING_COMBINATIONS } from "../constants/winning-combinations";
+// 틱택토 ai 알고리즘
+// 좀더 복잡해지면 클래스로 관리
 export interface AIEngine {
   getBestMove: (
     board: Board,
@@ -47,8 +47,8 @@ function checkWinningMove(
  */
 function findDecisiveMove(board: Board, targetSymbol: string): Move | null {
   for (const combo of WINNING_COMBINATIONS) {
-    const line = combo.map(pos => ({ row: pos.row, col: pos.column }));
-    
+    const line = combo.map((pos) => ({ row: pos.row, col: pos.column }));
+
     let targetCount = 0;
     let emptyPos: Move | null = null;
 
@@ -56,7 +56,7 @@ function findDecisiveMove(board: Board, targetSymbol: string): Move | null {
       if (board[row][col] === targetSymbol) targetCount++;
       else if (board[row][col] === null) emptyPos = { row, col };
     }
-    
+
     if (targetCount === 2 && emptyPos) return emptyPos;
   }
   return null;
@@ -67,12 +67,18 @@ function findDecisiveMove(board: Board, targetSymbol: string): Move | null {
  */
 function getStrategicMove(board: Board): Move | null {
   const priorities: Move[] = [
-    { row: 1, col: 1 }, 
-    { row: 0, col: 0 }, { row: 0, col: 2 }, { row: 2, col: 0 }, { row: 2, col: 2 }, 
-    { row: 0, col: 1 }, { row: 1, col: 0 }, { row: 1, col: 2 }, { row: 2, col: 1 }, 
+    { row: 1, col: 1 },
+    { row: 0, col: 0 },
+    { row: 0, col: 2 },
+    { row: 2, col: 0 },
+    { row: 2, col: 2 },
+    { row: 0, col: 1 },
+    { row: 1, col: 0 },
+    { row: 1, col: 2 },
+    { row: 2, col: 1 },
   ];
 
-  return priorities.find(pos => board[pos.row][pos.col] === null) || null;
+  return priorities.find((pos) => board[pos.row][pos.col] === null) || null;
 }
 
 // AI 엔진 구현체
@@ -88,5 +94,5 @@ export const ticTacToeAI: AIEngine = {
 
     // 3. 전략적 배치
     return getStrategicMove(board);
-  }
+  },
 };

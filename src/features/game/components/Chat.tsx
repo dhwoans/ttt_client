@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { eventManager } from "@/shared/utils/EventManager";
+import { eventManager } from "@/shared/managers/EventManager";
 import SpeechBalloon from "./SpeechBalloon";
 import { ChevronDown, X, MessageSquare } from "lucide-react";
 

@@ -49,8 +49,18 @@ client/
 │   │       ├── VersusBanner.tsx
 │   │       ├── types.ts
 │   │       ├── hooks/
-│   │       │   ├── useGameSocket.ts
-│   │       │   └── useSoloGame.ts
+│   │       │   ├── useGameSocket.ts (deprecated ⚠️)
+│   │       │   ├── useGameSocketConnection.ts
+│   │       │   ├── useSendReady.ts
+│   │       │   ├── useSendMove.ts
+│   │       │   ├── useSendChat.ts
+│   │       │   ├── useSendLeave.ts
+│   │       │   ├── useSoloGame.ts (deprecated ⚠️)
+│   │       │   ├── useGameState.ts
+│   │       │   ├── usePlayerMove.ts
+│   │       │   ├── useAIMove.ts
+│   │       │   ├── useGameTimeout.ts
+│   │       │   └── useGameRestart.ts
 │   │       ├── local/
 │   │       ├── multi/
 │   │       │   ├── App.tsx
@@ -283,9 +293,14 @@ __tests__/
 
 ### Phase 2: Hook 최적화
 
-- [ ] useSoloGame 분리 (single 모드)
-- [ ] useMultiGame 분리 (multi 모드)
-- [ ] useLocalGame 분리 (local 모드)
+- [x] useSoloGame 분리
+  - [x] useGameState (상태 관리 및 스토리지)
+  - [x] usePlayerMove (플레이어 이동)
+  - [x] useAIMove (AI 자동 이동)
+  - [x] useGameTimeout (타임아웃 처리)
+  - [x] useGameRestart (게임 재시작)
+- [ ] useGameSocket 분리 (멀티 모드)
+- [ ] 로컬 모드 게임 로직 Hook 작성
 
 ### Phase 3: 전역 상태 관리
 
@@ -305,9 +320,9 @@ __tests__/
 ### Nginx 리버스 프록시 및 인스턴스 확장 시 동접 처리
 
 - 백엔드 인스턴스를 확장하여, 더많은 동시접속자까지도 처리할 수 있도록 설계했습니다.(이론적으로 2배까지 접속가능)
- 이를 위해 다음 조건이 충족시켰습니다.
+  이를 위해 다음 조건이 충족시켰습니다.
   - Nginx가 트래픽을 로드밸런싱할 것
-  - Redis를 사용하여  인스턴스 간 일관성 유지
+  - Redis를 사용하여 인스턴스 간 일관성 유지
   - 실제 서비스와 유사한 환경에서 추가적인 부하 테스트로 검증
 
 - **예상 동시접속자(동접) 수**: 20~50명 수준의 소규모 트래픽을 기준으로 개발되었습니다.

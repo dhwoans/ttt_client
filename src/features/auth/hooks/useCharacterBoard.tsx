@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { animalList, getRandomAdj } from "@/shared/utils/randomAvatar";
+import { animalList, getRandomAdj } from "@/shared/constants/randomAvatar";
 import { useNavigate } from "react-router-dom";
 import { useAudio } from "@/shared/hooks/useAudioEffect";
 import { useCreateUser } from "./useCreateUser";

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import GamePage from "../../../pages/Playing";
-import ReadyPage from "../../../pages/Ready";
+import Playing from "./Playing";
+import Ready from "./Ready";
 import Nav from "@/shared/components/Nav";
-import { useRoomState } from "../hooks/useRoomState";
+import { useRoomState } from "../features/game/hooks/useRoomState";
 import { eventManager } from "@/shared/managers/EventManager";
 
 // 시작전 게임정보 저장
@@ -59,9 +59,9 @@ export default function Room() {
     <>
       <Nav />
       {phase === "ready" ? (
-        <ReadyPage onReady={handleReady} playersInfos={playersInfos} />
+        <Ready onReady={handleReady} playersInfos={playersInfos} />
       ) : (
-        <GamePage playersInfos={playersInfos} onExit={handleExitConfirm} />
+        <Playing playersInfos={playersInfos} onExit={handleExitConfirm} />
       )}
     </>
   );

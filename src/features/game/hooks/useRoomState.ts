@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
-import { randomBot } from "@/shared/utils/randomBot";
-import { animalList } from "@/shared/utils/randomAvatar";
+import { randomBot } from "@/shared/constants/randomBot";
+import { animalList } from "@/shared/constants/randomAvatar";
 import { useLocation } from "react-router-dom";
 
 export interface GamePlayerInfo {

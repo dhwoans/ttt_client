@@ -1,4 +1,4 @@
-import { animalList } from "@/shared/utils/randomAvatar";
+import { animalList } from "@/shared/constants/randomAvatar";
 
 export function AvatorSelectModal() {
   const list = animalList;

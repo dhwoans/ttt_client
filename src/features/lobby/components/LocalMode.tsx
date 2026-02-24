@@ -1,8 +1,7 @@
 import { motion } from "motion/react";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/utils/AudioManager";
+import { audioManager } from "@/shared/managers/AudioManager";
 import Badge from "@/shared/components/Badge";
-
 
 const LocalMode = () => {
   const { sfxMuted } = useAudioStore();

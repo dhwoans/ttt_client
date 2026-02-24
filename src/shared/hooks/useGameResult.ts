@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import JSConfetti from "js-confetti";
-import { audioManager } from "@/shared/utils/AudioManager";
+import { audioManager } from "@/shared/managers/AudioManager";
 
 const WIN = "/assets/icons/Horns.png";
 const LOOSE = "/assets/icons/Thumbs_Down.png";
@@ -27,7 +27,7 @@ export function useGameResult({
   onExit,
   exitTime = 10000,
 }: UseGameResultProps) {
-  console.log(winner)
+  console.log(winner);
   const nickname = sessionStorage.getItem("nickname");
   const [result, setResult] = useState("무승부");
 

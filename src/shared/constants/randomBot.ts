@@ -10,7 +10,7 @@ export const botList: [string, string, string][] = [
   ["😈", "악마", "/assets/bots/Smiling_Face_with_Horns.png"],
 ];
 
-export const randomBot = () =>{
-  const result = Math.floor(Math.random()*botList.length)
-  return botList[result]
-}
+export const randomBot = () => {
+  const result = Math.floor(Math.random() * botList.length);
+  return botList[result];
+};

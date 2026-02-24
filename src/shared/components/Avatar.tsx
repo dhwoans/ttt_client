@@ -1,6 +1,6 @@
 import { useState, useEffect, ReactNode } from "react";
-import { animalList } from "../utils/randomAvatar";
-import { botList } from "../utils/randomBot";
+import { animalList } from "../constants/randomAvatar";
+import { botList } from "../constants/randomBot";
 interface AvatarProps {
   size?: "small" | "large";
   onClick?: () => void;
@@ -59,7 +59,11 @@ export function Avatar({
         {isRandomizing ? (
           <img
             className="w-30 h-30"
-            src={randomIndex > 5 ? animalList[randomIndex][2]:botList[randomIndex][2]}
+            src={
+              randomIndex > 5
+                ? animalList[randomIndex][2]
+                : botList[randomIndex][2]
+            }
           ></img>
         ) : imageSrc ? (
           <img

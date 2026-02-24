@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/utils/AudioManager";
+import { audioManager } from "@/shared/managers/AudioManager";
 import { toast } from "react-toastify";
 import Badge from "@/shared/components/Badge";
 

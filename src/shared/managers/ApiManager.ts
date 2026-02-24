@@ -35,7 +35,10 @@ class ApiManager {
     });
   }
   // POST /api/user - 사용자 생성
-  async createUser(userData: { nickname: string; avatar?: string }): Promise<CreateUserResponse | null>{
+  async createUser(userData: {
+    nickname: string;
+    avatar?: string;
+  }): Promise<CreateUserResponse | null> {
     return await this.request("/api/user", {
       method: "POST",
       headers: {

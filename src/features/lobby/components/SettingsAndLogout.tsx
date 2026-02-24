@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/utils/AudioManager";
+import { audioManager } from "@/shared/managers/AudioManager";
 
 const SettingsAndLogout = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
