@@ -4,6 +4,7 @@ import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
 import { toast } from "react-toastify";
 import Badge from "@/shared/components/Badge";
+import robotImg from "@assets/bots/Robot.png";
 
 const SingleMode = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const SingleMode = () => {
       className="flex-1 relative bg-yellow-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
     >
       <img
-        src="/assets/bots/Robot.png"
+        src={robotImg}
         alt="싱글플레이 로봇"
         className="h-16 w-16 object-contain mb-2 drop-shadow"
       />

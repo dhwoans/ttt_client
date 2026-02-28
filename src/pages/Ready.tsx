@@ -10,13 +10,14 @@ interface GamePlayerInfo {
 
 interface SingleReadyProps {
   onReady: () => void;
+  onExit: ()=>void;
   playersInfos: GamePlayerInfo[];
 }
 const brutalBox =
   "border-[0.25rem] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
 const brutalBtn = `${brutalBox} hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px] transition-all active:scale-95`;
 
-export default function Ready({ onReady, playersInfos }: SingleReadyProps) {
+export default function Ready({ onReady,onExit, playersInfos }: SingleReadyProps) {
   const navigate = useNavigate();
   const [isReady, setIsReady] = useState(false);
 
@@ -34,13 +35,13 @@ export default function Ready({ onReady, playersInfos }: SingleReadyProps) {
 
       <div className="flex flex-col gap-4">
         <button
-          onClick={handleReadyClick}
+          onClick={()=>handleReadyClick()}
           className={`px-10 py-4 rounded-2xl text-2xl font-black ${isReady ? "bg-red-500" : "bg-accent"} text-dark-1 ${brutalBtn}`}
         >
           {isReady ? "취소" : "준비"}
         </button>
         <button
-          onClick={() => navigate("/lobby")}
+          onClick={() => onExit()}
           className={`px-10 py-4 rounded-2xl text-2xl font-black bg-white text-dark-1 ${brutalBtn}`}
         >
           나가기

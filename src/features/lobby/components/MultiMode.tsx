@@ -3,6 +3,7 @@ import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
 import { useMultiMode } from "../hooks/useMultiMode";
 import Badge from "@/shared/components/Badge";
+import bustsImg from "@assets/icons/Busts.png";
 
 const MultiMode = () => {
   const { sfxMuted } = useAudioStore();
@@ -17,7 +18,7 @@ const MultiMode = () => {
       className="flex-1 relative bg-indigo-600 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center gap-4 h-full group hover-diagonal-stripes"
     >
       <img
-        src="/assets/icons/Busts.png"
+        src={bustsImg}
         alt="멀티플레이 아이콘"
         className="h-16 w-16 object-contain"
       />

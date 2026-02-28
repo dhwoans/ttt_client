@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { eventManager } from "@/shared/managers/EventManager";
 import SpeechBalloon from "./SpeechBalloon";
 import { ChevronDown, X, MessageSquare } from "lucide-react";
+import thoughtBalloonImg from "@assets/Thought_Balloon.png";
+import writingHandImg from "@assets/Writing_Hand.png";
 
 export default function Chat({ sender }) {
   const [message, setMessage] = useState("");
@@ -65,7 +67,7 @@ export default function Chat({ sender }) {
           aria-label="채팅 열기"
         >
           <img
-            src="/assets/Thought_Balloon.png"
+            src={thoughtBalloonImg}
             alt="채팅"
             className="h-8 w-8 object-contain"
           />
@@ -123,7 +125,7 @@ export default function Chat({ sender }) {
               <div className="flex flex-col items-center justify-center">
                 <img
                   className="w-30 h-30"
-                  src="/assets/Writing_Hand.png"
+                  src={writingHandImg}
                   alt="writingHand"
                 />
                 <p className="text-sm text-gray-400 text-center mt-8">

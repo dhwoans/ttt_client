@@ -30,8 +30,8 @@ class ApiManager {
   // GET /api/room - 멀티플레이 서버 입장 정보 요청
   // 접속가능한 게임서버주소,입장티켓 리턴
   async joinRoom(): Promise<JoinRoomResponse | null> {
-    return await this.request<JoinRoomResponse>("/api/room", {
-      method: "GET",
+    return await this.request<JoinRoomResponse>("/api/ticket", {
+      method: "POST",
     });
   }
   // POST /api/user - 사용자 생성

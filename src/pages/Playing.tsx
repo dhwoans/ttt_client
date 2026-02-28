@@ -10,6 +10,8 @@ import { usePlayerMove } from "../features/game/hooks/usePlayerMove";
 import { useAIMove } from "../features/game/hooks/useAIMove";
 import { useGameTimeout } from "../features/game/hooks/useGameTimeout";
 import { useGameRestart } from "../features/game/hooks/useGameRestart";
+import { useSendMove } from "../features/game/hooks/useSendMove";
+import { eventManager } from "@/shared/managers/EventManager";
 
 interface GamePlayerInfo {
   nickname: string;
@@ -19,9 +21,14 @@ interface GamePlayerInfo {
 
 interface SoloGamePageProps {
   playersInfos: GamePlayerInfo[];
+  mode?: "single" | "multi";
   onExit?: () => void;
 }
-export default function Playing({ playersInfos, onExit }: SoloGamePageProps) {
+export default function Playing({
+  playersInfos,
+  mode = "single",
+  onExit,
+}: SoloGamePageProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const handleExitIntent = useCallback(() => {
     setShowExitModal(true);
@@ -34,12 +41,22 @@ export default function Playing({ playersInfos, onExit }: SoloGamePageProps) {
 
   // 게임 핸들러들
   const { handleRestart } = useGameRestart();
+  const { sendMove } = useSendMove();
 
-  // 컴포넌트 마운트 시 새 게임 시작
   useEffect(() => {
     handleRestart();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 의도적으로 마운트 시에만 실행
+    // 멀티 모드: 다른 플레이어의 이동 수신
+    if (mode === "multi") {
+      const handleOpponentMove = (data: any) => {
+        // 서버에서 받은 상대 플레이어의 이동을 상태에 반영
+        // 게임 상태는 서버에서 관리됨
+      };
+      eventManager.on("OPPONENT_MOVE", handleOpponentMove);
+      return () => {
+        eventManager.off("OPPONENT_MOVE", handleOpponentMove);
+      };
+    }
+  }, [mode]);
 
   // 게임 상태 관리
   const {
@@ -56,7 +73,7 @@ export default function Playing({ playersInfos, onExit }: SoloGamePageProps) {
   } = useGameState(playersInfos);
 
   // 게임 핸들러들
-  const { handleSquare } = usePlayerMove(
+  const { handleSquare: handleSquareSingle } = usePlayerMove(
     isGameOver,
     isPlayerTurn,
     playersInfos,
@@ -64,6 +81,21 @@ export default function Playing({ playersInfos, onExit }: SoloGamePageProps) {
   );
   useAIMove(isGameOver, isPlayerTurn, board, playersInfos);
   const { handleTimeout } = useGameTimeout(currentPlayer.nickname);
+
+  // 모드에 따라 다른 핸들러 사용
+  const handleSquare = useCallback(
+    (row: number, col: number) => {
+      if (mode === "multi") {
+        // 멀티 모드: 서버에 좌표 전송
+        if (isGameOver || !isPlayerTurn) return;
+        sendMove(row, col);
+      } else {
+        // 싱글 모드: 로컬 상태 업데이트
+        handleSquareSingle(row, col);
+      }
+    },
+    [mode, isGameOver, isPlayerTurn, sendMove, handleSquareSingle],
+  );
 
   const isTurn = currentPlayer.nickname;
 

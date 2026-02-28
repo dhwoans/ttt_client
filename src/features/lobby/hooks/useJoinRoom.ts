@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { apiManager } from "../../../shared/managers/ApiManager";
 
 interface JoinRoomResult {
@@ -7,13 +6,13 @@ interface JoinRoomResult {
   error?: string;
 }
 
-export async function useJoinRoom() {
+export async function useJoinRoom(): Promise<JoinRoomResult> {
   try {
     const response = await apiManager.joinRoom();
     const resultObj: JoinRoomResult = { success: true, data: response };
     return resultObj;
   } catch (error: any) {
-    const errorObj = {
+    const errorObj: JoinRoomResult = {
       success: false,
       error: error?.message || "Unknown error",
     };

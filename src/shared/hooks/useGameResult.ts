@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import JSConfetti from "js-confetti";
 import { audioManager } from "@/shared/managers/AudioManager";
+import hornsImg from "@assets/icons/Horns.png";
+import thumbsDownImg from "@assets/icons/Thumbs_Down.png";
+import handshakeImg from "@assets/icons/Handshake.png";
 
-const WIN = "/assets/icons/Horns.png";
-const LOOSE = "/assets/icons/Thumbs_Down.png";
-const DRAW = "/assets/icons/Handshake.png";
+const WIN = hornsImg;
+const LOOSE = thumbsDownImg;
+const DRAW = handshakeImg;
 
 const triggerConfetti = (result: string) => {
   const emoji = result === "승리" ? "👍" : "💩";

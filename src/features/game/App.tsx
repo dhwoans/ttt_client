@@ -1,5 +1,5 @@
-import Room from "./components/Room";
+import GameRoomPage from "../../pages/GameRoomPage";
 
 export default function GameApp() {
-  return <Room />;
+  return <GameRoomPage />;
 }

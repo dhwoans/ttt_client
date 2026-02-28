@@ -1,22 +1,38 @@
+// Vite가 자동으로 처리하는 이미지 import
+const animalImages = import.meta.glob<{ default: string }>(
+  "@assets/animals/*.png",
+  { eager: true },
+);
+
+// 이미지 경로 매핑
+const imageMap = Object.entries(animalImages).reduce(
+  (acc, [path, module]) => {
+    const fileName = path.split("/").pop();
+    acc[fileName] = module.default;
+    return acc;
+  },
+  {} as Record<string, string>,
+);
+
 export const animalList: [string, string, string][] = [
-  ["🐶", "강아지", "/assets/animals/Dog Face.png"],
-  ["🐱", "고양이", "/assets/animals/Cat Face.png"],
-  ["🐭", "생쥐", "/assets/animals/Mouse Face.png"],
-  ["🐹", "햄스터", "/assets/animals/Hamster.png"],
-  ["🐰", "토끼", "/assets/animals/Rabbit Face.png"],
-  ["🦊", "여우", "/assets/animals/Fox.png"],
-  ["🐻", "곰", "/assets/animals/Bear.png"],
-  ["🦝", "너구리", "/assets/animals/Raccoon.png"],
-  ["🐨", "코알라", "/assets/animals/Koala.png"],
-  ["🐯", "호랑이", "/assets/animals/Tiger Face.png"],
-  ["🦁", "사자", "/assets/animals/Lion.png"],
-  ["🐮", "소", "/assets/animals/Cow Face.png"],
-  ["🐷", "돼지", "/assets/animals/Pig Face.png"],
-  ["🐸", "개구리", "/assets/animals/Frog.png"],
-  ["🐵", "원숭이", "/assets/animals/Monkey Face.png"],
-  ["🦉", "부엉이", "/assets/animals/Owl.png"],
-  ["🐢", "거북이", "/assets/animals/Turtle.png"],
-  ["🐬", "돌고래", "/assets/animals/Dolphin.png"],
+  ["🐶", "강아지", imageMap["Dog Face.png"]],
+  ["🐱", "고양이", imageMap["Cat Face.png"]],
+  ["🐭", "생쥐", imageMap["Mouse Face.png"]],
+  ["🐹", "햄스터", imageMap["Hamster.png"]],
+  ["🐰", "토끼", imageMap["Rabbit Face.png"]],
+  ["🦊", "여우", imageMap["Fox.png"]],
+  ["🐻", "곰", imageMap["Bear.png"]],
+  ["🦝", "너구리", imageMap["Raccoon.png"]],
+  ["🐨", "코알라", imageMap["Koala.png"]],
+  ["🐯", "호랑이", imageMap["Tiger Face.png"]],
+  ["🦁", "사자", imageMap["Lion.png"]],
+  ["🐮", "소", imageMap["Cow Face.png"]],
+  ["🐷", "돼지", imageMap["Pig Face.png"]],
+  ["🐸", "개구리", imageMap["Frog.png"]],
+  ["🐵", "원숭이", imageMap["Monkey Face.png"]],
+  ["🦉", "부엉이", imageMap["Owl.png"]],
+  ["🐢", "거북이", imageMap["Turtle.png"]],
+  ["🐬", "돌고래", imageMap["Dolphin.png"]],
 ];
 
 export const adjectives: string[] = [

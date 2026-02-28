@@ -1,9 +1,13 @@
 import { useAudioStore } from "@/stores/audioStore";
+import bgmUrl from "@assets/sound/BGM.mp3";
+import beepUrl from "@assets/sound/BlopSound.mp3";
+import tickUrl from "@assets/sound/TickSound.mp3";
+import winUrl from "@assets/sound/win.mp3";
 
-const BGM = "/assets/sound/BGM.mp3";
-const BEEP = "/assets/sound/Blop Sound.mp3";
-const TICK = "/assets/sound/Tick Sound.mp3";
-const WIN = "/assets/sound/win.mp3";
+const BGM = bgmUrl;
+const BEEP = beepUrl;
+const TICK = tickUrl;
+const WIN = winUrl;
 
 interface AudioOptions {
   loop?: boolean;

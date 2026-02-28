@@ -1,6 +1,9 @@
 import { Avatar } from "../../../shared/components/Avatar";
-const loadingImgSrc = "/assets/icons/Hourglass_Not_Done.png";
-const verse = "/assets/icons/verse.png";
+import hourglassImg from "@assets/icons/Hourglass_Not_Done.png";
+import verseImg from "@assets/icons/verse.png";
+
+const loadingImgSrc = hourglassImg;
+const verse = verseImg;
 interface SideProps {
   name: string;
   imageSrc?: string;

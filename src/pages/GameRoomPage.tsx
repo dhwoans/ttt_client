@@ -5,6 +5,8 @@ import Ready from "./Ready";
 import Nav from "@/shared/components/Nav";
 import { useRoomState } from "../features/game/hooks/useRoomState";
 import { eventManager } from "@/shared/managers/EventManager";
+import { useSendReady } from "../features/game/hooks/useSendReady";
+import { useSendLeave } from "../features/game/hooks/useSendLeave";
 
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {
@@ -35,9 +37,10 @@ export default function Room() {
   }, []);
 
   const navigate = useNavigate();
-  //
-  const { playersInfos, setPlayersInfos, phase, setPhase, mode } =
-    useRoomState();
+  const { sendReady } = useSendReady();
+  const { sendLeave } = useSendLeave();
+
+  const { playersInfos, setPlayersInfos, phase, setPhase, mode } = useRoomState();
 
   const handleReady = () => {
     if (mode === "single") {
@@ -46,8 +49,14 @@ export default function Room() {
       const botInfo = [bot?.avatar, bot?.nickname, bot?.imageSrc];
       preprocessGameStart(botInfo);
     } else {
-      // socket.emit('player_ready')
+      sendReady(true);
     }
+  };
+  const handleExit = () => {
+    if (mode !== "single") {
+      sendLeave();
+    }
+    navigate("/lobby");
   };
 
   const handleExitConfirm = () => {
@@ -59,7 +68,11 @@ export default function Room() {
     <>
       <Nav />
       {phase === "ready" ? (
-        <Ready onReady={handleReady} playersInfos={playersInfos} />
+        <Ready
+          onReady={handleReady}
+          onExit={handleExit}
+          playersInfos={playersInfos}
+        />
       ) : (
         <Playing playersInfos={playersInfos} onExit={handleExitConfirm} />
       )}

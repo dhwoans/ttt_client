@@ -1,21 +1,55 @@
 import { Avatar } from "@/shared/components/Avatar";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { useCharacterBoard } from "../hooks/useCharacterBoard";
+import { useNavigate } from "react-router-dom";
+import { useAudio } from "@/shared/hooks/useAudioEffect";
+import { useAvatarSelection } from "../hooks/useAvatarSelection";
+import { useNickname } from "../hooks/useNickname";
+import { useShakeAnimation } from "../hooks/useShakeAnimation";
+import { useCreateUser } from "../hooks/useCreateUser";
+import { useState } from "react";
 
 export default function CharacterBoard() {
-  const {
-    state: { currentAvatar, fullNickname, isCreating, shakeMotion },
-    actions: {
-      handleAvatarClick,
-      handleNavigateAvatar,
-      handleNicknameChange,
-      handleCreateUser,
-      handleAnimationEnd,
-      playBeep,
-    },
-  } = useCharacterBoard();
+  const navigate = useNavigate();
+  const { playBeep } = useAudio();
+  const { createUser } = useCreateUser();
+  
+  const avatar = useAvatarSelection();
+  const nickname = useNickname(avatar.index);
+  const shake = useShakeAnimation();
+  const [isCreating, setIsCreating] = useState(false);
 
-  const shake = "animate__animated animate__shakeX";
+  // 유저 생성 및 로비 이동
+  const handleCreateUser = async () => {
+    if (!nickname.fullNickname.trim()) {
+      shake.trigger();
+      return;
+    }
+    if (isCreating) return;
+    setIsCreating(true);
+
+    try {
+      const result = await createUser({
+        nickname: nickname.fullNickname,
+        avatar: avatar.currentAvatar[0],
+      });
+
+      if (result && result.success) {
+        sessionStorage.setItem("avator", String(avatar.index));
+        sessionStorage.setItem("nickname", nickname.fullNickname);
+        sessionStorage.setItem("userId", result.message);
+        navigate("/lobby", { replace: true });
+      } else {
+        shake.trigger();
+      }
+    } catch (error) {
+      console.error("유저 생성 오류:", error);
+      shake.trigger();
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const shakeClass = "animate__animated animate__shakeX";
   const brutalBox =
     "border-[0.25rem] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
   const brutalBtn = `${brutalBox} hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px] transition-all active:scale-95`;
@@ -23,8 +57,8 @@ export default function CharacterBoard() {
   return (
     <div
       className={`mx-auto my-12 max-w-120 rounded-2xl bg-linear-to-b from-dark-1 to-dark-2 p-8 border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
-    ${shakeMotion ? shake : ""}`}
-      onAnimationEnd={handleAnimationEnd}
+    ${shake.isShaking ? shakeClass : ""}`}
+      onAnimationEnd={shake.handleAnimationEnd}
     >
       <h2 className="mb-8 text-center text-3xl font-bold text-accent drop-shadow-md">
         CHARACTER SELECT
@@ -32,22 +66,22 @@ export default function CharacterBoard() {
       <div className="mb-8 flex items-center justify-center gap-8">
         {/* 이전 버튼 */}
         <button
-          onClick={() => handleNavigateAvatar("prev")}
+          onClick={() => avatar.navigate("prev")}
           className={`h-20 w-20 rounded-full text-2xl border-none font-bold flex items-center justify-center ${brutalBtn}`}
         >
           <ChevronLeft size={50} />
         </button>
         <div className="flex flex-col items-center justify-center gap-4">
           {/* 아바타  */}
-          <Avatar onClick={handleAvatarClick} imageSrc={currentAvatar[2]}>
-            {currentAvatar[0]}
+          <Avatar onClick={avatar.randomize} imageSrc={avatar.currentAvatar[2]}>
+            {avatar.currentAvatar[0]}
           </Avatar>
           {/* 닉네임 입력 */}
           <input
             type="text"
             name="nickname"
-            value={fullNickname}
-            onChange={handleNicknameChange}
+            value={nickname.fullNickname}
+            onChange={nickname.handleChange}
             className={`rounded-2xl w-50 text-center text-lg text-black outline-none py-1 bg-white `}
             spellCheck="false"
           />
@@ -55,7 +89,7 @@ export default function CharacterBoard() {
 
         {/* 다음 버튼 */}
         <button
-          onClick={() => handleNavigateAvatar("next")}
+          onClick={() => avatar.navigate("next")}
           className={`h-20 w-20 rounded-full border-none flex items-center justify-center ${brutalBtn}`}
         >
           <ChevronRight size={50} />

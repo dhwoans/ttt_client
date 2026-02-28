@@ -4,6 +4,8 @@ import { motion } from "motion/react";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
+import gearImg from "@assets/icons/Gear.png";
+import wavingHandImg from "@assets/icons/Waving_Hand.png";
 
 const SettingsAndLogout = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -24,7 +26,7 @@ const SettingsAndLogout = () => {
         className="flex-1 relative bg-yellow-400 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
       >
         <img
-          src="/assets/icons/Gear.png"
+          src={gearImg}
           alt="설정 기어"
           className="h-16 w-16 object-contain mb-2 drop-shadow"
         />
@@ -46,7 +48,7 @@ const SettingsAndLogout = () => {
         className="flex-1 relative bg-red-500 rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-col items-center justify-center h-full group hover-diagonal-stripes"
       >
         <img
-          src="/assets/icons/Waving_Hand.png"
+          src={wavingHandImg}
           alt="나가기 손인사"
           className="h-16 w-16 object-contain mb-2 drop-shadow"
         />

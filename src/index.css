@@ -53,7 +53,7 @@ body {
       rgba(241, 210, 70, 0.98),
       rgba(250, 176, 103, 0.87)
     ),
-    url("/assets/backgrounds/Smiling.png");
+    url("../assets/backgrounds/Smiling.png");
   background-repeat: repeat;
   background-size:
     auto,

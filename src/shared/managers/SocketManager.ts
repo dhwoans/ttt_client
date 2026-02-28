@@ -23,8 +23,18 @@ class GameSocketManager {
 
     const { roomId, ticket } = options;
 
+    console.log("[socket] connect request", {
+      serverUrl,
+      path: "/socket.io",
+      auth: {
+        roomId,
+        userId,
+        ticket,
+      },
+    });
+
     this.socket = io(serverUrl, {
-      path: "/ws/",
+      path: "/socket.io",
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
@@ -49,6 +59,10 @@ class GameSocketManager {
 
     this.socket.on("disconnect", () => {
       console.log("연결 종료");
+    });
+
+    this.socket.on("connect_error", (error: any) => {
+      console.error("[socket] connect_error:", error?.message || error);
     });
 
     // 메시지 핸들러 등록

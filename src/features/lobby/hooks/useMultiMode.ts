@@ -1,29 +1,34 @@
 import { useCallback } from "react";
 import { toast } from "react-toastify";
-import { useRequestGameServer } from "./useRequestGameServer";
-import { useConnectToGameServer } from "./useConnectToGameServer";
+import { useGetGameTicket } from "./useGetGameTicket";
+import { useConnectGameServer } from "./useConnectGameServer";
 
 export function useMultiMode() {
-  const { requestGameServer } = useRequestGameServer();
-  const { connectToGameServer } = useConnectToGameServer();
+  const { getGameTicket } = useGetGameTicket();
+  const { connectGameServer } = useConnectGameServer();
 
   const handleMultiMode = useCallback(async () => {
     try {
-      const toastId = toast.info("🎟️ 입장 티켓내는 중", { autoClose: false });
+      const toastId = toast.info("🎟️ 입장 티켓 발급 중...", {
+        autoClose: false,
+      });
 
-      // API 서버로 게임 서버 요청
-      const response = await requestGameServer();
+      // 1️⃣ API에서 ticket 받기
+      const response = await getGameTicket();
+      console.log("[multi] getGameTicket response:", response);
 
       if (response.success) {
+        console.log("[multi] gameServerUrl received:", response.gameServerUrl);
+        console.log("[multi] ticket received:", response.ticket);
         toast.update(toastId, {
-          render: "👍 입장 성공. 방 배정 대기중...",
+          render: "👍 티켓 발급 완료. 방 배정 대기중...",
           type: "success",
           autoClose: 1500,
           isLoading: false,
         });
 
-        // 게임서버 연결 요청 (roomId 없이, ticket으로 접속)
-        connectToGameServer(response.gameServerUrl!, response.ticket!);
+        // 2️⃣ ticket으로 게임 서버 연결
+        connectGameServer(response.gameServerUrl!, response.ticket!);
       } else {
         toast.update(toastId, {
           render: "❌ 입장 실패.",
@@ -35,7 +40,7 @@ export function useMultiMode() {
     } catch (error) {
       toast.error("⚠️ 연결 중 문제 발생.");
     }
-  }, [requestGameServer, connectToGameServer]);
+  }, [getGameTicket, connectGameServer]);
 
   return { handleMultiMode };
 }
