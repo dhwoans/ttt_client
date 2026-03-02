@@ -1,23 +1,23 @@
 import { gameSocketManager } from "@/shared/managers/SocketManager";
 
 /**
- * Ready 상태를 서버에 전송하는 훅
+ * 채팅 메시지를 서버에 전송하는 훅
  */
-export function useSendReady() {
+export function useSendPlayerChat() {
   const getSessionInfo = () => ({
     roomId: sessionStorage.getItem("roomId"),
     userId: sessionStorage.getItem("userId"),
     nickname: sessionStorage.getItem("nickname"),
   });
 
-  const sendReady = (isReady: boolean) => {
+  const sendChat = (message: string) => {
     const { roomId, userId, nickname } = getSessionInfo();
-    gameSocketManager.sendMessage("READY", {
-      type: "READY",
-      message: [roomId, userId, isReady],
+    gameSocketManager.sendMessage("CHAT", {
+      type: "CHAT",
+      message: message,
       sender: nickname,
     });
   };
 
-  return { sendReady };
+  return { sendChat };
 }

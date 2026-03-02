@@ -8,6 +8,8 @@ interface SideProps {
   name: string;
   imageSrc?: string;
   emoji?: string;
+  userId?: string;
+  isReady?: boolean;
 }
 
 interface VersusBannerProps {
@@ -15,7 +17,8 @@ interface VersusBannerProps {
   left?: SideProps;
   right?: SideProps;
   sides?: SideProps[];
-  playersInfos?: { nickname: string; imageSrc: string }[];
+  playersInfos?: { nickname: string; imageSrc: string; userId?: string }[];
+  playersReadyStatus?: Record<string, boolean>;
   dividerText?: string;
   className?: string;
 }
@@ -26,6 +29,7 @@ export function VersusBanner({
   right,
   sides,
   playersInfos,
+  playersReadyStatus = {},
   className = "",
 }: VersusBannerProps) {
   // playersInfos가 있으면 우선 사용, 아니면 기존 방식
@@ -34,6 +38,8 @@ export function VersusBanner({
     participants = playersInfos.map((p) => ({
       name: p.nickname,
       imageSrc: p.imageSrc,
+      userId: p.userId,
+      isReady: p.userId ? (playersReadyStatus[p.userId] ?? false) : true,
     }));
   } else if (sides && sides.length > 0) {
     participants = sides;
@@ -53,14 +59,31 @@ export function VersusBanner({
     : "flex items-center justify-center gap-6 md:gap-10 px-4 py-6 rounded-xl";
 
   // 첫번째 플레이어(나)가 아닌 경우 effectOnce로 등장 애니메이션 적용
-  const renderSide = ({ name, imageSrc, emoji }: SideProps, idx: number) => (
-    <div className="flex flex-col items-center gap-2">
-      <Avatar size="large" effectOnce={idx !== 0}>
-        <img className="w-30 h-30" src={imageSrc} alt={name} />
-      </Avatar>
-      {/* <div className="text-white font-bold text-lg md:text-xl">{name}</div> */}
-    </div>
-  );
+  const renderSide = (
+    { name, imageSrc, emoji, isReady }: SideProps,
+    idx: number,
+  ) => {
+    // imageSrc가 없으면 로딩 이미지 표시
+    const displaySrc = imageSrc || loadingImgSrc;
+    // 준비 상태에 따라 opacity 적용 (준비 안 함 = 반투명)
+    const opacity = isReady !== false ? "opacity-100" : "opacity-50";
+
+    return (
+      <div className="flex flex-col items-center gap-2">
+        <Avatar size="large" effectOnce={idx !== 0}>
+          <img
+            className={`w-30 h-30 transition-opacity duration-300 ${opacity}`}
+            src={displaySrc}
+            alt={name}
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = loadingImgSrc;
+            }}
+          />
+        </Avatar>
+        {/* <div className="text-white font-bold text-lg md:text-xl">{name}</div> */}
+      </div>
+    );
+  };
 
   return (
     <section className={`${base} ${className}`}>

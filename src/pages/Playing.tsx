@@ -10,7 +10,7 @@ import { usePlayerMove } from "../features/game/hooks/usePlayerMove";
 import { useAIMove } from "../features/game/hooks/useAIMove";
 import { useGameTimeout } from "../features/game/hooks/useGameTimeout";
 import { useGameRestart } from "../features/game/hooks/useGameRestart";
-import { useSendMove } from "../features/game/hooks/useSendMove";
+import { useSendPlayerMove } from "../features/game/hooks/useSendPlayerMove";
 import { eventManager } from "@/shared/managers/EventManager";
 
 interface GamePlayerInfo {
@@ -41,7 +41,7 @@ export default function Playing({
 
   // 게임 핸들러들
   const { handleRestart } = useGameRestart();
-  const { sendMove } = useSendMove();
+  const { sendMove } = useSendPlayerMove();
 
   useEffect(() => {
     handleRestart();

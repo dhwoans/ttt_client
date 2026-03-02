@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
 import Playing from "./Playing";
 import Ready from "./Ready";
 import Nav from "@/shared/components/Nav";
 import { useRoomState } from "../features/game/hooks/useRoomState";
-import { eventManager } from "@/shared/managers/EventManager";
-import { useSendReady } from "../features/game/hooks/useSendReady";
-import { useSendLeave } from "../features/game/hooks/useSendLeave";
+import { useSendPlayerReady } from "../features/game/hooks/useSendPlayerReady";
+import { useSendPlayerLeave } from "../features/game/hooks/useSendPlayerLeave";
+import { useGamePhaseEvents } from "../features/game/hooks/useGamePhaseEvents";
+import { useMultiplayerPlayers } from "../features/game/hooks/useMultiplayerPlayers";
+import { useReceivePlayerReady } from "../features/game/hooks/useReceivePlayerReady";
+import { useReceivePlayerLeave } from "../features/game/hooks/useReceivePlayerLeave";
 
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {
@@ -23,58 +27,79 @@ const preprocessGameStart = (botInfo: any) => {
   );
 };
 
-// GamePlayerInfo 타입은 useRoomState에서 export
 export default function Room() {
-  // PLAYING 신호 수신 시 phase 변경 및 전처리
+  const navigate = useNavigate();
+  const { sendReady } = useSendPlayerReady();
+  const { sendLeave } = useSendPlayerLeave();
+  const { playersInfos, setPlayersInfos, phase, setPhase, mode } =
+    useRoomState();
+
+  const [playersReadyStatus, setPlayersReadyStatus] = useState<
+    Record<string, boolean>
+  >({});
+
+  // 마운트/언마운트 로그
   useEffect(() => {
-    const handlePlaying = (data: any) => {
-      preprocessGameStart(data.bot ?? null);
-    };
-    eventManager.on("PLAYING", handlePlaying);
+    console.log("[GameRoomPage] 마운트됨");
     return () => {
-      eventManager.off("PLAYING", handlePlaying);
+      console.log("[GameRoomPage] 언마운트됨 - 모든 리스너 정리됨");
     };
   }, []);
 
-  const navigate = useNavigate();
-  const { sendReady } = useSendReady();
-  const { sendLeave } = useSendLeave();
+  // 커스텀 훅으로 이벤트 처리 로직 분리
+  useGamePhaseEvents(setPhase);
+  useMultiplayerPlayers(mode, setPlayersInfos, setPlayersReadyStatus);
+  useReceivePlayerReady(mode, setPlayersReadyStatus);
+  useReceivePlayerLeave(mode, phase, setPlayersInfos, setPlayersReadyStatus);
 
-  const { playersInfos, setPlayersInfos, phase, setPhase, mode } = useRoomState();
-
-  const handleReady = () => {
+  const handleReady = (isReady: boolean) => {
     if (mode === "single") {
-      setPhase("playing");
-      const bot = playersInfos[1];
-      const botInfo = [bot?.avatar, bot?.nickname, bot?.imageSrc];
-      preprocessGameStart(botInfo);
+      if (isReady) {
+        setPhase("playing");
+        const bot = playersInfos[1];
+        const botInfo = [bot?.avatar, bot?.nickname, bot?.imageSrc];
+        preprocessGameStart(botInfo);
+      }
     } else {
-      sendReady(true);
+      console.log("[room] handleReady 호출, isReady:", isReady);
+      sendReady(isReady);
     }
   };
+
   const handleExit = () => {
     if (mode !== "single") {
       sendLeave();
     }
-    navigate("/lobby");
-  };
-
-  const handleExitConfirm = () => {
     localStorage.removeItem("singleGameState");
-    navigate("/lobby", { replace: true });
+    sessionStorage.removeItem("roomId");
+    sessionStorage.removeItem("gameMode");
+    navigate("/lobby");
   };
 
   return (
     <>
       <Nav />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {phase === "ready" ? (
         <Ready
           onReady={handleReady}
           onExit={handleExit}
           playersInfos={playersInfos}
+          playersReadyStatus={playersReadyStatus}
+          mode={mode}
         />
       ) : (
-        <Playing playersInfos={playersInfos} onExit={handleExitConfirm} />
+        <Playing playersInfos={playersInfos} mode={mode} onExit={handleExit} />
       )}
     </>
   );

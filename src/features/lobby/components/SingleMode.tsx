@@ -15,6 +15,7 @@ const SingleMode = () => {
   const handleSingleMode = () => {
     toast("🤔 알고리즘 구상 중...");
     setTimeout(() => {
+      sessionStorage.setItem("gameMode", "single");
       navigate("/game/single", { state: { mode: "single" } });
     }, 1500);
   };

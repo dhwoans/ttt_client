@@ -8,6 +8,7 @@ export interface GamePlayerInfo {
   nickname: string;
   avatar: string;
   imageSrc: string;
+  userId?: string;
 }
 
 export function useRoomState() {
@@ -17,6 +18,7 @@ export function useRoomState() {
     nickname: playerInfo.nickname,
     avatar: animalList[playerInfo.avatarIndex][0],
     imageSrc: animalList[playerInfo.avatarIndex][2],
+    userId: sessionStorage.getItem("userId") || undefined,
   };
   const [playersInfos, setPlayersInfos] = useState<GamePlayerInfo[]>([myInfo]);
   const [phase, setPhase] = useState<"ready" | "playing">(() => {
@@ -29,9 +31,25 @@ export function useRoomState() {
     return "ready";
   });
   const location = useLocation();
-  const [mode, setMode] = useState<string>(
-    () => location.state?.mode || "single",
-  );
+  const resolveMode = (): "single" | "multi" => {
+    const locationMode = location.state?.mode as "single" | "multi" | undefined;
+    if (locationMode === "single" || locationMode === "multi") {
+      return locationMode;
+    }
+
+    const sessionMode = sessionStorage.getItem("gameMode");
+    if (sessionMode === "single" || sessionMode === "multi") {
+      return sessionMode;
+    }
+
+    if (sessionStorage.getItem("roomId")) {
+      return "multi";
+    }
+
+    return "single";
+  };
+
+  const [mode, setMode] = useState<"single" | "multi">(() => resolveMode());
 
   useEffect(() => {
     if (mode === "single" && playersInfos.length === 1) {

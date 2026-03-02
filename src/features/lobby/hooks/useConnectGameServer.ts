@@ -32,11 +32,31 @@ export function useConnectGameServer() {
       // gameServerUrl 무시하고 현재 origin 사용
       gameSocketManager.connect(userId, nickname, "/", { ticket });
 
+      // EXISTING_PLAYERS를 한 번만 받아서 sessionStorage에 저장
+      console.log("[multi] EXISTING_PLAYERS 리스너 등록 (once)");
+
+      const handleExistingPlayers = (data: any) => {
+        console.log(
+          "[multi] EXISTING_PLAYERS 수신, sessionStorage에 저장:",
+          data,
+        );
+        sessionStorage.setItem("existingPlayers", JSON.stringify(data.players));
+        console.log(
+          "[multi] existingPlayers sessionStorage 저장 완료:",
+          data.players,
+        );
+      };
+
+      // once 사용: 한 번만 실행되고 자동으로 리스너 제거
+      eventManager.once("EXISTING_PLAYERS", handleExistingPlayers);
+      console.log("[multi] EXISTING_PLAYERS 리스너 등록 완료");
+
       // 서버에서 roomId 받기
       const handleRoomAssigned = (data: any) => {
         console.log("[multi] ROOM_ASSIGNED received:", data);
         const assignedRoomId = data.roomId;
         sessionStorage.setItem("roomId", assignedRoomId);
+        sessionStorage.setItem("gameMode", "multi");
 
         // 게임방으로 이동
         navigate(`/game/${assignedRoomId}`, { state: { mode: "multi" } });
