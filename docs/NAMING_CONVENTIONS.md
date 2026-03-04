@@ -1,61 +1,45 @@
-# 네이밍 규칙 (Naming Conventions)
+# 네이밍 규칙 안내
 
-이 문서는 프로젝트 내에서 일관된 네이밍을 유지하기 위한 규칙을 정의합니다. 모든 코드 작성자는 아래 규칙을 준수해야 합니다.
-
-## 접두사/형식별 의미 정리
-
-| 접두사/형식             | 예시                                           | 의미/용도                                           |
-| :---------------------- | :--------------------------------------------- | :-------------------------------------------------- |
-| is, has, can, should    | isActive, hasPermission, canPlay, shouldUpdate | Boolean 값, 상태/권한/가능 여부 등                  |
-| get, set, fetch, update | getUserInfo, setName, fetchData, updateScore   | 데이터 조회/설정/갱신 함수                          |
-| use                     | useGameSocket, useCountdown                    | React 커스텀 훅                                     |
-| on                      | onClick, onChange                              | 이벤트 핸들러 함수                                  |
-| handle                  | handleSubmit, handleError                      | 이벤트/로직 처리 함수                               |
-| MAX, MIN, DEFAULT       | MAX_PLAYER_COUNT, MIN_SCORE, DEFAULT_TIMEOUT   | 상수 값 (대문자 스네이크 케이스)                    |
-| I (지양)                | IUser                                          | (지양) 타입/인터페이스 접두사, 사용하지 않음        |
-| T                       | TUser, TGameResult                             | 타입 별칭에 사용 가능 (권장 아님, 명확한 이름 선호) |
-| \_ (언더스코어)         | \_temp, \_internal                             | 내부 변수, 임시 변수 (외부 노출 X)                  |
-| $                       | $el, $container                                | DOM 요소 참조 (JS/TS에서 제한적으로 사용)           |
-
-> **참고:**
->
-> - Boolean 변수는 `is`, `has`, `can`, `should` 등으로 시작
-> - 이벤트 핸들러는 `on` 또는 `handle`로 시작
-> - 커스텀 훅은 반드시 `use`로 시작
-> - 상수는 대문자 스네이크 케이스와 의미 있는 접두사 사용
-
-## 1. 파일 및 폴더명
-
-- **케밥 케이스(kebab-case)** 사용: `my-component.tsx`, `user-profile/`
-- 테스트 파일: `*.test.ts(x)` 또는 `__tests__/` 폴더 내에 위치
-
-## 2. 변수명, 함수명
-
-- **카멜 케이스(camelCase)** 사용: `userName`, `getUserInfo()`
-- boolean 변수: `is`, `has`, `can` 등으로 시작 (`isActive`, `hasPermission`)
-
-## 3. 클래스, 컴포넌트명
-
-- **파스칼 케이스(PascalCase)** 사용: `UserProfile`, `GameManager`
-
-## 4. 상수
-
-- **대문자 스네이크 케이스(UPPER_SNAKE_CASE)** 사용: `MAX_PLAYER_COUNT`, `API_URL`
-
-## 5. 타입, 인터페이스
-
-- **파스칼 케이스(PascalCase)** 사용: `User`, `GameResult`
-- 인터페이스는 `I` 접두사 사용하지 않음
-
-## 6. 커스텀 훅
-
-- `use`로 시작하는 **카멜 케이스**: `useGameSocket`, `useCountdown`
-
-## 7. 기타
-
-- 약어는 대문자로 표기: `APIManager`, `URLParser`
-- 파일 내 export default는 파일명과 동일하게 네이밍
+이 문서는 이름을 예쁘게 짓는 규칙이 아니라, 협업 중 오해를 줄이기 위한 약속을 설명합니다.
+코드 예시는 최소화하고, 이름이 전달해야 하는 의미를 중심으로 정리합니다.
 
 ---
 
-> 네이밍 규칙을 위반하는 경우 코드 리뷰에서 수정 요청될 수 있습니다.
+## 네이밍의 목적
+
+좋은 이름은 주석을 줄이고, 코드를 처음 보는 사람도 흐름을 예상하게 만듭니다.
+반대로 모호한 이름은 작은 수정에도 큰 탐색 비용을 만들고, 버그 대응 속도를 늦춥니다.
+
+---
+
+## 기본 원칙
+
+첫째, 역할이 이름에 드러나야 합니다.
+둘째, 같은 개념은 어디서나 같은 단어를 써야 합니다.
+셋째, 전송(send)과 수신(receive)처럼 방향이 중요한 개념은 접두어로 명확히 구분합니다.
+
+---
+
+## 훅 이름 기준
+
+```mermaid
+flowchart LR
+  A[행동 전송 훅] --> B[useSend...]
+  C[이벤트 수신 훅] --> D[useReceive...]
+```
+
+이 구분이 유지되면 파일을 열기 전에도 역할을 예측할 수 있습니다.
+
+---
+
+## 문서 이름 기준
+
+문서 이름은 기능명만 적기보다 읽는 목적이 드러나야 합니다.
+예를 들어 overview, entry-flow, inroom-flow처럼 단계와 관점을 이름에 담으면 탐색 시간이 줄어듭니다.
+
+---
+
+## 팀 합의 방식
+
+네이밍 규칙은 완벽한 정답보다 팀 내 일관성이 중요합니다.
+새 규칙이 필요하면 문서에 즉시 반영하고, 기존 이름도 점진적으로 맞춰가는 방식을 권장합니다.
