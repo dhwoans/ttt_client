@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { eventManager } from "@/shared/managers/EventManager";
+import type { PlayerLeftEvent, LeaveSuccessEvent } from "@share";
 import { GamePlayerInfo } from "./useRoomState";
 
 /**
@@ -23,11 +24,7 @@ export function useReceivePlayerLeave(
   useEffect(() => {
     if (mode !== "multi") return;
 
-    const handlePlayerLeft = (data: {
-      userId: string;
-      nickname: string;
-      roomId: string;
-    }) => {
+    const handlePlayerLeft = (data: PlayerLeftEvent) => {
       console.log(`[room] ${data.nickname}님이 나갔습니다`);
       toast.warning(`${data.nickname}님이 게임을 나갔습니다.`);
 
@@ -39,7 +36,7 @@ export function useReceivePlayerLeave(
       // 준비 상태 제거
       setPlayersReadyStatus((prev) => {
         const next = { ...prev };
-        delete next[data.userId];
+        delete next[data.connId];
         return next;
       });
 
@@ -62,7 +59,7 @@ export function useReceivePlayerLeave(
 
   // LEAVE_SUCCESS 이벤트 처리 (본인 퇴장 성공)
   useEffect(() => {
-    const handleLeaveSuccess = (data: { success: boolean }) => {
+    const handleLeaveSuccess = (data: LeaveSuccessEvent) => {
       if (data.success) {
         console.log("[room] 방 나가기 성공");
         localStorage.removeItem("singleGameState");

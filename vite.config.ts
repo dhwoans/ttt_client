@@ -53,6 +53,7 @@ export default defineConfig(({ mode }) => {
       alias: [
         { find: "@", replacement: path.resolve(__dirname, "src") },
         { find: "@assets", replacement: path.resolve(__dirname, "assets") },
+        { find: "@share", replacement: path.resolve(__dirname, "src/share/index.ts") },
       ],
     },
   };

@@ -76,6 +76,17 @@ export default function Room() {
     navigate("/lobby");
   };
 
+  const handleRestartToReady = () => {
+    // 게임 종료 후 다시하기는 준비 화면으로 돌아가서 다시 ready를 받는다.
+    setPhase("ready");
+    localStorage.removeItem("singleGameState");
+
+    if (mode === "multi") {
+      // 멀티는 다시 ready 상태를 서버와 동기화한다.
+      sendReady(false);
+    }
+  };
+
   return (
     <>
       <Nav />
@@ -99,7 +110,12 @@ export default function Room() {
           mode={mode}
         />
       ) : (
-        <Playing playersInfos={playersInfos} mode={mode} onExit={handleExit} />
+        <Playing
+          playersInfos={playersInfos}
+          mode={mode}
+          onExit={handleExit}
+          onRestart={handleRestartToReady}
+        />
       )}
     </>
   );

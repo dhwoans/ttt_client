@@ -43,10 +43,6 @@ export default function Ready({
     onExit();
   };
 
-  const handleExitButtonClick = () => {
-    setShowExitModal(true);
-  };
-
   const handleReadyClick = () => {
     const newReadyState = !isReady;
     console.log("[Ready] 준비 상태 변경:", isReady, "→", newReadyState);
@@ -74,7 +70,7 @@ export default function Ready({
           {isReady ? "취소" : "준비"}
         </button>
         <button
-          onClick={handleExitButtonClick}
+          onClick={handleExit}
           className={`px-10 py-4 rounded-2xl text-2xl font-black bg-white text-dark-1 ${brutalBtn}`}
         >
           나가기

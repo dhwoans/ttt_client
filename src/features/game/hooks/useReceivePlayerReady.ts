@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { eventManager } from "@/shared/managers/EventManager";
+import type { PlayerReadyEvent } from "@share";
 
 /**
  * 플레이어 준비 상태 수신 처리
@@ -15,12 +16,7 @@ export function useReceivePlayerReady(
   useEffect(() => {
     if (mode !== "multi") return;
 
-    const handlePlayerReady = (data: {
-      userId: string;
-      nickname: string;
-      isReady: boolean;
-      roomId: string;
-    }) => {
+    const handlePlayerReady = (data: PlayerReadyEvent) => {
       console.log(`[room] PLAYER_READY 수신:`, data);
       console.log(
         `[room] ${data.nickname}님이 ${data.isReady ? "준비완료" : "준비취소"}`,
@@ -28,7 +24,7 @@ export function useReceivePlayerReady(
 
       setPlayersReadyStatus((prev) => ({
         ...prev,
-        [data.userId]: data.isReady,
+        [data.connId]: data.isReady,
       }));
     };
 

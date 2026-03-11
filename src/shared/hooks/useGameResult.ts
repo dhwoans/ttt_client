@@ -28,7 +28,7 @@ interface UseGameResultProps {
 export function useGameResult({
   winner,
   onExit,
-  exitTime = 10000,
+  exitTime = 5000,
 }: UseGameResultProps) {
   console.log(winner);
   const nickname = sessionStorage.getItem("nickname");
@@ -46,9 +46,9 @@ export function useGameResult({
 
     setResult(resolved);
     triggerConfetti(resolved);
-    // 자동 onExit 제거: 사용자가 직접 나가기 버튼을 눌러야만 onExit 호출
-    // const timeoutId = setTimeout(onExit, exitTime);
-    // return () => clearTimeout(timeoutId);
+    // 자동 onExit 
+    const timeoutId = setTimeout(onExit, exitTime);
+    return () => clearTimeout(timeoutId);
   }, [winner, nickname]);
 
   return { result, imgSrc };

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { eventManager } from "@/shared/managers/EventManager";
+import { gameSocketManager } from "@/shared/managers/SocketManager";
 
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {
@@ -28,8 +29,33 @@ export function useGamePhaseEvents(
   useEffect(() => {
     const handlePlaying = (data: any) => {
       console.log("[room] PLAYING 이벤트 수신, 게임 시작:", data);
+
+      // socket.id 저장 (턴 ID 비교 시 필요)
+      const socketId = gameSocketManager.getSocket()?.id;
+      if (socketId) {
+        sessionStorage.setItem("socketId", socketId);
+        console.log("[room] socket.id 저장:", socketId);
+      }
+
       preprocessGameStart(data.bot ?? null);
       setPhase("playing");
+
+      // 멀티플레이: 게임 상태 정보 브로드캐스트
+      if (data.currentTurnPlayerId) {
+        sessionStorage.setItem("currentTurnPlayerId", data.currentTurnPlayerId);
+        console.log(
+          "[room] PLAYING 이벤트에서 currentTurnPlayerId 저장:",
+          data.currentTurnPlayerId,
+        );
+        eventManager.emit("GAME_STATE_UPDATE", {
+          currentTurnPlayerId: data.currentTurnPlayerId,
+          roomId: data.roomId,
+          status: data.status,
+          players: data.players,
+        });
+      } else {
+        console.warn("[room] PLAYING 이벤트에 currentTurnPlayerId 없음:", data);
+      }
     };
 
     eventManager.on("PLAYING", handlePlaying);

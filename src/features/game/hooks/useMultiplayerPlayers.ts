@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { eventManager } from "@/shared/managers/EventManager";
 import { animalList } from "@/shared/constants/randomAvatar";
+import type { PlayerJoinedEvent, ExistingPlayersEvent } from "@share";
 import { GamePlayerInfo } from "./useRoomState";
 
 /**
@@ -40,14 +41,12 @@ export function useMultiplayerPlayers(
                   !existingPlayerNicknames.includes(player.nickname),
               )
               .map((player: any) => {
-                let imageSrc = player.imageSrc || "";
-                if (!imageSrc) {
-                  const found = animalList.find(
-                    (animal) => animal[0] === player.avatar,
-                  );
-                  if (found) {
-                    imageSrc = found[2];
-                  }
+                let imageSrc = "";
+                const found = animalList.find(
+                  (animal) => animal[0] === player.avatar,
+                );
+                if (found) {
+                  imageSrc = found[2];
                 }
                 return {
                   nickname: player.nickname,
@@ -79,16 +78,7 @@ export function useMultiplayerPlayers(
 
   // EXISTING_PLAYERS 이벤트 처리
   useEffect(() => {
-    const handleExistingPlayers = (data: {
-      players: Array<{
-        connId: string;
-        nickname: string;
-        isReady: boolean;
-        avatar: string;
-        imageSrc?: string;
-      }>;
-      roomId: string;
-    }) => {
+    const handleExistingPlayers = (data: ExistingPlayersEvent) => {
       console.log("[room] EXISTING_PLAYERS 이벤트 수신:", data.players);
 
       setPlayersInfos((prev) => {
@@ -99,18 +89,16 @@ export function useMultiplayerPlayers(
             (player) => !existingPlayerNicknames.includes(player.nickname),
           )
           .map((player) => {
-            let imageSrc = player.imageSrc || "";
-            if (!imageSrc) {
-              const found = animalList.find(
-                (animal) => animal[0] === player.avatar,
-              );
-              if (found) {
-                imageSrc = found[2];
-              }
+            let imageSrc = "";
+            const found = animalList.find(
+              (animal) => animal[0] === player.avatar,
+            );
+            if (found) {
+              imageSrc = found[2];
             }
             return {
               nickname: player.nickname,
-              avatar: player.avatar,
+              avatar: player.avatar ?? "",
               imageSrc,
               userId: player.connId,
             };
@@ -147,42 +135,31 @@ export function useMultiplayerPlayers(
   useEffect(() => {
     if (mode !== "multi") return;
 
-    const handlePlayerJoined = (data: {
-      player: {
-        userId: string;
-        nickname: string;
-        isReady: boolean;
-        avatar: string;
-        imageSrc?: string;
-      };
-      roomId: string;
-    }) => {
+    const handlePlayerJoined = (data: PlayerJoinedEvent) => {
       console.log("[room] 새 플레이어 입장:", data.player);
       toast.info(`${data.player.nickname}님이 들어왔습니다!`);
 
-      let imageSrc = data.player.imageSrc || "";
-      if (!imageSrc) {
-        const found = animalList.find(
-          (animal) => animal[0] === data.player.avatar,
-        );
-        if (found) {
-          imageSrc = found[2];
-        }
+      let imageSrc = "";
+      const found = animalList.find(
+        (animal) => animal[0] === data.player.avatar,
+      );
+      if (found) {
+        imageSrc = found[2];
       }
 
       setPlayersInfos((prev) => [
         ...prev,
         {
           nickname: data.player.nickname,
-          avatar: data.player.avatar,
+          avatar: data.player.avatar ?? "",
           imageSrc,
-          userId: data.player.userId,
+          userId: data.player.connId,
         },
       ]);
 
       setPlayersReadyStatus((prev) => ({
         ...prev,
-        [data.player.userId]: data.player.isReady,
+        [data.player.connId]: data.player.isReady,
       }));
     };
 

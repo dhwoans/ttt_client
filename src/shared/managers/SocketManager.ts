@@ -1,12 +1,12 @@
 import io from "socket.io-client";
-
-type Socket = any;
+import type { Socket } from "socket.io-client";
+import type { ServerEvents, ClientEvents } from "@share";
 
 import { eventManager } from "@/shared/managers/EventManager";
 import { GAME_EVENTS } from "@/shared/constants/eventList";
 
 class GameSocketManager {
-  private socket: Socket | null = null;
+  private socket: Socket<ServerEvents, ClientEvents> | null = null;
   private currentTicket: string | null = null;
 
   public connect(
@@ -68,13 +68,18 @@ class GameSocketManager {
         userId: userId,
         ticket: ticket,
       },
-    });
+    }) as unknown as Socket<ServerEvents, ClientEvents>;
 
     this.socket.on("connect", () => {
       console.log("[socket] 연결 성공, socket.id:", this.socket?.id);
+      // socket.id를 sessionStorage에 저장 (턴 비교용)
+      if (this.socket?.id) {
+        sessionStorage.setItem("socketId", this.socket.id);
+        console.log("[socket] socket.id 저장:", this.socket.id);
+      }
       if (roomId) {
         console.log("[socket] JOIN 메시지 발송:", { roomId, userId, nickname });
-        this.socket?.emit("JOIN", {
+        this.socket?.emit("JOIN" as any, {
           type: "JOIN",
           message: [roomId, userId],
           sender: nickname,
@@ -92,7 +97,7 @@ class GameSocketManager {
 
     // 메시지 핸들러 등록
     GAME_EVENTS.forEach(({ name, log }) => {
-      this.socket?.on(name, (data: any) => {
+      this.socket?.on(name as any, (data: any) => {
         if (log) {
           console.log(`[socket] ${name} 수신:`, JSON.stringify(data));
         }
@@ -101,7 +106,12 @@ class GameSocketManager {
     });
   }
 
-  public sendMessage(event: string, dataObject: any) {
+  public sendMessage<E extends keyof ClientEvents>(
+    event: E,
+    payload: Parameters<ClientEvents[E]>[0],
+  ): void;
+  public sendMessage(event: string, payload: unknown): void;
+  public sendMessage(event: string, payload: unknown) {
     console.log(
       `[socket.sendMessage] 호출: event=${event}, socket=${this.socket ? "존재" : "없음"}`,
     );
@@ -118,8 +128,8 @@ class GameSocketManager {
       id: this.socket.id,
     });
 
-    console.log(`[socket] ${event} 신호 서버로 보냄:`, dataObject);
-    this.socket.emit(event, dataObject);
+    console.log(`[socket] ${event} 신호 서버로 보냄:`, payload);
+    this.socket.emit(event as any, payload);
 
     if (event === "LEAVE") {
       this.disconnect();

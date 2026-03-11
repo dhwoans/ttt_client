@@ -1,22 +1,13 @@
 import { gameSocketManager } from "@/shared/managers/SocketManager";
+import type { MoveEventPayload } from "@share";
 
 /**
  * 플레이어의 이동(좌표) 정보를 서버에 전송하는 훅
  */
 export function useSendPlayerMove() {
-  const getSessionInfo = () => ({
-    roomId: sessionStorage.getItem("roomId"),
-    userId: sessionStorage.getItem("userId"),
-    nickname: sessionStorage.getItem("nickname"),
-  });
-
-  const sendMove = (x: number, y: number) => {
-    const { roomId, userId, nickname } = getSessionInfo();
-    gameSocketManager.sendMessage("MOVE", {
-      type: "MOVE",
-      message: [roomId, userId, [x, y]],
-      sender: nickname,
-    });
+  const sendMove = (row: number, col: number) => {
+    const payload: MoveEventPayload = { move: row * 3 + col };
+    gameSocketManager.sendMessage("MOVE", payload);
   };
 
   return { sendMove };

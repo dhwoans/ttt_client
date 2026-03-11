@@ -16,11 +16,13 @@ export function useAIMove(
   isPlayerTurn: boolean,
   board: string[][],
   playersInfos: GamePlayerInfo[],
+  mode: "single" | "multi" = "single",
 ) {
   const addTurn = useSingleGameStore((state) => state.addTurn);
 
   useEffect(() => {
-    if (isGameOver || isPlayerTurn) {
+    // Multiplayer uses server-authoritative moves; never run local AI there.
+    if (mode === "multi" || isGameOver || isPlayerTurn) {
       return;
     }
 
@@ -39,5 +41,5 @@ export function useAIMove(
     }, 1000);
 
     return () => clearTimeout(aiTimer);
-  }, [isPlayerTurn, isGameOver, board, playersInfos, addTurn]);
+  }, [mode, isPlayerTurn, isGameOver, board, playersInfos, addTurn]);
 }

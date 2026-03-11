@@ -1,11 +1,7 @@
 import { animalList } from "../constants/randomAvatar";
 import { getPlayerInfoFromStorage } from "../utils/playerStorage";
+import type { IssueTicketRequest, IssueTicketResponse } from "@share";
 
-interface JoinRoomResponse {
-  success: boolean;
-  gameServerUrl: string;
-  ticket: string;
-}
 interface CreateUserResponse {
   success: boolean;
   message: string;
@@ -32,7 +28,7 @@ class ApiManager {
   }
   // GET /api/room - 멀티플레이 서버 입장 정보 요청
   // 접속가능한 게임서버주소,입장티켓 리턴
-  async joinRoom(): Promise<JoinRoomResponse | null> {
+  async joinRoom(): Promise<IssueTicketResponse | null> {
     const userId = sessionStorage.getItem("userId");
     const { nickname, avatarIndex } = getPlayerInfoFromStorage();
     const avatar = animalList[avatarIndex]?.[0];
@@ -42,12 +38,14 @@ class ApiManager {
       return null;
     }
 
-    return await this.request<JoinRoomResponse>("/api/ticket", {
+    const body: IssueTicketRequest = { userId, nickname, avatar };
+
+    return await this.request<IssueTicketResponse>("/api/ticket", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, nickname, avatar }),
+      body: JSON.stringify(body),
     });
   }
   // POST /api/user - 사용자 생성
