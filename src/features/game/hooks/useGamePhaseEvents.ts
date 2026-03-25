@@ -5,13 +5,12 @@ import { gameSocketManager } from "@/shared/managers/SocketManager";
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {
   localStorage.setItem(
-    "singleGameState",
+    "gameState",
     JSON.stringify({
       phase: "playing",
       bot: botInfo,
       turnStart: Date.now(),
-      turns: [],
-      isTimeOver: false,
+      moveHistory: [],
       timeoutBy: null,
     }),
   );

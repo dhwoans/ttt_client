@@ -11,23 +11,26 @@ import { useGamePhaseEvents } from "../features/game/hooks/useGamePhaseEvents";
 import { useMultiplayerPlayers } from "../features/game/hooks/useMultiplayerPlayers";
 import { useReceivePlayerReady } from "../features/game/hooks/useReceivePlayerReady";
 import { useReceivePlayerLeave } from "../features/game/hooks/useReceivePlayerLeave";
+import { useGameRestart } from "../features/game/hooks/useGameRestart";
+import { useReadyTimeoutHandler } from "../features/game/hooks/useReadyTimeoutHandler";
+import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
+import { clearGameSession } from "@/shared/utils/playerStorage";
 
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {
   localStorage.setItem(
-    "singleGameState",
+    "gameState",
     JSON.stringify({
       phase: "playing",
       bot: botInfo,
       turnStart: Date.now(),
-      turns: [],
-      isTimeOver: false,
+      moveHistory: [],
       timeoutBy: null,
     }),
   );
 };
 
-export default function Room() {
+export default function GameRoomPage() {
   const navigate = useNavigate();
   const { sendReady } = useSendPlayerReady();
   const { sendLeave } = useSendPlayerLeave();
@@ -46,15 +49,20 @@ export default function Room() {
     };
   }, []);
 
-  // 커스텀 훅으로 이벤트 처리 로직 분리
+  // 이벤트 처리 로직
   useGamePhaseEvents(setPhase);
   useMultiplayerPlayers(mode, setPlayersInfos, setPlayersReadyStatus);
   useReceivePlayerReady(mode, setPlayersReadyStatus);
   useReceivePlayerLeave(mode, phase, setPlayersInfos, setPlayersReadyStatus);
+  useReadyTimeoutHandler();
+
+  const resetGame = useTicTacToeGameStore((state) => state.resetGame);
 
   const handleReady = (isReady: boolean) => {
     if (mode === "single") {
       if (isReady) {
+        // 싱글 게임 시작 직전에 로컬 상태 초기화
+        resetGame();
         setPhase("playing");
         const bot = playersInfos[1];
         const botInfo = [bot?.avatar, bot?.nickname, bot?.imageSrc];
@@ -70,22 +78,17 @@ export default function Room() {
     if (mode !== "single") {
       sendLeave();
     }
-    localStorage.removeItem("singleGameState");
-    sessionStorage.removeItem("roomId");
-    sessionStorage.removeItem("gameMode");
+    resetGame();
+    clearGameSession();
     navigate("/lobby");
   };
 
-  const handleRestartToReady = () => {
-    // 게임 종료 후 다시하기는 준비 화면으로 돌아가서 다시 ready를 받는다.
-    setPhase("ready");
-    localStorage.removeItem("singleGameState");
-
-    if (mode === "multi") {
-      // 멀티는 다시 ready 상태를 서버와 동기화한다.
-      sendReady(false);
-    }
-  };
+  const { handleRestart } = useGameRestart({
+    setPhase,
+    mode,
+    sendReady,
+    handleReady,
+  });
 
   return (
     <>
@@ -93,6 +96,7 @@ export default function Room() {
       <ToastContainer
         position="top-center"
         autoClose={3000}
+        limit={1}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -114,7 +118,7 @@ export default function Room() {
           playersInfos={playersInfos}
           mode={mode}
           onExit={handleExit}
-          onRestart={handleRestartToReady}
+          onRestart={handleRestart}
         />
       )}
     </>

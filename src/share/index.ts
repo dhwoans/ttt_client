@@ -43,5 +43,46 @@
  */
 
 export * from "./rest-api.types";
-export * from "./socket-client-events.types";
-export * from "./socket-server-events.types";
+
+type RestSchemas = import("./rest-api.types").components["schemas"];
+type ClientSchemas =
+  import("./socket-client-events.types.js").components["schemas"];
+type ServerSchemas =
+  import("./socket-server-events.types.js").components["schemas"];
+
+export type IssueTicketRequest = RestSchemas["IssueTicketRequest"];
+export type IssueTicketResponse = RestSchemas["IssueTicketResponse"];
+
+export type ReadyEventPayload = ClientSchemas["ReadyEventPayload"];
+export type MoveEventPayload = ClientSchemas["MoveEventPayload"];
+export type LeaveEventPayload = Record<string, never>;
+
+export type ExistingPlayersEvent = ServerSchemas["ExistingPlayersEvent"];
+export type PlayerJoinedEvent = ServerSchemas["PlayerJoinedEvent"];
+export type PlayerReadyEvent = ServerSchemas["PlayerReadyEvent"];
+export type ReadyTimeoutExpiredEvent =
+  ServerSchemas["ReadyTimeoutExpiredEvent"];
+export type TurnTimeoutStartedEvent = ServerSchemas["TurnTimeoutStartedEvent"];
+export type MoveMadeEvent = ServerSchemas["MoveMadeEvent"];
+export type PlayerLeftEvent = ServerSchemas["PlayerLeftEvent"];
+export type LeaveSuccessEvent = ServerSchemas["LeaveSuccessEvent"];
+
+export interface ClientEvents {
+  READY: (payload: ReadyEventPayload) => void;
+  MOVE: (payload: MoveEventPayload) => void;
+  LEAVE: (payload: LeaveEventPayload) => void;
+  CHAT: (payload: unknown) => void;
+  [eventName: string]: (payload: unknown) => void;
+}
+
+export interface ServerEvents {
+  EXISTING_PLAYERS: (payload: ExistingPlayersEvent) => void;
+  PLAYER_JOINED: (payload: PlayerJoinedEvent) => void;
+  PLAYER_READY: (payload: PlayerReadyEvent) => void;
+  READY_TIMEOUT_EXPIRED: (payload: ReadyTimeoutExpiredEvent) => void;
+  TURN_TIMEOUT_STARTED: (payload: TurnTimeoutStartedEvent) => void;
+  MOVE_MADE: (payload: MoveMadeEvent) => void;
+  PLAYER_LEFT: (payload: PlayerLeftEvent) => void;
+  LEAVE_SUCCESS: (payload: LeaveSuccessEvent) => void;
+  [eventName: string]: (payload: unknown) => void;
+}

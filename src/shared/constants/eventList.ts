@@ -14,6 +14,11 @@ export const GAME_EVENTS: EventConfig[] = [
   { name: "READY", handler: "handleReady", log: true },
   { name: "MOVE", handler: "handleMove", log: true },
   { name: "MOVE_MADE", handler: "handleMoveMade", log: true },
+  {
+    name: "TURN_TIMEOUT_STARTED",
+    handler: "handleTurnTimeoutStarted",
+    log: true,
+  },
   { name: "NEXT_TURN", handler: "handleNextTurn", log: true },
   { name: "PLAYING", handler: "handlePlaying", log: true },
   { name: "GAME_OVER", handler: "handleGameOver", log: true },
@@ -23,6 +28,21 @@ export const GAME_EVENTS: EventConfig[] = [
   { name: "PLAYER_READY", handler: "handlePlayerReady", log: true },
   { name: "EXISTING_PLAYERS", handler: "handleExistingPlayers", log: true },
   { name: "PLAYER_JOINED", handler: "handlePlayerJoined", log: true },
+  {
+    name: "READY_TIMEOUT_STARTED",
+    handler: "handleReadyTimeoutStarted",
+    log: true,
+  },
+  {
+    name: "READY_TIMEOUT_EXPIRED",
+    handler: "handleReadyTimeoutExpired",
+    log: true,
+  },
+  {
+    name: "READY_TIMEOUT_CANCELED",
+    handler: "handleReadyTimeoutCanceled",
+    log: true,
+  },
   { name: "ERROR", handler: "handleError", log: true },
 ];
 

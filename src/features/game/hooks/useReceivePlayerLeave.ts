@@ -40,11 +40,11 @@ export function useReceivePlayerLeave(
         return next;
       });
 
-      // 게임 중이면 로비로 돌아가기
+      // 게임 중이면 준비상태로 돌아가기
+      // 임시로 로비로 퇴장
       if (phase === "playing") {
         setTimeout(() => {
-          toast.info("게임이 중단되었습니다.");
-          localStorage.removeItem("singleGameState");
+          localStorage.removeItem("gameState");
           navigate("/lobby");
         }, 1500);
       }
@@ -62,7 +62,7 @@ export function useReceivePlayerLeave(
     const handleLeaveSuccess = (data: LeaveSuccessEvent) => {
       if (data.success) {
         console.log("[room] 방 나가기 성공");
-        localStorage.removeItem("singleGameState");
+        localStorage.removeItem("gameState");
         navigate("/lobby");
       }
     };

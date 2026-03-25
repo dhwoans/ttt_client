@@ -5,15 +5,16 @@ import Countdown from "@/shared/components/Countdown";
 import ExitModal from "@/shared/modals/ExitModal";
 import { useState, useCallback, useEffect } from "react";
 import { useBackExitModal } from "@/shared/hooks/useBackExitModal";
-import { useGameState } from "../features/game/hooks/useGameState";
-import { usePlayerMove } from "../features/game/hooks/usePlayerMove";
+import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
+import { calcBoard, whoIsWin } from "../features/game/util/ticTacToeUtils";
 import { useAIMove } from "../features/game/hooks/useAIMove";
 import { useGameTimeout } from "../features/game/hooks/useGameTimeout";
-import { useGameRestart } from "../features/game/hooks/useGameRestart";
-import { useSendPlayerMove } from "../features/game/hooks/useSendPlayerMove";
-import { useSingleGameStore } from "@/stores/singleGameStore";
-import { eventManager } from "@/shared/managers/EventManager";
-import { gameSocketManager } from "@/shared/managers/SocketManager";
+import { useNextTurn } from "../features/game/hooks/useNextTurn";
+import { useReceiveMoveMade } from "../features/game/hooks/useReceiveMoveMade";
+import { useReceiveGameOver } from "../features/game/hooks/useReceiveGameOver";
+import { useReceiveGameStateUpdate } from "../features/game/hooks/useReceiveGameStateUpdate";
+import { useReceiveNextTurn } from "../features/game/hooks/useReceiveNextTurn";
+import { useReceiveTurnTimeoutStarted } from "../features/game/hooks/useReceiveTurnTimeoutStarted";
 
 interface GamePlayerInfo {
   nickname: string;
@@ -22,7 +23,7 @@ interface GamePlayerInfo {
   userId?: string;
 }
 
-interface SoloGamePageProps {
+interface PlayingProps {
   playersInfos: GamePlayerInfo[];
   mode?: "single" | "multi";
   onExit?: () => void;
@@ -33,7 +34,7 @@ export default function Playing({
   mode = "single",
   onExit,
   onRestart,
-}: SoloGamePageProps) {
+}: PlayingProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState<string | null>(
     () => sessionStorage.getItem("currentTurnPlayerId"),
@@ -45,209 +46,53 @@ export default function Playing({
   useBackExitModal(handleExitIntent, true);
   const handleExitCancel = () => setShowExitModal(false);
   const handleExit = () => {
-    if (onExit) onExit();
+    onExit?.();
   };
 
-  // 게임 핸들러들
-  const { handleRestart } = useGameRestart();
-  const { sendMove } = useSendPlayerMove();
-  const addTurn = useSingleGameStore((state) => state.addTurn);
-
-  useEffect(() => {
-    handleRestart();
-    // 멀티 모드: 다른 플레이어의 이동 수신 및 게임 상태 업데이트
-    if (mode === "multi") {
-      const handleOpponentMove = (data: any) => {
-        // OPPONENT_MOVE는 상대 이동을 알림
-        console.log("[Playing] OPPONENT_MOVE 수신:", data);
-      };
-
-      const handleMoveMade = (data: any) => {
-        // MOVE_MADE는 누군가 수를 놨을 때 모두에게 브로드캐스트됨
-        console.log("[Playing] MOVE_MADE 수신:", data);
-        const { connId, move } = data;
-
-        // 대기 상태 해제
-        setIsWaitingForServer(false);
-
-        // connId로 플레이어 찾기
-        const player = playersInfos.find((p) => p.userId === connId);
-        if (!player) {
-          console.warn("[Playing] MOVE_MADE: 플레이어를 찾을 수 없음", connId);
-          return;
-        }
-
-        // 보드 인덱스를 행/열로 변환
-        const row = Math.floor(move / 3);
-        const col = move % 3;
-
-        // 보드에는 플레이어 아바타(이모지)를 그대로 표시
-        const symbol = player.avatar;
-
-        // store에 turn 추가 (보드 상태 업데이트)
-        addTurn({
-          square: { row, col },
-          symbol,
-          nickname: player.nickname,
-        });
-
-        console.log("[Playing] turn 추가됨:", {
-          row,
-          col,
-          symbol,
-          nickname: player.nickname,
-        });
-      };
-
-      const handleGameOver = (data: any) => {
-        // 게임 종료
-        console.log("[Playing] GAME_OVER 수신:", data);
-      };
-
-      const handleGameStateUpdate = (data: any) => {
-        // 서버에서 모든 플레이어에게 게임 상태 업데이트
-        // { roomId, status: "PLAYING", currentTurnPlayerId: state.players[state.currentTurn], players }
-        if (data.currentTurnPlayerId) {
-          setCurrentTurnPlayerId(data.currentTurnPlayerId);
-          sessionStorage.setItem(
-            "currentTurnPlayerId",
-            data.currentTurnPlayerId,
-          );
-        }
-      };
-
-      const handleNextTurn = (data: any) => {
-        if (data.nextPlayerId) {
-          setCurrentTurnPlayerId(data.nextPlayerId);
-          sessionStorage.setItem("currentTurnPlayerId", data.nextPlayerId);
-        }
-      };
-
-      eventManager.on("OPPONENT_MOVE", handleOpponentMove);
-      eventManager.on("MOVE_MADE", handleMoveMade);
-      eventManager.on("GAME_OVER", handleGameOver);
-      eventManager.on("GAME_STATE_UPDATE", handleGameStateUpdate);
-      eventManager.on("NEXT_TURN", handleNextTurn);
-      return () => {
-        eventManager.off("OPPONENT_MOVE", handleOpponentMove);
-        eventManager.off("MOVE_MADE", handleMoveMade);
-        eventManager.off("GAME_OVER", handleGameOver);
-        eventManager.off("GAME_STATE_UPDATE", handleGameStateUpdate);
-        eventManager.off("NEXT_TURN", handleNextTurn);
-      };
-    }
-  }, [mode, addTurn, playersInfos]);
-
-  // 게임 상태 관리
-  const {
-    board,
-    turns,
-    winner,
-    isDraw,
-    isTimeOver,
-    isGameOver,
-    currentPlayer,
-    isPlayerTurn,
-    turnStart,
-    timeoutBy,
-  } = useGameState(playersInfos);
-
-  // 게임 핸들러들
-  const { handleSquare: handleSquareSingle } = usePlayerMove(
-    isGameOver,
-    isPlayerTurn,
-    playersInfos,
-    turns,
+  // 멀티플레이 이벤트 구독
+  useReceiveMoveMade(mode, playersInfos, setIsWaitingForServer);
+  useReceiveGameOver();
+  useReceiveGameStateUpdate(setCurrentTurnPlayerId);
+  const { currentTurnPlayerId: receivedTurnPlayerId } = useReceiveNextTurn();
+  const { turnTimeoutMs, turnTimeoutStartedAt } = useReceiveTurnTimeoutStarted(
+    mode,
+    setCurrentTurnPlayerId,
   );
-  useAIMove(isGameOver, isPlayerTurn, board, playersInfos, mode);
+
+  // receivedTurnPlayerId 업데이트 감지
+  useEffect(() => {
+    if (receivedTurnPlayerId) {
+      setCurrentTurnPlayerId(receivedTurnPlayerId);
+    }
+  }, [receivedTurnPlayerId]);
+
+  // 게임 상태 직접 계산
+  const moveHistory = useTicTacToeGameStore((state) => state.moveHistory);
+  const turnStart = useTicTacToeGameStore((state) => state.turnStart);
+  const board = calcBoard(moveHistory);
+  const winner = whoIsWin(board, moveHistory);
+  const isDraw = moveHistory.length === 9;
+  const isGameOver = !!winner || isDraw;
+  const currentPlayer =
+    mode === "multi" && currentTurnPlayerId
+      ? (playersInfos.find((p) => p.userId === currentTurnPlayerId) ??
+        playersInfos[0])
+      : (playersInfos[moveHistory.length % 2] ?? playersInfos[0]);
+  const isPlayerTurn = currentPlayer?.nickname === playersInfos[0]?.nickname;
+  // ...existing code...
+
   const { handleTimeout } = useGameTimeout(currentPlayer.nickname);
 
-  const sessionUserId = sessionStorage.getItem("userId");
-  const socketConnId =
-    sessionStorage.getItem("socketId") ??
-    gameSocketManager.getSocket()?.id ??
-    null;
-  const isCurrentUserTurnByServer =
-    !!currentTurnPlayerId &&
-    (currentTurnPlayerId === sessionUserId ||
-      currentTurnPlayerId === socketConnId);
-
-  useEffect(() => {
-    if (mode === "multi") {
-      console.log("[Playing] 턴 정보:", {
-        currentTurnPlayerId,
-        sessionUserId,
-        socketConnId,
-        socketConnected: gameSocketManager.getSocket()?.connected,
-        isCurrentUserTurnByServer,
-        playersInfos: playersInfos.map((p) => ({
-          nickname: p.nickname,
-          userId: p.userId,
-        })),
-      });
-    }
-  }, [
-    currentTurnPlayerId,
-    sessionUserId,
-    socketConnId,
+  // board 클릭 처리 (싱글/멀티 모드 분기 처리)
+  const { handleSquare, isCurrentUserTurnByServer } = useNextTurn({
     mode,
-    isCurrentUserTurnByServer,
+    isPlayerTurn,
+    currentTurnPlayerId,
     playersInfos,
-  ]);
-
-  const currentTurnNicknameByServer =
-    mode === "multi"
-      ? isCurrentUserTurnByServer
-        ? (playersInfos[0]?.nickname ?? "")
-        : (playersInfos.find((player) => player.userId === currentTurnPlayerId)
-            ?.nickname ?? "")
-      : "";
-
-  const turnNickname =
-    mode === "multi" ? currentTurnNicknameByServer : currentPlayer.nickname;
-
-  // 모드에 따라 다른 핸들러 사용
-  const handleSquare = useCallback(
-    (row: number, col: number) => {
-      console.log("[Playing] handleSquare 호출:", {
-        row,
-        col,
-        mode,
-        isGameOver,
-        isCurrentUserTurnByServer,
-        currentTurnPlayerId,
-      });
-      if (mode === "multi") {
-        // 멀티 모드: 서버에 좌표 전송
-        // currentTurnPlayerId가 내 ID가 아니면 클릭 불가
-        if (isGameOver || !isCurrentUserTurnByServer || isWaitingForServer) {
-          console.log("[Playing] 클릭 거부:", {
-            reason: isGameOver
-              ? "gameOver"
-              : !isCurrentUserTurnByServer
-                ? "notYourTurn"
-                : "waitingForServer",
-          });
-          return;
-        }
-        console.log("[Playing] sendMove 호출:", { row, col });
-        setIsWaitingForServer(true);
-        sendMove(row, col);
-      } else {
-        // 싱글 모드: 로컬 상태 업데이트
-        handleSquareSingle(row, col);
-      }
-    },
-    [
-      mode,
-      isGameOver,
-      isCurrentUserTurnByServer,
-      isWaitingForServer,
-      currentTurnPlayerId,
-      sendMove,
-      handleSquareSingle,
-    ],
-  );
+    moveHistory,
+    board,
+    isGameOver,
+  });
 
   const canSelectSquare =
     !isGameOver &&
@@ -260,15 +105,17 @@ export default function Playing({
       <div className="w-full md:w-auto mb-6 md:mb-0 md:mr-12 flex flex-col items-center justify-center md:justify-center gap-4">
         <Players
           playerInfos={playersInfos}
-          isTurn={!isGameOver && turnNickname}
+          isTurn={!isGameOver && currentPlayer.nickname}
         />
         {!isGameOver && (
           <Countdown
-            durationMs={10000}
+            durationMs={mode === "multi" ? (turnTimeoutMs ?? 10000) : 10000}
             format="mmss"
             className="text-3xl font-bold text-red-600"
             onComplete={mode === "single" ? handleTimeout : undefined}
-            initialStartTime={turnStart}
+            initialStartTime={
+              mode === "multi" ? (turnTimeoutStartedAt ?? turnStart) : turnStart
+            }
           />
         )}
       </div>
@@ -286,19 +133,10 @@ export default function Playing({
         />
       )}
 
-      {isGameOver && (turns.length > 0 || isTimeOver) && (
+      {isGameOver && moveHistory.length > 0 && (
         <GameOverModal
-          winner={
-            isTimeOver
-              ? timeoutBy
-                ? playersInfos.find((p) => p.nickname !== timeoutBy)
-                    ?.nickname || ""
-                : ""
-              : isDraw
-                ? "DRAW"
-                : winner
-          }
-          handleRestart={onRestart ?? handleRestart}
+          winner={isDraw ? "DRAW" : winner}
+          handleRestart={onRestart}
           onExit={handleExit}
         />
       )}

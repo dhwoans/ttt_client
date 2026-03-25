@@ -27,7 +27,7 @@ export const calcBoard = (turn: Array<TurnInfo> | undefined | null) => {
 
 export function whoIsWin(
   board: CellSymbol[][],
-  turns: TurnInfo[],
+  moveHistory: TurnInfo[],
 ): string | null {
   for (const square of WINNING_COMBINATIONS) {
     const firstSquare = board[square[0].row][square[0].column];
@@ -41,7 +41,7 @@ export function whoIsWin(
       thirdSquare === firstSquare
     ) {
       // 승리한 symbol에 해당하는 nickname 반환
-      const winnerTurn = turns.find((t) => t.symbol === firstSquare);
+      const winnerTurn = moveHistory.find((t) => t.symbol === firstSquare);
       return winnerTurn ? winnerTurn.nickname : null;
     }
   }

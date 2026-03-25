@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { ticTacToeAI } from "@/shared/utils/AIPlayer";
-import { useSingleGameStore } from "@/stores/singleGameStore";
+import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 
 interface GamePlayerInfo {
   nickname: string;
@@ -18,7 +18,7 @@ export function useAIMove(
   playersInfos: GamePlayerInfo[],
   mode: "single" | "multi" = "single",
 ) {
-  const addTurn = useSingleGameStore((state) => state.addTurn);
+  const addMove = useTicTacToeGameStore((state) => state.addMove);
 
   useEffect(() => {
     // Multiplayer uses server-authoritative moves; never run local AI there.
@@ -27,12 +27,13 @@ export function useAIMove(
     }
 
     const aiTimer = setTimeout(() => {
+      if (!playersInfos[0] || !playersInfos[1]) return;
       const playerSymbol = playersInfos[0].avatar;
       const botSymbol = playersInfos[1].avatar;
       const aiMove = ticTacToeAI.getBestMove(board, botSymbol, playerSymbol);
 
       if (aiMove) {
-        addTurn({
+        addMove({
           square: { row: aiMove.row, col: aiMove.col },
           symbol: botSymbol,
           nickname: playersInfos[1].nickname,
@@ -41,5 +42,5 @@ export function useAIMove(
     }, 1000);
 
     return () => clearTimeout(aiTimer);
-  }, [mode, isPlayerTurn, isGameOver, board, playersInfos, addTurn]);
+  }, [mode, isPlayerTurn, isGameOver, board, playersInfos, addMove]);
 }

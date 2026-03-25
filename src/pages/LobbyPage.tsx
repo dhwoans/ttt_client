@@ -20,6 +20,7 @@ export default function LobbyPage() {
       <ToastContainer
         position="bottom-left"
         autoClose={2000}
+        limit={1}
         hideProgressBar
         newestOnTop
         closeOnClick

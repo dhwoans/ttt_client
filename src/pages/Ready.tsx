@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { VersusBanner } from "@/features/game/components/VersusBanner";
 import ExitModal from "@/shared/modals/ExitModal";
 import { useBackExitModal } from "@/shared/hooks/useBackExitModal";
+import { TimeoutProgressBar } from "@/shared/components/TimeoutProgressBar";
 
 interface GamePlayerInfo {
   nickname: string;
@@ -57,6 +58,11 @@ export default function Ready({
       <VersusBanner
         playersInfos={playersInfos}
         playersReadyStatus={playersReadyStatus}
+      />
+
+      <TimeoutProgressBar
+        eventName="READY_TIMEOUT_STARTED"
+        label="준비 제한 시간"
       />
 
       <div className="flex flex-col gap-4">

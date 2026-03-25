@@ -1,56 +1,45 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-}
-
-interface GameTurn {
+interface GameMove {
   square: { row: number; col: number };
   symbol: string;
   nickname: string;
 }
 
-interface SingleGameState {
-  turns: GameTurn[];
-  isTimeOver: boolean;
+interface TicTacToeGameStoreState {
+  moveHistory: GameMove[];
   timeoutBy: string | null;
   turnStart: number;
 
-  // Actions
-  addTurn: (turn: GameTurn) => void;
-  setTimeOver: (timeoutBy: string) => void;
+  addMove: (move: GameMove) => void;
+  setTimeoutBy: (timeoutBy: string) => void;
   resetGame: () => void;
   clearTurnStart: () => void;
 }
 
-export const useSingleGameStore = create<SingleGameState>()(
+export const useTicTacToeGameStore = create<TicTacToeGameStoreState>()(
   persist(
     (set) => ({
-      turns: [],
-      isTimeOver: false,
+      moveHistory: [],
       timeoutBy: null,
       turnStart: Date.now(),
 
-      addTurn: (turn: GameTurn) =>
+      addMove: (move: GameMove) =>
         set((state) => ({
-          turns: [...state.turns, turn],
+          moveHistory: [...state.moveHistory, move],
           turnStart: Date.now(),
         })),
 
-      setTimeOver: (timeoutBy: string) =>
+      setTimeoutBy: (timeoutBy: string) =>
         set({
-          isTimeOver: true,
           timeoutBy,
           turnStart: undefined,
         }),
 
       resetGame: () =>
         set({
-          turns: [],
-          isTimeOver: false,
+          moveHistory: [],
           timeoutBy: null,
           turnStart: Date.now(),
         }),
@@ -61,7 +50,7 @@ export const useSingleGameStore = create<SingleGameState>()(
         }),
     }),
     {
-      name: "single-game-storage",
+      name: "tic-tac-toe-game-storage",
     },
   ),
 );

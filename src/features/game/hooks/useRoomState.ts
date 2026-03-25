@@ -12,7 +12,7 @@ export interface GamePlayerInfo {
 }
 
 export function useRoomState() {
-  const saved = localStorage.getItem("singleGameState");
+  const saved = localStorage.getItem("gameState");
   const playerInfo = getPlayerInfoFromStorage();
   const myInfo: GamePlayerInfo = {
     nickname: playerInfo.nickname,

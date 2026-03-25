@@ -26,6 +26,7 @@ const [isWaitingForServer, setIsWaitingForServer] = useState(false);
 ```
 
 **문제점:**
+
 - 모든 훅이 모드와 무관하게 호출됨
 - 멀티 전용 로직이 useEffect 안에 흩어져 있음
 - 어떤 상태가 어느 모드에 필요한지 한눈에 안 보임
@@ -39,12 +40,27 @@ const [isWaitingForServer, setIsWaitingForServer] = useState(false);
 ```typescript
 // src/features/game/hooks/useSingleGameLogic.ts
 export function useSingleGameLogic(playersInfos, onTimeout) {
-  const { board, turns, winner, isDraw, isTimeOver, isGameOver, 
-          currentPlayer, isPlayerTurn, turnStart, timeoutBy } = useGameState(playersInfos);
-  const { handleSquare } = usePlayerMove(isGameOver, isPlayerTurn, playersInfos, turns);
+  const {
+    board,
+    turns,
+    winner,
+    isDraw,
+    isTimeOver,
+    isGameOver,
+    currentPlayer,
+    isPlayerTurn,
+    turnStart,
+    timeoutBy,
+  } = useGameState(playersInfos);
+  const { handleSquare } = usePlayerMove(
+    isGameOver,
+    isPlayerTurn,
+    playersInfos,
+    turns,
+  );
   const { handleRestart } = useGameRestart();
   const { handleTimeout } = useGameTimeout(currentPlayer.nickname);
-  
+
   useAIMove(isGameOver, isPlayerTurn, board, playersInfos, "single");
 
   return {
@@ -60,7 +76,7 @@ export function useSingleGameLogic(playersInfos, onTimeout) {
     canSelectSquare: !isGameOver && isPlayerTurn,
     turnStart,
     timeoutBy,
-    
+
     // 액션
     handleSquare,
     handleRestart,
@@ -72,36 +88,61 @@ export function useSingleGameLogic(playersInfos, onTimeout) {
 ```typescript
 // src/features/game/hooks/useMultiGameLogic.ts
 export function useMultiGameLogic(playersInfos, mode, addTurn) {
-  const { board, turns, winner, isDraw, isTimeOver, isGameOver, 
-          currentPlayer, isPlayerTurn, turnStart, timeoutBy } = useGameState(playersInfos);
+  const {
+    board,
+    turns,
+    winner,
+    isDraw,
+    isTimeOver,
+    isGameOver,
+    currentPlayer,
+    isPlayerTurn,
+    turnStart,
+    timeoutBy,
+  } = useGameState(playersInfos);
   const { handleRestart } = useGameRestart();
   const { sendMove } = useSendPlayerMove();
-  
-  const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState(() => 
-    sessionStorage.getItem("currentTurnPlayerId")
+
+  const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState(() =>
+    sessionStorage.getItem("currentTurnPlayerId"),
   );
   const [isWaitingForServer, setIsWaitingForServer] = useState(false);
 
   // 소켓 이벤트 핸들러 통합
-  useMultiplayerEvents(mode, playersInfos, addTurn, setCurrentTurnPlayerId, setIsWaitingForServer);
-  
+  useMultiplayerEvents(
+    mode,
+    playersInfos,
+    addTurn,
+    setCurrentTurnPlayerId,
+    setIsWaitingForServer,
+  );
+
   // 턴 계산
   const sessionUserId = sessionStorage.getItem("userId");
-  const socketConnId = sessionStorage.getItem("socketId") ?? gameSocketManager.getSocket()?.id ?? null;
-  const isCurrentUserTurnByServer = !!currentTurnPlayerId && 
-    (currentTurnPlayerId === sessionUserId || currentTurnPlayerId === socketConnId);
-  
-  const currentTurnNicknameByServer = isCurrentUserTurnByServer
-    ? playersInfos[0]?.nickname ?? ""
-    : playersInfos.find(p => p.userId === currentTurnPlayerId)?.nickname ?? "";
+  const socketConnId =
+    sessionStorage.getItem("socketId") ??
+    gameSocketManager.getSocket()?.id ??
+    null;
+  const isCurrentUserTurnByServer =
+    !!currentTurnPlayerId &&
+    (currentTurnPlayerId === sessionUserId ||
+      currentTurnPlayerId === socketConnId);
 
-  const handleSquare = useCallback((row: number, col: number) => {
-    if (isGameOver || !isCurrentUserTurnByServer || isWaitingForServer) {
-      return;
-    }
-    setIsWaitingForServer(true);
-    sendMove(row, col);
-  }, [isGameOver, isCurrentUserTurnByServer, isWaitingForServer, sendMove]);
+  const currentTurnNicknameByServer = isCurrentUserTurnByServer
+    ? (playersInfos[0]?.nickname ?? "")
+    : (playersInfos.find((p) => p.userId === currentTurnPlayerId)?.nickname ??
+      "");
+
+  const handleSquare = useCallback(
+    (row: number, col: number) => {
+      if (isGameOver || !isCurrentUserTurnByServer || isWaitingForServer) {
+        return;
+      }
+      setIsWaitingForServer(true);
+      sendMove(row, col);
+    },
+    [isGameOver, isCurrentUserTurnByServer, isWaitingForServer, sendMove],
+  );
 
   return {
     // 상태
@@ -112,10 +153,11 @@ export function useMultiGameLogic(playersInfos, mode, addTurn) {
     isTimeOver,
     isGameOver,
     turnNickname: currentTurnNicknameByServer,
-    canSelectSquare: !isGameOver && isCurrentUserTurnByServer && !isWaitingForServer,
+    canSelectSquare:
+      !isGameOver && isCurrentUserTurnByServer && !isWaitingForServer,
     turnStart,
     timeoutBy,
-    
+
     // 액션
     handleSquare,
     handleRestart,
@@ -131,12 +173,12 @@ export default function Playing({ playersInfos, mode, onExit, onRestart }) {
   const addTurn = useSingleGameStore((state) => state.addTurn);
 
   // 🎯 모드별 분기 명확화
-  const singleGame = mode === "single" 
-    ? useSingleGameLogic(playersInfos, handleTimeout) 
+  const singleGame = mode === "single"
+    ? useSingleGameLogic(playersInfos, handleTimeout)
     : null;
-    
-  const multiGame = mode === "multi" 
-    ? useMultiGameLogic(playersInfos, mode, addTurn) 
+
+  const multiGame = mode === "multi"
+    ? useMultiGameLogic(playersInfos, mode, addTurn)
     : null;
 
   const game = mode === "single" ? singleGame : multiGame;
@@ -152,6 +194,7 @@ export default function Playing({ playersInfos, mode, onExit, onRestart }) {
 ```
 
 **개선 효과:**
+
 - 호출부에서 `useSingleGameLogic` vs `useMultiGameLogic` 명확히 구분
 - 각 훅이 자신의 모드에 필요한 것만 관리
 - 테스트/유지보수 용이 (모드별 독립적 테스트 가능)
@@ -175,4 +218,3 @@ export default function Playing({ playersInfos, mode, onExit, onRestart }) {
 - 모드별로 다른 인터페이스를 리턴해도 무방 (각자 최적화)
 
 ---
-

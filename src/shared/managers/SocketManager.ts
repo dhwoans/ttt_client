@@ -5,6 +5,9 @@ import type { ServerEvents, ClientEvents } from "@share";
 import { eventManager } from "@/shared/managers/EventManager";
 import { GAME_EVENTS } from "@/shared/constants/eventList";
 
+const READY_TIMEOUT_SNAPSHOT_KEY = "readyTimeoutSnapshot";
+const TURN_TIMEOUT_SNAPSHOT_KEY = "turnTimeoutSnapshot";
+
 class GameSocketManager {
   private socket: Socket<ServerEvents, ClientEvents> | null = null;
   private currentTicket: string | null = null;
@@ -101,6 +104,43 @@ class GameSocketManager {
         if (log) {
           console.log(`[socket] ${name} 수신:`, JSON.stringify(data));
         }
+
+        if (name === "READY_TIMEOUT_STARTED") {
+          const timeoutMs = Number(data?.timeoutMs);
+          if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
+            sessionStorage.setItem(
+              READY_TIMEOUT_SNAPSHOT_KEY,
+              JSON.stringify({ timeoutMs, startedAt: Date.now() }),
+            );
+          }
+        }
+
+        if (name === "TURN_TIMEOUT_STARTED") {
+          const timeoutMs = Number(data?.timeoutMs);
+          if (Number.isFinite(timeoutMs) && timeoutMs > 0) {
+            sessionStorage.setItem(
+              TURN_TIMEOUT_SNAPSHOT_KEY,
+              JSON.stringify({ timeoutMs, startedAt: Date.now() }),
+            );
+          }
+        }
+
+        if (
+          name === "READY_TIMEOUT_CANCELED" ||
+          name === "READY_TIMEOUT_EXPIRED" ||
+          name === "PLAYING"
+        ) {
+          sessionStorage.removeItem(READY_TIMEOUT_SNAPSHOT_KEY);
+        }
+
+        if (
+          name === "MOVE_MADE" ||
+          name === "GAME_OVER" ||
+          name === "LEAVE_SUCCESS"
+        ) {
+          sessionStorage.removeItem(TURN_TIMEOUT_SNAPSHOT_KEY);
+        }
+
         eventManager.emit(name, data);
       });
     });
