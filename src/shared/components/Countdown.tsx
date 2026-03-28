@@ -1,21 +1,9 @@
 import { useCountdown } from "@/shared/hooks/useCountdown";
 
-export type CountdownFormat = "seconds" | "mmss";
-
-// 포맷팅
-const formatSeconds = (ms: number) => Math.ceil(ms / 1000);
-const formatMmSs = (ms: number) => {
-  const total = Math.ceil(ms / 1000);
-  const m = Math.floor(total / 60);
-  const s = total % 60;
-  return `${m}:${s.toString().padStart(2, "0")}`;
-};
-
 interface CountdownProps {
   durationMs: number;
   onComplete?: () => void;
   autoStart?: boolean;
-  format?: CountdownFormat;
   className?: string;
   initialStartTime?: number; // 타이머 시작 시각 (ms, Date.now())
 }
@@ -24,7 +12,6 @@ export const Countdown = ({
   durationMs,
   onComplete,
   autoStart = true,
-  format = "seconds",
   className,
   initialStartTime,
 }: CountdownProps) => {
@@ -35,10 +22,15 @@ export const Countdown = ({
     initialStartTime,
   );
 
-  const displayText =
-    format === "mmss" ? formatMmSs(remaining) : formatSeconds(remaining);
+  const displayText = Math.ceil(remaining / 1000);
+  const isWarning = remaining < Math.round(durationMs / 3);
+  const resolvedStyle = isWarning ? { color: "#ef4444" } : undefined;
 
-  return <span className={className}>{displayText}</span>;
+  return (
+    <span className={className} style={resolvedStyle}>
+      {displayText}
+    </span>
+  );
 };
 
 export default Countdown;

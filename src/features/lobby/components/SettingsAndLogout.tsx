@@ -33,9 +33,6 @@ const SettingsAndLogout = () => {
         <p className="font-bold text-white transition-opacity duration-200 group-hover:opacity-0">
           설정
         </p>
-        <p className="text-xs text-white/70 mt-1 transition-opacity duration-200 group-hover:opacity-0">
-          음량 조절
-        </p>
         <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <span className="text-3xl font-extrabold text-black drop-shadow-lg">
             설정
@@ -54,9 +51,6 @@ const SettingsAndLogout = () => {
         />
         <p className="font-bold text-white transition-opacity duration-200 group-hover:opacity-0">
           나가기
-        </p>
-        <p className="text-xs text-white/70 mt-1 transition-opacity duration-200 group-hover:opacity-0">
-          로그아웃
         </p>
         <div className="pointer-events-none select-none absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <span className="text-3xl font-extrabold text-black drop-shadow-lg">

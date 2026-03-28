@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import Playing from "./Playing";
 import Ready from "./Ready";
-import Nav from "@/shared/components/Nav";
+import NicknameMarquee from "@/features/lobby/components/NicknameMarquee";
 import { useRoomState } from "../features/game/hooks/useRoomState";
 import { useSendPlayerReady } from "../features/game/hooks/useSendPlayerReady";
 import { useSendPlayerLeave } from "../features/game/hooks/useSendPlayerLeave";
@@ -92,7 +92,7 @@ export default function GameRoomPage() {
 
   return (
     <>
-      <Nav />
+      <NicknameMarquee />
       <ToastContainer
         position="top-center"
         autoClose={3000}

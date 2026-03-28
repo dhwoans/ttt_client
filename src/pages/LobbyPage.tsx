@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BentoGrid from "../features/lobby/components/BentoGrid";
+import NicknameMarquee from "../features/lobby/components/NicknameMarquee";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -29,6 +30,7 @@ export default function LobbyPage() {
         pauseOnHover
         theme="colored"
       />
+      <NicknameMarquee emoji="🎮" />
       <section className=" flex items-center justify-center min-h-screen px-4">
         <div className="w-full max-w-6xl">
           <BentoGrid />

@@ -72,19 +72,6 @@ describe("Countdown", () => {
     expect(screen.getByText("0")).toBeInTheDocument();
   });
 
-  it("mm:ss 포맷이 정상적으로 표시된다", () => {
-    render(<Countdown durationMs={65000} format="mmss" />);
-    expect(screen.getByText("1:05")).toBeInTheDocument();
-    act(() => {
-      vi.advanceTimersByTime(5000);
-    });
-    expect(screen.getByText("1:00")).toBeInTheDocument();
-    act(() => {
-      vi.advanceTimersByTime(60000);
-    });
-    expect(screen.getByText("0:00")).toBeInTheDocument();
-  });
-
   it("onComplete 콜백이 0초 도달 시 호출된다", () => {
     const onComplete = vi.fn();
     render(<Countdown durationMs={2000} onComplete={onComplete} />);
