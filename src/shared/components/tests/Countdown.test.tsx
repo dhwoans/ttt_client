@@ -43,21 +43,24 @@ describe("Countdown", () => {
     expect(onComplete).toHaveBeenCalledTimes(1);
   });
 
-  it("탭 전환 후 복귀 시 시간 동기화(초기값 보정) 확인", () => {
+  it("새로고침 동기화(초기값 보정) 확인", () => {
     const now = Date.now();
     // 4초 경과 후 복귀 상황 가정
     render(<Countdown durationMs={10000} initialStartTime={now - 4000} />);
     expect(screen.getByText("6")).toBeInTheDocument();
   });
-
-  // 아래 항목은 실제 UI/로직 구현 필요
-  it("3초 이하 시각적 강조 효과 작동 확인 (미구현, TODO)", () => {
-    // TODO: 3초 이하에서 className/style/애니메이션 등 강조 효과가 있으면 테스트 추가
+ 
+  it("3초 이하 시각적 강조 효과 작동 확인", () => {
+    render(<Countdown durationMs={10000} />);
+    // 7초 경과 → 3초 남음 → 강조 색상 적용
+    act(() => {
+      vi.advanceTimersByTime(7000);
+    });
+    const el = screen.getByText("3");
+    expect(el).toBeInTheDocument();
+    expect(el).toHaveStyle({ color: "#ef4444" });
   });
 
-  it('0초 시 "Time Out!" 텍스트 표시 확인 (미구현, TODO)', () => {
-    // TODO: 0초에 "Time Out!" 텍스트가 표시되는 경우 테스트 추가
-  });
 
   it("초 단위로 카운트다운이 표시된다", () => {
     render(<Countdown durationMs={3000} />);

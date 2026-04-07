@@ -1,7 +1,8 @@
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
+import type { RoomPhase } from "../types";
 
 interface GameRestartConfig {
-  setPhase: (phase: "ready" | "playing") => void;
+  setPhase: (phase: RoomPhase) => void;
   mode: "single" | "multi";
   sendReady: (isReady: boolean) => void;
   handleReady: (isReady: boolean) => void;

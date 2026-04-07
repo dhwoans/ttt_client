@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { eventManager } from "@/shared/managers/EventManager";
 import { gameSocketManager } from "@/shared/managers/SocketManager";
+import type { RoomPhase } from "../types";
 
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {
@@ -21,9 +22,7 @@ const preprocessGameStart = (botInfo: any) => {
  * - PLAYING: 게임 시작
  * - ROOM_ASSIGNED: 방 배정
  */
-export function useGamePhaseEvents(
-  setPhase: (phase: "ready" | "playing") => void,
-) {
+export function useGamePhaseEvents(setPhase: (phase: RoomPhase) => void) {
   // PLAYING 신호 수신 시 phase 변경 및 전처리
   useEffect(() => {
     const handlePlaying = (data: any) => {

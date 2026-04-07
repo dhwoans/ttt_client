@@ -1,53 +1,44 @@
 import { Avatar } from "@/shared/components/Avatar";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useReducer } from "react";
 import { useAudio } from "@/shared/hooks/useAudioEffect";
 import { useAvatarSelection } from "../hooks/useAvatarSelection";
 import { useNickname } from "../hooks/useNickname";
-import { useShakeAnimation } from "../hooks/useShakeAnimation";
-import { useCreateUser } from "../hooks/useCreateUser";
-import { useState } from "react";
+import { useCreateUserAndLobbyMove } from "../hooks/useCreateUserAndLobbyMove";
+import Bridge from "@/shared/components/Bridge";
+
+type ShakeAction = { type: "trigger" } | { type: "end" };
+
+function shakeReducer(_: boolean, action: ShakeAction) {
+  switch (action.type) {
+    case "trigger":
+      return true;
+    case "end":
+      return false;
+    default:
+      return false;
+  }
+}
 
 export default function CharacterBoard() {
-  const navigate = useNavigate();
   const { playBeep } = useAudio();
-  const { createUser } = useCreateUser();
-  
+  const { isCreating, handleCreateUser } = useCreateUserAndLobbyMove();
+
   const avatar = useAvatarSelection();
   const nickname = useNickname(avatar.index);
-  const shake = useShakeAnimation();
-  const [isCreating, setIsCreating] = useState(false);
+  const [isShaking, dispatchShake] = useReducer(shakeReducer, false);
 
-  // 유저 생성 및 로비 이동
-  const handleCreateUser = async () => {
-    if (!nickname.fullNickname.trim()) {
-      shake.trigger();
-      return;
-    }
-    if (isCreating) return;
-    setIsCreating(true);
-
-    try {
-      const result = await createUser({
-        nickname: nickname.fullNickname,
-        avatar: avatar.currentAvatar[0],
-      });
-
-      if (result && result.success) {
-        sessionStorage.setItem("avator", String(avatar.index));
-        sessionStorage.setItem("nickname", nickname.fullNickname);
-        sessionStorage.setItem("userId", result.message);
-        navigate("/lobby", { replace: true });
-      } else {
-        shake.trigger();
-      }
-    } catch (error) {
-      console.error("유저 생성 오류:", error);
-      shake.trigger();
-    } finally {
-      setIsCreating(false);
-    }
+  const triggerShake = () => {
+    dispatchShake({ type: "trigger" });
   };
+
+  const handleShakeAnimationEnd = () => {
+    dispatchShake({ type: "end" });
+  };
+
+  if (isCreating) {
+    return <Bridge />;
+  }
 
   const shakeClass = "animate__animated animate__shakeX";
   const brutalBox =
@@ -57,8 +48,8 @@ export default function CharacterBoard() {
   return (
     <div
       className={`mx-auto my-12 max-w-120 rounded-2xl bg-linear-to-b from-dark-1 to-dark-2 p-8 border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
-    ${shake.isShaking ? shakeClass : ""}`}
-      onAnimationEnd={shake.handleAnimationEnd}
+    ${isShaking ? shakeClass : ""}`}
+      onAnimationEnd={handleShakeAnimationEnd}
     >
       <h2 className="mb-8 text-center text-3xl font-bold text-accent drop-shadow-md">
         CHARACTER SELECT
@@ -97,13 +88,20 @@ export default function CharacterBoard() {
       </div>
       <button
         onMouseDown={playBeep}
-        onClick={handleCreateUser}
+        onClick={() =>
+          handleCreateUser({
+            nickname: nickname.fullNickname,
+            avatarName: avatar.currentAvatar[0],
+            avatarIndex: avatar.index,
+            onError: triggerShake,
+          })
+        }
         disabled={isCreating}
         className={`w-full rounded-2xl py-4 font-black bg-accent text-xl text-dark-1 ${brutalBtn} ${
           isCreating ? "opacity-60 pointer-events-none" : ""
         }`}
       >
-        {isCreating ? "입장 중..." : "이 캐릭터로 입장"}
+        입장
       </button>
     </div>
   );

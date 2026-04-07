@@ -37,6 +37,8 @@ export function useGameResult({
   const imgSrc = result === "승리" ? WIN : result === "패배" ? LOOSE : DRAW;
 
   useEffect(() => {
+    if (!winner) return;
+
     const resolved =
       winner !== "DRAW" ? (winner === nickname ? "승리" : "패배") : "무승부";
 
@@ -46,7 +48,7 @@ export function useGameResult({
 
     setResult(resolved);
     triggerConfetti(resolved);
-    // 자동 onExit 
+    // 자동 onExit
     const timeoutId = setTimeout(onExit, exitTime);
     return () => clearTimeout(timeoutId);
   }, [winner, nickname]);

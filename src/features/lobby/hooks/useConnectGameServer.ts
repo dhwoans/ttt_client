@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { gameSocketManager } from "@/shared/managers/SocketManager";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
 import { eventManager } from "@/shared/managers/EventManager";
+import { toast } from "react-toastify";
 
 /**
  * 게임 서버 연결 (ticket 기반 인증)
@@ -59,7 +60,10 @@ export function useConnectGameServer() {
         sessionStorage.setItem("gameMode", "multi");
 
         // 게임방으로 이동
-        navigate(`/game/${assignedRoomId}`, { state: { mode: "multi" } });
+        toast("🎟️ 입장권 내는 중...");
+        setTimeout(() => {
+          navigate(`/game/${assignedRoomId}`, { state: { mode: "multi" } });
+        }, 1500);
       };
 
       // 한 번만 실행되도록 설정

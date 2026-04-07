@@ -8,14 +8,11 @@ import type { PlayerReadyEvent } from "@share";
  * - 다른 플레이어의 준비 상태 업데이트
  */
 export function useReceivePlayerReady(
-  mode: "single" | "multi",
   setPlayersReadyStatus: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
   >,
 ) {
   useEffect(() => {
-    if (mode !== "multi") return;
-
     const handlePlayerReady = (data: PlayerReadyEvent) => {
       console.log(`[room] PLAYER_READY 수신:`, data);
       console.log(
@@ -33,5 +30,5 @@ export function useReceivePlayerReady(
       console.log("[room] PLAYER_READY 리스너 제거");
       eventManager.off("PLAYER_READY", handlePlayerReady);
     };
-  }, [mode, setPlayersReadyStatus]);
+  }, [setPlayersReadyStatus]);
 }

@@ -12,7 +12,6 @@ import { GamePlayerInfo } from "./useRoomState";
  * - PLAYER_JOINED 이벤트 처리
  */
 export function useMultiplayerPlayers(
-  mode: "single" | "multi",
   setPlayersInfos: React.Dispatch<React.SetStateAction<GamePlayerInfo[]>>,
   setPlayersReadyStatus: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
@@ -20,7 +19,7 @@ export function useMultiplayerPlayers(
 ) {
   // sessionStorage에서 기존 플레이어 로드
   useEffect(() => {
-    if (mode === "multi") {
+    {
       const storedPlayers = sessionStorage.getItem("existingPlayers");
       console.log(
         "[room] sessionStorage에서 existingPlayers 로드:",
@@ -74,9 +73,9 @@ export function useMultiplayerPlayers(
         }
       }
     }
-  }, [mode, setPlayersInfos, setPlayersReadyStatus]);
+  }, [setPlayersInfos, setPlayersReadyStatus]);
 
-  // EXISTING_PLAYERS 이벤트 처리
+  // PLAYER_JOINED 이벤트 처리
   useEffect(() => {
     const handleExistingPlayers = (data: ExistingPlayersEvent) => {
       console.log("[room] EXISTING_PLAYERS 이벤트 수신:", data.players);
@@ -131,10 +130,8 @@ export function useMultiplayerPlayers(
     };
   }, [setPlayersInfos, setPlayersReadyStatus]);
 
-  // PLAYER_JOINED 이벤트 처리
+  
   useEffect(() => {
-    if (mode !== "multi") return;
-
     const handlePlayerJoined = (data: PlayerJoinedEvent) => {
       console.log("[room] 새 플레이어 입장:", data.player);
       toast.info(`${data.player.nickname}님이 들어왔습니다!`);
@@ -168,5 +165,5 @@ export function useMultiplayerPlayers(
       console.log("[room] PLAYER_JOINED 리스너 제거");
       eventManager.off("PLAYER_JOINED", handlePlayerJoined);
     };
-  }, [mode, setPlayersInfos, setPlayersReadyStatus]);
+  }, [setPlayersInfos, setPlayersReadyStatus]);
 }

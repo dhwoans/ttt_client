@@ -30,13 +30,14 @@ interface PlayingProps {
   onExit?: () => void;
   onRestart?: () => void;
 }
-export default function Playing({
+export default function TicTacToe({
   playersInfos,
   mode = "single",
   onExit,
   onRestart,
 }: PlayingProps) {
   const [showExitModal, setShowExitModal] = useState(false);
+  const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState<string | null>(
     () => sessionStorage.getItem("currentTurnPlayerId"),
   );
@@ -89,6 +90,15 @@ export default function Playing({
 
   const { handleTimeout } = useGameTimeout(currentPlayer.nickname);
 
+  useEffect(() => {
+    if (isGameOver) {
+      const timer = setTimeout(() => setShowGameOverModal(true), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowGameOverModal(false);
+    }
+  }, [isGameOver]);
+
   // board 클릭 처리 (싱글/멀티 모드 분기 처리)
   const { handleSquare, isCurrentUserTurnByServer } = useNextTurn({
     mode,
@@ -114,7 +124,9 @@ export default function Playing({
           isTurn={!isGameOver && currentPlayer.nickname}
         />
       </div>
-      <div className="w-full max-w-150 aspect-square flex items-center justify-center rounded-2xl backdrop-blur-sm p-4 md:p-6 mx-auto">
+      <div
+        className={`w-full max-w-150 aspect-square flex items-center justify-center rounded-2xl backdrop-blur-sm p-4 md:p-6 mx-auto${isGameOver ? " animate__animated animate__hinge" : ""}`}
+      >
         <Board
           list={board}
           selectSquare={canSelectSquare ? handleSquare : false}
@@ -145,7 +157,7 @@ export default function Playing({
         />
       )}
 
-      {isGameOver && (
+      {showGameOverModal && (
         <GameOverModal
           winner={isDraw ? "DRAW" : winner}
           handleRestart={onRestart}

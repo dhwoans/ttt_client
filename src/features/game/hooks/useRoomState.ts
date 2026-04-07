@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
-import { randomBot } from "@/shared/constants/randomBot";
 import { animalList } from "@/shared/constants/randomAvatar";
 import { useLocation } from "react-router-dom";
+import type { RoomPhase } from "../types";
 
 export interface GamePlayerInfo {
   nickname: string;
@@ -21,7 +21,7 @@ export function useRoomState() {
     userId: sessionStorage.getItem("userId") || undefined,
   };
   const [playersInfos, setPlayersInfos] = useState<GamePlayerInfo[]>([myInfo]);
-  const [phase, setPhase] = useState<"ready" | "playing">(() => {
+  const [phase, setPhase] = useState<RoomPhase>(() => {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -50,33 +50,6 @@ export function useRoomState() {
   };
 
   const [mode, setMode] = useState<"single" | "multi">(() => resolveMode());
-
-  useEffect(() => {
-    if (mode === "single" && playersInfos.length === 1) {
-      let initialBot: any = undefined;
-      if (saved) {
-        try {
-          const parsed = JSON.parse(saved);
-          if (parsed.bot) initialBot = parsed.bot;
-        } catch {}
-      }
-      let randomBotData: any;
-      if (initialBot) {
-        randomBotData = initialBot;
-      } else {
-        randomBotData = randomBot();
-      }
-      setPlayersInfos([
-        myInfo,
-        {
-          nickname: randomBotData[1],
-          avatar: randomBotData[0],
-          imageSrc: randomBotData[2],
-        },
-      ]);
-    }
-    // 멀티플레이는 소켓 등에서 setPlayersInfos로 갱신 (상대방만 추가)
-  }, [mode, saved, playersInfos.length, myInfo]);
 
   return {
     playersInfos,

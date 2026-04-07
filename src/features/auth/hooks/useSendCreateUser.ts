@@ -7,7 +7,7 @@ interface CreateUserResult {
   error?: string;
 }
 
-export function useCreateUser() {
+export function useSendCreateUser() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<CreateUserResult | null>(null);
 

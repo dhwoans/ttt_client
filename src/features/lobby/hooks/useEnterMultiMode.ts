@@ -2,13 +2,13 @@ import { useCallback } from "react";
 import { useGetGameTicket } from "./useGetGameTicket";
 import { useConnectGameServer } from "./useConnectGameServer";
 
-export function useMultiMode() {
+export function useEnterMultiMode() {
   const { getGameTicket } = useGetGameTicket();
   const { connectGameServer } = useConnectGameServer();
 
   const handleMultiMode = useCallback(async () => {
     try {
-      // 1️⃣ API에서 ticket 받기
+      // API에서 ticket 받기
       const response = await getGameTicket();
       console.log("[multi] getGameTicket response:", response);
 
@@ -16,7 +16,7 @@ export function useMultiMode() {
         console.log("[multi] gameServerUrl received:", response.gameServerUrl);
         console.log("[multi] ticket received:", response.ticket);
 
-        // 2️⃣ ticket으로 게임 서버 연결
+        // ticket으로 게임 서버 연결
         connectGameServer(response.gameServerUrl!, response.ticket!);
       } else {
         console.error("[multi] 입장 실패");

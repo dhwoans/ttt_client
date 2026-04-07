@@ -6,6 +6,7 @@ import { clearGameSession } from "@/shared/utils/playerStorage";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 import type { PlayerLeftEvent, LeaveSuccessEvent } from "@share";
 import { GamePlayerInfo } from "./useRoomState";
+import type { RoomPhase } from "../types";
 
 /**
  * 플레이어 퇴장 이벤트 수신 처리
@@ -13,8 +14,7 @@ import { GamePlayerInfo } from "./useRoomState";
  * - LEAVE_SUCCESS: 본인 퇴장 성공
  */
 export function useReceivePlayerLeave(
-  mode: "single" | "multi",
-  phase: "ready" | "playing",
+  phase: RoomPhase,
   setPlayersInfos: React.Dispatch<React.SetStateAction<GamePlayerInfo[]>>,
   setPlayersReadyStatus: React.Dispatch<
     React.SetStateAction<Record<string, boolean>>
@@ -25,8 +25,6 @@ export function useReceivePlayerLeave(
 
   // PLAYER_LEFT 이벤트 처리 (상대 플레이어 퇴장)
   useEffect(() => {
-    if (mode !== "multi") return;
-
     const handlePlayerLeft = (data: PlayerLeftEvent) => {
       console.log(`[room] ${data.nickname}님이 나갔습니다`);
       toast.warning(`${data.nickname}님이 게임을 나갔습니다.`);
@@ -43,7 +41,7 @@ export function useReceivePlayerLeave(
         return next;
       });
 
-      // 게임 중이면 준비상태로 돌아가기
+      // 게임 중이면 준비상태로 돌아가기로 구현 예정
       // 임시로 로비로 퇴장
       if (phase === "playing") {
         setTimeout(() => {
@@ -60,7 +58,6 @@ export function useReceivePlayerLeave(
       eventManager.off("PLAYER_LEFT", handlePlayerLeft);
     };
   }, [
-    mode,
     phase,
     setPlayersInfos,
     setPlayersReadyStatus,

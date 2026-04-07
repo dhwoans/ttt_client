@@ -4,7 +4,9 @@ import { useAudio } from "@/shared/hooks/useAudioEffect";
 
 export function useAvatarSelection() {
   const { playTick } = useAudio();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() =>
+    Math.floor(Math.random() * animalList.length),
+  );
   const [isRandomizing, setIsRandomizing] = useState(false);
 
   // 아바타 랜덤 선택
