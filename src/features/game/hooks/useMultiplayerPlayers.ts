@@ -7,6 +7,7 @@ import { GamePlayerInfo } from "./useRoomState";
 
 /**
  * 멀티플레이 플레이어 목록 관리
+ * - useRoomState가 가진 playersInfos를 멀티 이벤트 기준으로 갱신한다.
  * - sessionStorage에서 기존 플레이어 로드
  * - EXISTING_PLAYERS 이벤트 처리
  * - PLAYER_JOINED 이벤트 처리
@@ -130,7 +131,6 @@ export function useMultiplayerPlayers(
     };
   }, [setPlayersInfos, setPlayersReadyStatus]);
 
-  
   useEffect(() => {
     const handlePlayerJoined = (data: PlayerJoinedEvent) => {
       console.log("[room] 새 플레이어 입장:", data.player);

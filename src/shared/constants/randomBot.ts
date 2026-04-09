@@ -1,7 +1,10 @@
-// Vite가 자동으로 처리하는 이미지 import
-const botImages = import.meta.glob<{ default: string }>("@assets/bots/*.png", {
-  eager: true,
-});
+// Vite가 자동으로 처리하는 봇 리소스 import
+const botImages = import.meta.glob<{ default: string }>(
+  "@assets/bots/*.{png,webm}",
+  {
+    eager: true,
+  },
+);
 
 // 이미지 경로 매핑
 const botImageMap = Object.entries(botImages).reduce(
@@ -14,15 +17,15 @@ const botImageMap = Object.entries(botImages).reduce(
 );
 
 export const botList: [string, string, string][] = [
-  ["👾", "외계인", botImageMap["Alien Monster.png"]],
-  ["👽", "에일리언", botImageMap["Alien.png"]],
-  ["🤡", "광대", botImageMap["Clown Face.png"]],
-  ["👻", "유령", botImageMap["Ghost.png"]],
-  ["👹", "고블린", botImageMap["Ogre.png"]],
-  ["👺", "코주부", botImageMap["Goblin.png"]],
-  ["🤖", "로봇", botImageMap["Robot.png"]],
-  ["💀", "해골", botImageMap["Skull.png"]],
-  ["😈", "악마", botImageMap["Smiling_Face_with_Horns.png"]],
+  ["👾", "외계인", botImageMap["AlienMonster.webm"]],
+  ["👽", "에일리언", botImageMap["Alien.webm"]],
+  ["🤡", "광대", botImageMap["ClownFace.webm"]],
+  ["👻", "유령", botImageMap["Ghost.webm"]],
+  ["👹", "고블린", botImageMap["Ogre.webm"]],
+  ["👺", "코주부", botImageMap["Goblin.webm"]],
+  ["🤖", "로봇", botImageMap["Robot.webm"]],
+  ["💀", "해골", botImageMap["Skull.webm"]],
+  ["😈", "악마", botImageMap["SmilingFacewithHorns.webm"]],
 ];
 
 export const randomBot = () => {

@@ -1,6 +1,6 @@
-// Vite가 자동으로 처리하는 이미지 import
+// Vite가 자동으로 처리하는 아바타 리소스 import (png/webm)
 const animalImages = import.meta.glob<{ default: string }>(
-  "@assets/animals/*.png",
+  "@assets/animals/*.{png,webm}",
   { eager: true },
 );
 
@@ -15,24 +15,24 @@ const imageMap = Object.entries(animalImages).reduce(
 );
 
 export const animalList: [string, string, string][] = [
-  ["🐶", "강아지", imageMap["Dog Face.png"]],
-  ["🐱", "고양이", imageMap["Cat Face.png"]],
-  ["🐭", "생쥐", imageMap["Mouse Face.png"]],
-  ["🐹", "햄스터", imageMap["Hamster.png"]],
-  ["🐰", "토끼", imageMap["Rabbit Face.png"]],
-  ["🦊", "여우", imageMap["Fox.png"]],
-  ["🐻", "곰", imageMap["Bear.png"]],
-  ["🦝", "너구리", imageMap["Raccoon.png"]],
-  ["🐨", "코알라", imageMap["Koala.png"]],
-  ["🐯", "호랑이", imageMap["Tiger Face.png"]],
-  ["🦁", "사자", imageMap["Lion.png"]],
-  ["🐮", "소", imageMap["Cow Face.png"]],
-  ["🐷", "돼지", imageMap["Pig Face.png"]],
-  ["🐸", "개구리", imageMap["Frog.png"]],
-  ["🐵", "원숭이", imageMap["Monkey Face.png"]],
-  ["🦉", "부엉이", imageMap["Owl.png"]],
-  ["🐢", "거북이", imageMap["Turtle.png"]],
-  ["🐬", "돌고래", imageMap["Dolphin.png"]],
+  ["🐶", "강아지", imageMap["DogFace.webm"]],
+  ["🐱", "고양이", imageMap["CatFace.webm"]],
+  ["🐭", "생쥐", imageMap["MouseFace.webm"]],
+  ["🐹", "햄스터", imageMap["Hamster.webm"]],
+  ["🐰", "토끼", imageMap["RabbitFace.webm"]],
+  ["🦊", "여우", imageMap["Fox.webm"]],
+  ["🐻", "곰", imageMap["Bear.webm"]],
+  ["🦝", "너구리", imageMap["Raccoon.webm"]],
+  ["🐨", "코알라", imageMap["Koala.webm"]],
+  ["🐯", "호랑이", imageMap["TigerFace.webm"]],
+  ["🦁", "사자", imageMap["Lion.webm"]],
+  ["🐮", "소", imageMap["CowFace.webm"]],
+  ["🐷", "돼지", imageMap["PigFace.webm"]],
+  ["🐸", "개구리", imageMap["Frog.webm"]],
+  ["🐵", "원숭이", imageMap["MonkeyFace.webm"]],
+  ["🦉", "부엉이", imageMap["Owl.webm"]],
+  ["🐢", "거북이", imageMap["Turtle.webm"]],
+  ["🐬", "돌고래", imageMap["Dolphin.webm"]],
 ];
 
 export const adjectives: string[] = [

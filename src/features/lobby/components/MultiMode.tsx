@@ -3,7 +3,7 @@ import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
 import { useEnterMultiMode } from "../hooks/useEnterMultiMode";
 import Badge from "@/shared/components/Badge";
-import chequeredFlag from "@assets/icons/ChequeredFlag.png";
+import chequeredFlag from "@assets/icons/ChequeredFlag.webm";
 import Subtitle from "./Subtitle";
 
 const MultiMode = () => {
@@ -18,9 +18,12 @@ const MultiMode = () => {
       onClick={handleMultiMode}
       className="flex-1 relative bg-[#552cb7] rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center gap-4 h-full group hover-diagonal-stripes"
     >
-      <img
+      <video
         src={chequeredFlag}
-        alt="멀티플레이 아이콘"
+        autoPlay
+        loop
+        muted
+        playsInline
         className="h-16 w-16 object-contain"
       />
       <div>

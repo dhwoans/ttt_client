@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { Avatar } from "@/shared/components/Avatar";
 import { animalList } from "@/shared/constants/randomAvatar";
 import Subtitle from "./Subtitle";
-import ticTacToe from "@assets/ticTacToe.png";
+import ticTacToe from "@assets/ticTacToe.webp";
 
 const PlayerInfo = () => {
   const index = sessionStorage.getItem("avator") || 3;

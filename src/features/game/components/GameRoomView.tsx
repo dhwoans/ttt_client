@@ -1,10 +1,10 @@
 import { ToastContainer } from "react-toastify";
 import Marquee from "react-fast-marquee";
-import Playing from "../../../pages/TicTacToe";
+import TicTacToe from "../../../pages/TicTacToe";
 import Ready from "../../../pages/Ready";
 import Bridge from "../../../shared/components/Bridge";
 import HeaderLayout from "../../../pages/layouts/HeaderLayout";
-import gameStart from "@assets/gameStart.png";
+import gameStart from "@assets/gameStart.webp";
 import type { GamePlayerInfo } from "../hooks/useRoomState";
 import type { RoomPhase } from "../types";
 
@@ -64,7 +64,7 @@ export default function GameRoomView({
       )}
       {phase === "bridge" && <Bridge imageSrc={gameStart} />}
       {phase === "playing" && (
-        <Playing
+        <TicTacToe
           playersInfos={playersInfos}
           mode={mode}
           onExit={onExit}

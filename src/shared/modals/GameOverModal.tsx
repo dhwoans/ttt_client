@@ -36,9 +36,10 @@ export default function GameOverModal({
           {result}
         </h2>
 
-        <img
+        <video
           src={imgSrc}
-          alt={result}
+          autoPlay
+          loop
           className="w-64 h-64 mx-auto object-contain mb-6"
         />
 

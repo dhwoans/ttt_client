@@ -1,4 +1,4 @@
-import ticTacToe from "@assets/ticTacToe.png";
+import ticTacToe from "@assets/ticTacToe.webp";
 
 interface BridgeProps {
   imageSrc?: string;

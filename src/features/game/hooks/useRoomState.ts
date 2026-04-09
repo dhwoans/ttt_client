@@ -11,6 +11,8 @@ export interface GamePlayerInfo {
   userId?: string;
 }
 
+// 방 화면에서 쓰는 기본 상태를 관리
+// 내 플레이어 정보, 현재 phase, mode를 초기화하고 보관한다.
 export function useRoomState() {
   const saved = localStorage.getItem("gameState");
   const playerInfo = getPlayerInfoFromStorage();

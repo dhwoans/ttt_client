@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import LobbyPage from "./pages/LobbyPage";
 import GameRoomPage from "./pages/GameRoomPage";
 import AuthGuard from "./shared/components/AuthGuard";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
         <Route path="/lobby" element={<LobbyPage />} />
         <Route path="/game/:roomId?" element={<GameRoomPage />} />
       </Route>
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

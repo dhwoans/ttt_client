@@ -4,9 +4,9 @@ import { motion } from "motion/react";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
-import gearImg from "@assets/icons/Gear.png";
-import wavingHandImg from "@assets/icons/Waving_Hand.png";
-import Subtitle from "./Subtitle";
+import gearImg from "@assets/icons/Gear.webp";
+import wavingHandImg from "@assets/icons/Waving_Hand.webm";
+
 
 const SettingsAndLogout = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -45,9 +45,10 @@ const SettingsAndLogout = () => {
         onClick={handleLogout}
         className="flex-1 relative bg-[#058cd7] rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center justify-center gap-3 h-full group hover-diagonal-stripes"
       >
-        <img
+        <video
           src={wavingHandImg}
-          alt="나가기 손인사"
+          autoPlay
+          loop
           className="h-14 w-14 object-contain drop-shadow"
         />
         <span className="font-bold text-black transition-opacity duration-200 group-hover:opacity-0">

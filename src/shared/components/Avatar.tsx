@@ -36,7 +36,7 @@ export function Avatar({
       const interval = setInterval(() => {
         setRandomIndex(Math.floor(Math.random() * animalList.length));
         count++;
-        if (count > 15) {
+        if (count > 5) {
           clearInterval(interval);
           setIsRandomizing(false);
           setHasAnimated(true);
@@ -57,18 +57,30 @@ export function Avatar({
         tabIndex={hasOnClick ? 0 : undefined}
       >
         {isRandomizing ? (
-          <img
-            className="w-30 h-30"
-            src={
+          (() => {
+            const randomSrc =
               randomIndex > 5
                 ? animalList[randomIndex][2]
-                : botList[randomIndex][2]
-            }
-          ></img>
+                : botList[randomIndex][2];
+
+            return (
+              <video
+                className="w-30 h-30 object-cover"
+                src={randomSrc}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            );
+          })()
         ) : imageSrc ? (
-          <img
+          <video
             src={imageSrc}
-            alt="avatar"
+            autoPlay
+            loop
+            muted
+            playsInline
             className={`w-40 h-40 object-cover ${isHovered && hasOnClick ? "opacity-50" : ""}`}
           />
         ) : (

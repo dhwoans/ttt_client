@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import JSConfetti from "js-confetti";
 import { audioManager } from "@/shared/managers/AudioManager";
-import hornsImg from "@assets/icons/Horns.png";
-import thumbsDownImg from "@assets/icons/Thumbs_Down.png";
-import handshakeImg from "@assets/icons/Handshake.png";
+import hornsImg from "@assets/icons/Horns.webm";
+import thumbsDownImg from "@assets/icons/Thumbs_Down.webm";
+import handshakeImg from "@assets/icons/Handshake.webm";
 
 const WIN = hornsImg;
 const LOOSE = thumbsDownImg;

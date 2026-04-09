@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
 import Badge from "@/shared/components/Badge";
-import JoystickImg from "@assets/icons/Joystick.png";
+import JoystickImg from "@assets/icons/Joystick.webp";
 import Subtitle from "./Subtitle";
 
 const LocalMode = () => {
