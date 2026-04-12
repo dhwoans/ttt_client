@@ -10,11 +10,10 @@ import { useCallback } from "react";
  */
 export function useSendPlayerReady() {
   const sendReady = useCallback((isReady: boolean) => {
-    const roomId = sessionStorage.getItem("roomId");
     const userId = sessionStorage.getItem("userId");
 
-    if (!roomId || !userId) {
-      console.error("[ready] 필수 정보 없음", { roomId, userId });
+    if (!userId) {
+      console.error("[ready] 필수 정보 없음", { userId });
       return;
     }
 

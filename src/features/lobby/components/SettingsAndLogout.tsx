@@ -6,7 +6,7 @@ import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
 import gearImg from "@assets/icons/Gear.webp";
 import wavingHandImg from "@assets/icons/Waving_Hand.webm";
-
+import { ROUTES } from "@/shared/constants/routes";
 
 const SettingsAndLogout = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -17,7 +17,7 @@ const SettingsAndLogout = () => {
   };
   const handleLogout = () => {
     sessionStorage.clear();
-    navigate("/login", { replace: true });
+    navigate(ROUTES.login, { replace: true });
   };
   return (
     <div className="flex flex-col gap-6 shrink-0 h-44">

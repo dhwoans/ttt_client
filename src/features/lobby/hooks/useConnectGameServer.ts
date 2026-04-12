@@ -4,6 +4,7 @@ import { gameSocketManager } from "@/shared/managers/SocketManager";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
 import { eventManager } from "@/shared/managers/EventManager";
 import { toast } from "react-toastify";
+import { ROUTES } from "@/shared/constants/routes";
 
 /**
  * 게임 서버 연결 (ticket 기반 인증)
@@ -62,7 +63,7 @@ export function useConnectGameServer() {
         // 게임방으로 이동
         toast("🎟️ 입장권 내는 중...");
         setTimeout(() => {
-          navigate(`/game/${assignedRoomId}`, { state: { mode: "multi" } });
+          navigate(ROUTES.game.room(assignedRoomId));
         }, 1500);
       };
 

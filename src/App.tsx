@@ -1,18 +1,39 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import LobbyPage from "./pages/LobbyPage";
-import GameRoomPage from "./pages/GameRoomPage";
+import SingleGameRoomPage from "./pages/SingleGameRoomPage";
+import MultiGameRoomPage from "./pages/MultiGameRoomPage";
+// import LocalHostPage from "./pages/LocalHostPage";
+// import LocalGuestPage from "./pages/LocalGuestPage";
 import AuthGuard from "./shared/components/AuthGuard";
+import GuestGuard from "./shared/components/GuestGuard";
 import NotFoundPage from "./pages/NotFoundPage";
+import { ROUTES, isAuthenticated } from "./shared/constants/routes";
+
+function RootRedirect() {
+  const to = isAuthenticated() ? ROUTES.lobby : ROUTES.login;
+  return <Navigate to={to} replace />;
+}
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path={ROUTES.root} element={<RootRedirect />} />
+      <Route element={<GuestGuard />}>
+        <Route path={ROUTES.login} element={<LoginPage />} />
+      </Route>
       <Route element={<AuthGuard />}>
-        <Route path="/lobby" element={<LobbyPage />} />
-        <Route path="/game/:roomId?" element={<GameRoomPage />} />
+        <Route path={ROUTES.lobby} element={<LobbyPage />} />
+        <Route path={ROUTES.game.single} element={<SingleGameRoomPage />} />
+        <Route path={ROUTES.game.roomPattern} element={<MultiGameRoomPage />} />
+        {/* <Route
+          path={ROUTES.game.localHostPattern}
+          element={<LocalHostPage />}
+        /> */}
+        {/* <Route
+          path={ROUTES.game.localGuestPattern}
+          element={<LocalGuestPage />}
+        /> */}
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

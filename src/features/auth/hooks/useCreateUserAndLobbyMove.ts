@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSendCreateUser } from "./useSendCreateUser";
+import { ROUTES } from "@/shared/constants/routes";
 
 interface HandleCreateUserOptions {
   nickname: string;
@@ -79,7 +80,7 @@ function useCreateUserFlow() {
       if (success) {
         shouldResetCreating = false;
         setTimeout(() => {
-          navigate("/lobby", { replace: true });
+          navigate(ROUTES.lobby, { replace: true });
         }, 1000);
       } else {
         onError();

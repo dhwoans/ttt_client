@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Badge from "@/shared/components/Badge";
 import robotImg from "@assets/bots/Robot.webm";
 import Subtitle from "./Subtitle";
+import { ROUTES } from "@/shared/constants/routes";
 
 const SingleMode = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const SingleMode = () => {
     toast("🤔 알고리즘 구상 중...");
     setTimeout(() => {
       sessionStorage.setItem("gameMode", "single");
-      navigate("/game/single", { state: { mode: "single" } });
+      navigate(ROUTES.game.single);
     }, 1500);
   };
   return (

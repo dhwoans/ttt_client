@@ -1,17 +1,20 @@
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores/audioStore";
 import { audioManager } from "@/shared/managers/AudioManager";
 import Badge from "@/shared/components/Badge";
 import JoystickImg from "@assets/icons/Joystick.webp";
 import Subtitle from "./Subtitle";
+import { ROUTES } from "@/shared/constants/routes";
 
 const LocalMode = () => {
+  const navigate = useNavigate();
   const { sfxMuted } = useAudioStore();
   const playBeep = () => {
     if (!sfxMuted) audioManager.play("beep");
   };
   const handleLocalMode = () => {
-    // TODO: 로컬 모드 진입 로직 구현
+    // 구현
   };
   return (
     <motion.div

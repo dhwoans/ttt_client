@@ -5,12 +5,22 @@ import { gameSocketManager } from "@/shared/managers/SocketManager";
  * 게임 소켓 연결을 관리하는 훅
  * 컴포넌트 마운트 시 연결, 언마운트 시 종료
  */
-export function useGameSocketConnection() {
+export function useGameSocketConnection(roomId: string) {
   useEffect(() => {
-    const roomId = sessionStorage.getItem("roomId");
     const userId = sessionStorage.getItem("userId");
     const userNickname = sessionStorage.getItem("nickname");
     const gameServerUrl = sessionStorage.getItem("gameServerUrl");
+    const gameTicket = sessionStorage.getItem("gameTicket") ?? undefined;
+    const socket = gameSocketManager.getSocket();
+
+    // URL 파라미터를 room 진입의 단일 소스로 사용한다.
+    sessionStorage.setItem("roomId", roomId);
+
+    if (socket?.connected) {
+      return () => {
+        gameSocketManager.disconnect();
+      };
+    }
 
     if (roomId && userId && userNickname) {
       gameSocketManager.connect(
@@ -19,6 +29,7 @@ export function useGameSocketConnection() {
         gameServerUrl || "/room",
         {
           roomId,
+          ticket: gameTicket,
         },
       );
     }
@@ -27,7 +38,7 @@ export function useGameSocketConnection() {
     return () => {
       gameSocketManager.disconnect();
     };
-  }, []);
+  }, [roomId]);
 
   const disconnect = () => {
     gameSocketManager.disconnect();

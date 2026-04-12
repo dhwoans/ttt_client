@@ -2,8 +2,19 @@ import { useRoomState } from "../features/game/hooks/useRoomState";
 import { useGameRestart } from "../features/game/hooks/useGameRestart";
 import { useMultiPlay } from "../features/game/hooks/useMultiPlay";
 import GameRoomView from "../features/game/components/GameRoomView";
+import { Navigate, useParams } from "react-router-dom";
+import { useGameSocketConnection } from "../features/game/hooks/useGameSocketConnection";
+import { ROUTES } from "@/shared/constants/routes";
 
 export default function MultiGameRoomPage() {
+  const { roomId } = useParams<{ roomId: string }>();
+
+  if (!roomId) {
+    return <Navigate to={ROUTES.lobby} replace />;
+  }
+
+  useGameSocketConnection(roomId);
+
   const nickname = sessionStorage.getItem("nickname");
   const { playersInfos, setPlayersInfos, phase, setPhase } = useRoomState();
   const mode = "multi" as const;

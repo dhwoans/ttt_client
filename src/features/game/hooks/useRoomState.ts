@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
 import { animalList } from "@/shared/constants/randomAvatar";
-import { useLocation } from "react-router-dom";
 import type { RoomPhase } from "../types";
 
 export interface GamePlayerInfo {
@@ -11,8 +10,8 @@ export interface GamePlayerInfo {
   userId?: string;
 }
 
-// 방 화면에서 쓰는 기본 상태를 관리
-// 내 플레이어 정보, 현재 phase, mode를 초기화하고 보관한다.
+// 방 화면에서 공유하는 기본 상태를 관리한다.
+// 내 플레이어 정보와 현재 phase를 초기화하고 보관한다.
 export function useRoomState() {
   const saved = localStorage.getItem("gameState");
   const playerInfo = getPlayerInfoFromStorage();
@@ -32,33 +31,11 @@ export function useRoomState() {
     }
     return "ready";
   });
-  const location = useLocation();
-  const resolveMode = (): "single" | "multi" => {
-    const locationMode = location.state?.mode as "single" | "multi" | undefined;
-    if (locationMode === "single" || locationMode === "multi") {
-      return locationMode;
-    }
-
-    const sessionMode = sessionStorage.getItem("gameMode");
-    if (sessionMode === "single" || sessionMode === "multi") {
-      return sessionMode;
-    }
-
-    if (sessionStorage.getItem("roomId")) {
-      return "multi";
-    }
-
-    return "single";
-  };
-
-  const [mode, setMode] = useState<"single" | "multi">(() => resolveMode());
 
   return {
     playersInfos,
     setPlayersInfos,
     phase,
     setPhase,
-    mode,
-    setMode,
   };
 }
