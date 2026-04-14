@@ -2,8 +2,7 @@ import { useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 import { clearGameSession } from "@/shared/utils/playerStorage";
-import type { GamePlayerInfo } from "./useRoomState";
-import type { RoomPhase } from "../types";
+import type { UseSinglePlayProps } from "../types/GameHookTypes";
 import { useSingleInitialBotSetup } from "./useSingleInitialBotSetup";
 
 const preprocessGameStart = (botInfo: unknown[]) => {
@@ -18,12 +17,6 @@ const preprocessGameStart = (botInfo: unknown[]) => {
     }),
   );
 };
-
-interface UseSinglePlayProps {
-  setPhase: (phase: RoomPhase) => void;
-  playersInfos: GamePlayerInfo[];
-  setPlayersInfos: React.Dispatch<React.SetStateAction<GamePlayerInfo[]>>;
-}
 
 export function useSinglePlay({
   setPhase,
@@ -62,7 +55,7 @@ export function useSinglePlay({
     if (bridgeTimerRef.current) clearTimeout(bridgeTimerRef.current);
     resetGame();
     clearGameSession();
-    navigate("/lobby");
+    navigate("/lobby", { replace: true });
   };
 
   return { handleReady, handleExit };

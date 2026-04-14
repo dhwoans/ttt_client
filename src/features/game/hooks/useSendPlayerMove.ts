@@ -1,4 +1,4 @@
-import { gameSocketManager } from "@/shared/managers/SocketManager";
+import { gameSocketManager } from "@/shared/utils/SocketManager";
 import type { MoveEventPayload } from "@share";
 
 /**

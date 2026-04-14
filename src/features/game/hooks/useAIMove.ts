@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import { ticTacToeAI } from "@/shared/utils/AIPlayer";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
-
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-}
+import type { GamePlayerInfo } from "../types/TicTacToeGameTypes";
 
 /**
  * AI의 자동 이동을 처리하는 훅
@@ -16,13 +11,11 @@ export function useAIMove(
   isPlayerTurn: boolean,
   board: string[][],
   playersInfos: GamePlayerInfo[],
-  mode: "single" | "multi" = "single",
 ) {
   const addMove = useTicTacToeGameStore((state) => state.addMove);
 
   useEffect(() => {
-    // Multiplayer uses server-authoritative moves; never run local AI there.
-    if (mode === "multi" || isGameOver || isPlayerTurn) {
+    if (isGameOver || isPlayerTurn) {
       return;
     }
 
@@ -42,5 +35,5 @@ export function useAIMove(
     }, 1000);
 
     return () => clearTimeout(aiTimer);
-  }, [mode, isPlayerTurn, isGameOver, board, playersInfos, addMove]);
+  }, [isPlayerTurn, isGameOver, board, playersInfos, addMove]);
 }

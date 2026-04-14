@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { gameSocketManager } from "@/shared/managers/SocketManager";
+import { gameSocketManager } from "@/shared/utils/SocketManager";
 
 /**
  * 게임 소켓 연결을 관리하는 훅

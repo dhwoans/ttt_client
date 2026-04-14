@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { apiManager } from "../../../shared/managers/ApiManager";
+import { apiManager } from "../../../shared/utils/ApiManager";
 
 interface CreateUserResult {
   success: boolean;

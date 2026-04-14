@@ -7,11 +7,10 @@ interface EventConfig {
 }
 
 export const GAME_EVENTS: EventConfig[] = [
-  { name: "CONNECTED", handler: "handleConnected", log: true },
-  { name: "CHAT", handler: "handleChat", log: true },
+  // { name: "CONNECTED", handler: "handleConnected", log: true }, 
   { name: "JOIN", handler: "handleJoin", log: true },
   { name: "LEAVE", handler: "handleLeave" },
-  { name: "READY", handler: "handleReady", log: true },
+  // { name: "READY", handler: "handleReady", log: true }, 
   { name: "MOVE", handler: "handleMove", log: true },
   { name: "MOVE_MADE", handler: "handleMoveMade", log: true },
   {
@@ -28,29 +27,30 @@ export const GAME_EVENTS: EventConfig[] = [
   { name: "PLAYER_READY", handler: "handlePlayerReady", log: true },
   { name: "EXISTING_PLAYERS", handler: "handleExistingPlayers", log: true },
   { name: "PLAYER_JOINED", handler: "handlePlayerJoined", log: true },
-  {
-    name: "READY_TIMEOUT_STARTED",
-    handler: "handleReadyTimeoutStarted",
-    log: true,
-  },
+  // {
+  //   name: "READY_TIMEOUT_STARTED",
+  //   handler: "handleReadyTimeoutStarted",
+  //   log: true,
+  // }, 
   {
     name: "READY_TIMEOUT_EXPIRED",
     handler: "handleReadyTimeoutExpired",
     log: true,
   },
-  {
-    name: "READY_TIMEOUT_CANCELED",
-    handler: "handleReadyTimeoutCanceled",
-    log: true,
-  },
-  { name: "ERROR", handler: "handleError", log: true },
+  // {
+  //   name: "READY_TIMEOUT_CANCELED",
+  //   handler: "handleReadyTimeoutCanceled",
+  //   log: true,
+  // },
+  // { name: "ERROR", handler: "handleError", log: true }, 
 ];
 
-export const LOBBY_EVENTS: EventConfig[] = [
-  { name: "connect", handler: "handleConnect", log: true },
-  { name: "joinLobby", handler: "handleJoinLobby", log: true },
-  { name: "ROOM_CREATE", handler: "handleRoomCreate", log: true },
-  { name: "ROOM_REMOVE", handler: "handleRoomRemove", log: true },
-  { name: "PLAYER_PLUS", handler: "handlePlayerPlus", log: true },
-  { name: "PLAYER_MINUS", handler: "handlePlayerMinus", log: true },
-];
+// LOBBY_EVENTS: 
+// export const LOBBY_EVENTS: EventConfig[] = [
+//   { name: "connect", handler: "handleConnect", log: true },
+//   { name: "joinLobby", handler: "handleJoinLobby", log: true },
+//   { name: "ROOM_CREATE", handler: "handleRoomCreate", log: true },
+//   { name: "ROOM_REMOVE", handler: "handleRoomRemove", log: true },
+//   { name: "PLAYER_PLUS", handler: "handlePlayerPlus", log: true },
+//   { name: "PLAYER_MINUS", handler: "handlePlayerMinus", log: true },
+// ];

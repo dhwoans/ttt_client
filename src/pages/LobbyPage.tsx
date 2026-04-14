@@ -1,15 +1,45 @@
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import LobbyMainLayout from "./layouts/LobbyMainLayout";
 import Marquee from "react-fast-marquee";
 import HeaderLayout from "./layouts/HeaderLayout";
 import { ToastContainer } from "react-toastify";
-import ticTacToe from "@assets/ticTacToe.webp";
-import click from "@assets/click.webp";
 import "react-toastify/dist/ReactToastify.css";
 import FooterLayout from "./layouts/FooterLayout";
 import LeftSideLayout from "./layouts/LeftSideLayout";
+import { ROUTES } from "@/shared/constants/routes";
+import ExitModal from "@/shared/modals/ExitModal";
+import { ImageManager } from "@/shared/utils/ImageManger";
 
 export default function LobbyPage() {
+  const navigate = useNavigate();
   const nickname = sessionStorage.getItem("nickname");
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    window.history.pushState({ lobbyBackTrap: true }, "", currentUrl);
+
+    const handlePopState = () => {
+      setShowExitModal(true);
+      window.history.pushState({ lobbyBackTrap: true }, "", currentUrl);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+  // exitModal 관련 로직
+  const handleStay = useCallback(() => {
+    setShowExitModal(false);
+  }, []);
+
+  const handleLeaveLobby = useCallback(() => {
+    sessionStorage.clear();
+    navigate(ROUTES.login, { replace: true });
+  }, [navigate]);
 
   return (
     <>
@@ -39,7 +69,7 @@ export default function LobbyPage() {
         {/* 데코 상단 좌 */}
         <img
           className="z-10 -rotate-20 -translate-20 translate-y-50"
-          src={ticTacToe}
+          src={ImageManager.ticTacToe}
           alt=""
           aria-hidden="true"
         />
@@ -50,9 +80,18 @@ export default function LobbyPage() {
       <FooterLayout className="z-40 flex justify-end">
         <img
           className="pointer-events-none h-50 w-150 -rotate-10 translate-y-20 blur-xs"
-          src={click}
+          src={ImageManager.click}
         />
       </FooterLayout>
+
+      {showExitModal && (
+        <ExitModal
+          onClose={handleStay}
+          sender={{ handleLeave: handleLeaveLobby }}
+          title="로비를 나가시겠습니까?"
+          navigateToLobbyOnLeave={false}
+        />
+      )}
     </>
   );
 }

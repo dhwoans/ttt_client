@@ -3,19 +3,14 @@ import { VersusBanner } from "@/features/game/components/VersusBanner";
 import ExitModal from "@/shared/modals/ExitModal";
 import { useBackExitModal } from "@/shared/hooks/useBackExitModal";
 import { TimeoutProgressBar } from "@/shared/components/TimeoutProgressBar";
-
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-}
+import type { GamePlayerInfo } from "../features/game/types/TicTacToeGameTypes";
 
 interface SingleReadyProps {
   onReady: (isReady: boolean) => void;
   onExit: () => void;
   playersInfos: GamePlayerInfo[];
   playersReadyStatus?: Record<string, boolean>;
-  mode?: "single" | "multi";
+  readyDisabled?: boolean;
 }
 
 const brutalBox =
@@ -27,7 +22,7 @@ export default function Ready({
   onExit,
   playersInfos,
   playersReadyStatus = {},
-  mode = "single",
+  readyDisabled = false,
 }: SingleReadyProps) {
   const [isReady, setIsReady] = useState(false);
   const [showExitModal, setShowExitModal] = useState(false);
@@ -71,7 +66,7 @@ export default function Ready({
           className={`px-10 py-4 rounded-2xl text-2xl font-black ${
             isReady ? "bg-red-500" : "bg-accent"
           } text-dark-1 ${brutalBtn}`}
-          disabled={mode === "multi" && playersInfos.length < 2}
+          disabled={readyDisabled}
         >
           {isReady ? "취소" : "준비"}
         </button>

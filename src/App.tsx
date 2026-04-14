@@ -3,8 +3,8 @@ import LoginPage from "./pages/LoginPage";
 import LobbyPage from "./pages/LobbyPage";
 import SingleGameRoomPage from "./pages/SingleGameRoomPage";
 import MultiGameRoomPage from "./pages/MultiGameRoomPage";
-// import LocalHostPage from "./pages/LocalHostPage";
-// import LocalGuestPage from "./pages/LocalGuestPage";
+import LocalHostPage from "./pages/LocalHostPage";
+import LocalGuestPage from "./pages/LocalGuestPage";
 import AuthGuard from "./shared/components/AuthGuard";
 import GuestGuard from "./shared/components/GuestGuard";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -26,14 +26,14 @@ function App() {
         <Route path={ROUTES.lobby} element={<LobbyPage />} />
         <Route path={ROUTES.game.single} element={<SingleGameRoomPage />} />
         <Route path={ROUTES.game.roomPattern} element={<MultiGameRoomPage />} />
-        {/* <Route
+        <Route
           path={ROUTES.game.localHostPattern}
           element={<LocalHostPage />}
-        /> */}
-        {/* <Route
+        />
+        <Route
           path={ROUTES.game.localGuestPattern}
           element={<LocalGuestPage />}
-        /> */}
+        />
       </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

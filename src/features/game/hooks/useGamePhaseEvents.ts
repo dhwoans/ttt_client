@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
-import { gameSocketManager } from "@/shared/managers/SocketManager";
-import type { RoomPhase } from "../types";
+import { eventManager } from "@/shared/utils/EventManager";
+import { gameSocketManager } from "@/shared/utils/SocketManager";
+import type { RoomPhase } from "../types/TicTacToeGameTypes";
 
 // 시작전 게임정보 저장
 const preprocessGameStart = (botInfo: any) => {

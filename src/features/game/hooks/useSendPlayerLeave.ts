@@ -1,4 +1,4 @@
-import { gameSocketManager } from "@/shared/managers/SocketManager";
+import { gameSocketManager } from "@/shared/utils/SocketManager";
 import type { LeaveEventPayload } from "@share";
 import { useCallback } from "react";
 

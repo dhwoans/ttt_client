@@ -16,5 +16,5 @@ export const ROUTES = {
 export const isAuthenticated = () => {
   const userId = sessionStorage.getItem("userId");
   const nickname = sessionStorage.getItem("nickname");
-  return Boolean(userId && nickname);
+  return !!(userId && nickname);
 };

@@ -1,11 +1,6 @@
 import "animate.css";
 import { Avatar } from "@/shared/components/Avatar";
-
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-}
+import type { GamePlayerInfo } from "../types/TicTacToeGameTypes";
 
 interface PlayersProps {
   playerInfos: GamePlayerInfo[];
@@ -13,10 +8,7 @@ interface PlayersProps {
 }
 
 //턴 알림
-export default function Players({
-  playerInfos,
-  isTurn = "",
-}: PlayersProps) {
+export default function Players({ playerInfos, isTurn = "" }: PlayersProps) {
   return (
     <ol className="flex flex-row md:flex-col gap-10 md:gap-6">
       {playerInfos.map((player, index) => {

@@ -1,4 +1,4 @@
-import { CellSymbol, Move } from "../types";
+import { CellSymbol, Move } from "../../features/game/types/TicTacToeGameTypes";
 import { WINNING_COMBINATIONS } from "@/shared/constants/winning-combinations";
 // 틱택토 승리판정,초기화, 착수 관련 로직
 export interface TurnInfo {

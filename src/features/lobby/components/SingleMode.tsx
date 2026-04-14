@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/managers/AudioManager";
+import { audioManager } from "@/shared/utils/AudioManager";
 import { toast } from "react-toastify";
 import Badge from "@/shared/components/Badge";
-import robotImg from "@assets/bots/Robot.webm";
+import { ImageManager } from "@/shared/utils/ImageManger";
 import Subtitle from "./Subtitle";
 import { ROUTES } from "@/shared/constants/routes";
 
@@ -17,7 +17,6 @@ const SingleMode = () => {
   const handleSingleMode = () => {
     toast("🤔 알고리즘 구상 중...");
     setTimeout(() => {
-      sessionStorage.setItem("gameMode", "single");
       navigate(ROUTES.game.single);
     }, 1500);
   };
@@ -28,7 +27,7 @@ const SingleMode = () => {
       className="flex-1 bg-[#fb7da8] rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center justify-center gap-4 h-full group hover-diagonal-stripes"
     >
       <video
-        src={robotImg}
+        src={ImageManager.robot}
         autoPlay
         muted
         loop

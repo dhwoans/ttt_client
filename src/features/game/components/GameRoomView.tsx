@@ -1,22 +1,21 @@
+import type { ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 import Marquee from "react-fast-marquee";
-import TicTacToe from "../../../pages/TicTacToe";
 import Ready from "../../../pages/Ready";
 import Bridge from "../../../shared/components/Bridge";
 import HeaderLayout from "../../../pages/layouts/HeaderLayout";
-import gameStart from "@assets/gameStart.webp";
-import type { GamePlayerInfo } from "../hooks/useRoomState";
-import type { RoomPhase } from "../types";
+import type { GamePlayerInfo, RoomPhase } from "../types/TicTacToeGameTypes";
+import { ImageManager } from "@/shared/utils/ImageManger";
 
 interface GameRoomViewProps {
   nickname: string | null;
   phase: RoomPhase;
   playersInfos: GamePlayerInfo[];
   playersReadyStatus: Record<string, boolean>;
-  mode: "single" | "multi";
+  readyDisabled?: boolean;
   onReady: (isReady: boolean) => void;
   onExit: () => void;
-  onRestart: () => void;
+  playingView: ReactNode;
 }
 
 export default function GameRoomView({
@@ -24,10 +23,10 @@ export default function GameRoomView({
   phase,
   playersInfos,
   playersReadyStatus,
-  mode,
+  readyDisabled = false,
   onReady,
   onExit,
-  onRestart,
+  playingView,
 }: GameRoomViewProps) {
   return (
     <>
@@ -59,18 +58,11 @@ export default function GameRoomView({
           onExit={onExit}
           playersInfos={playersInfos}
           playersReadyStatus={playersReadyStatus}
-          mode={mode}
+          readyDisabled={readyDisabled}
         />
       )}
-      {phase === "bridge" && <Bridge imageSrc={gameStart} />}
-      {phase === "playing" && (
-        <TicTacToe
-          playersInfos={playersInfos}
-          mode={mode}
-          onExit={onExit}
-          onRestart={onRestart}
-        />
-      )}
+      {phase === "bridge" && <Bridge imageSrc={ImageManager.gameStart} />}
+      {phase === "playing" && playingView}
     </>
   );
 }

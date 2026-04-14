@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 
 export default function Board({ list = [], selectSquare }) {
   return (

@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/managers/AudioManager";
-import gearImg from "@assets/icons/Gear.webp";
-import wavingHandImg from "@assets/icons/Waving_Hand.webm";
+import { audioManager } from "@/shared/utils/AudioManager";
+import { ImageManager } from "@/shared/utils/ImageManger";
 import { ROUTES } from "@/shared/constants/routes";
 
 const SettingsAndLogout = () => {
@@ -27,7 +26,7 @@ const SettingsAndLogout = () => {
         className="flex-1 relative bg-[#00995e] rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center justify-center gap-3 h-full group hover-diagonal-stripes"
       >
         <img
-          src={gearImg}
+          src={ImageManager.gear}
           alt="설정 기어"
           className="h-14 w-14 object-contain drop-shadow"
         />
@@ -46,7 +45,7 @@ const SettingsAndLogout = () => {
         className="flex-1 relative bg-[#058cd7] rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center justify-center gap-3 h-full group hover-diagonal-stripes"
       >
         <video
-          src={wavingHandImg}
+          src={ImageManager.wavingHand}
           autoPlay
           loop
           className="h-14 w-14 object-contain drop-shadow"

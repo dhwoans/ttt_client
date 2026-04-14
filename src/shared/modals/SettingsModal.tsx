@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/managers/AudioManager";
+import { audioManager } from "@/shared/utils/AudioManager";
 import { Volume, Volume1, Volume2, VolumeX } from "lucide-react";
 
 interface SettingsModalProps {

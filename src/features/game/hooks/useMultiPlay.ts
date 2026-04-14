@@ -9,14 +9,7 @@ import { useReadyTimeoutHandler } from "./useReadyTimeoutHandler";
 import { useGamePhaseEvents } from "./useGamePhaseEvents";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 import { clearGameSession } from "@/shared/utils/playerStorage";
-import type { GamePlayerInfo } from "./useRoomState";
-import type { RoomPhase } from "../types";
-
-interface UseMultiPlayProps {
-  phase: RoomPhase;
-  setPhase: (phase: RoomPhase) => void;
-  setPlayersInfos: React.Dispatch<React.SetStateAction<GamePlayerInfo[]>>;
-}
+import type { UseMultiPlayProps } from "../types/GameHookTypes";
 
 export function useMultiPlay({
   phase,
@@ -48,7 +41,7 @@ export function useMultiPlay({
     sendLeave();
     resetGame();
     clearGameSession();
-    navigate("/lobby");
+    navigate("/lobby", { replace: true });
   };
 
   return { handleReady, handleExit, playersReadyStatus, sendReady };

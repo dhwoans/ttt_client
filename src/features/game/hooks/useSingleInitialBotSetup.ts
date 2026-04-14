@@ -1,11 +1,6 @@
 import { useEffect } from "react";
 import { randomBot } from "@/shared/constants/randomBot";
-import type { GamePlayerInfo } from "./useRoomState";
-
-interface UseSingleInitialBotSetupProps {
-  playersInfos: GamePlayerInfo[];
-  setPlayersInfos: React.Dispatch<React.SetStateAction<GamePlayerInfo[]>>;
-}
+import type { UseSingleInitialBotSetupProps } from "../types/GameHookTypes";
 
 export function useSingleInitialBotSetup({
   playersInfos,

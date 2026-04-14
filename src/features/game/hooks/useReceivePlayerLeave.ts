@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import { clearGameSession } from "@/shared/utils/playerStorage";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 import type { PlayerLeftEvent, LeaveSuccessEvent } from "@share";
-import { GamePlayerInfo } from "./useRoomState";
-import type { RoomPhase } from "../types";
+import type { GamePlayerInfo, RoomPhase } from "../types/TicTacToeGameTypes";
 
 /**
  * 플레이어 퇴장 이벤트 수신 처리
@@ -47,7 +46,7 @@ export function useReceivePlayerLeave(
         setTimeout(() => {
           resetGame();
           clearGameSession();
-          navigate("/lobby");
+          navigate("/lobby", { replace: true });
         }, 1500);
       }
     };
@@ -57,13 +56,7 @@ export function useReceivePlayerLeave(
       console.log("[room] PLAYER_LEFT 리스너 제거");
       eventManager.off("PLAYER_LEFT", handlePlayerLeft);
     };
-  }, [
-    phase,
-    setPlayersInfos,
-    setPlayersReadyStatus,
-    navigate,
-    resetGame,
-  ]);
+  }, [phase, setPlayersInfos, setPlayersReadyStatus, navigate, resetGame]);
 
   // LEAVE_SUCCESS 이벤트 처리 (본인 퇴장 성공)
   useEffect(() => {
@@ -72,7 +65,7 @@ export function useReceivePlayerLeave(
         console.log("[room] 방 나가기 성공");
         resetGame();
         clearGameSession();
-        navigate("/lobby");
+        navigate("/lobby", { replace: true });
       }
     };
 

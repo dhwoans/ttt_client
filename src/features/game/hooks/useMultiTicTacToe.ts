@@ -1,30 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
 import { useBackExitModal } from "@/shared/hooks/useBackExitModal";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
-import { calcBoard, whoIsWin } from "../util/ticTacToeUtils";
-import { useNextTurn } from "./useNextTurn";
+import { calcBoard, whoIsWin } from "../../../shared/utils/ticTacToeUtils";
+import { useMultiNextTurn } from "./useNextTurn";
 import { useReceiveMoveMade } from "./useReceiveMoveMade";
 import { useReceiveGameOver } from "./useReceiveGameOver";
 import { useReceiveGameStateUpdate } from "./useReceiveGameStateUpdate";
 import { useReceiveNextTurn } from "./useReceiveNextTurn";
 import { useReceiveTurnTimeoutStarted } from "./useReceiveTurnTimeoutStarted";
+import type { UseTicTacToeProps } from "../types/GameHookTypes";
 
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-  userId?: string;
-}
-
-interface UseMultiTicTacToeProps {
-  playersInfos: GamePlayerInfo[];
-  onExit?: () => void;
-}
-
-export function useMultiTicTacToe({
-  playersInfos,
-  onExit,
-}: UseMultiTicTacToeProps) {
+export function useMultiTicTacToe({ playersInfos, onExit }: UseTicTacToeProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
   const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState<string | null>(
@@ -42,12 +28,11 @@ export function useMultiTicTacToe({
     onExit?.();
   };
 
-  useReceiveMoveMade("multi", playersInfos, setIsWaitingForServer);
+  useReceiveMoveMade({ playersInfos, setIsWaitingForServer });
   useReceiveGameOver();
   useReceiveGameStateUpdate(setCurrentTurnPlayerId);
   const { currentTurnPlayerId: receivedTurnPlayerId } = useReceiveNextTurn();
   const { turnTimeoutMs, turnTimeoutStartedAt } = useReceiveTurnTimeoutStarted(
-    "multi",
     setCurrentTurnPlayerId,
   );
 
@@ -82,13 +67,8 @@ export function useMultiTicTacToe({
     setShowGameOverModal(false);
   }, [isGameOver]);
 
-  const { handleSquare, isCurrentUserTurnByServer } = useNextTurn({
-    mode: "multi",
-    isPlayerTurn,
+  const { handleSquare, isCurrentUserTurnByServer } = useMultiNextTurn({
     currentTurnPlayerId,
-    playersInfos,
-    moveHistory,
-    board,
     isGameOver,
   });
 

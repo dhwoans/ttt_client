@@ -1,5 +1,5 @@
 import { animalList } from "../constants/randomAvatar";
-import { getPlayerInfoFromStorage } from "../utils/playerStorage";
+import { getPlayerInfoFromStorage } from "./playerStorage";
 import type { IssueTicketRequest, IssueTicketResponse } from "@share";
 
 interface CreateUserResponse {

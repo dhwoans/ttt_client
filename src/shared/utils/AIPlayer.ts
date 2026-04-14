@@ -1,4 +1,4 @@
-import { Board, Move } from "@/features/game/types";
+import { Board, Move } from "@/features/game/types/TicTacToeGameTypes";
 import { WINNING_COMBINATIONS } from "../constants/winning-combinations";
 // 틱택토 ai 알고리즘
 // 좀더 복잡해지면 클래스로 관리

@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { gameSocketManager } from "@/shared/managers/SocketManager";
+import { gameSocketManager } from "@/shared/utils/SocketManager";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import { toast } from "react-toastify";
 import { ROUTES } from "@/shared/constants/routes";
 
@@ -58,7 +58,6 @@ export function useConnectGameServer() {
         console.log("[multi] ROOM_ASSIGNED received:", data);
         const assignedRoomId = data.roomId;
         sessionStorage.setItem("roomId", assignedRoomId);
-        sessionStorage.setItem("gameMode", "multi");
 
         // 게임방으로 이동
         toast("🎟️ 입장권 내는 중...");

@@ -13,8 +13,8 @@ export function getPlayerInfoFromStorage(): PlayerInfo {
 }
 
 /**
- * 게임 세션 종료 시 관련 상태를 모두 초기화합니다.
- * handleExit, READY_TIMEOUT_EXPIRED 등 모든 퇴장 경로에서 사용합니다.
+ * 게임 세션 종료 시 관련 상태 초기화
+ * 모든 퇴장 경로에 사용
  */
 export function clearGameSession() {
   // localStorage
@@ -22,7 +22,6 @@ export function clearGameSession() {
 
   // sessionStorage - 게임/방 관련
   sessionStorage.removeItem("roomId");
-  sessionStorage.removeItem("gameMode");
   sessionStorage.removeItem("socketId");
   sessionStorage.removeItem("currentTurnPlayerId");
   sessionStorage.removeItem("existingPlayers");

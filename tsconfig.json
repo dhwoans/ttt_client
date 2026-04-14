@@ -21,11 +21,10 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Path Mapping */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
-      "@share": ["src/share/index"],
-      "@share/*": ["src/share/*"]
+      "@/*": ["./src/*"],
+      "@share": ["./src/share/index"],
+      "@share/*": ["./src/share/*"]
     }
   },
   "include": ["src"]

@@ -5,6 +5,7 @@ import GameRoomView from "../features/game/components/GameRoomView";
 import { Navigate, useParams } from "react-router-dom";
 import { useGameSocketConnection } from "../features/game/hooks/useGameSocketConnection";
 import { ROUTES } from "@/shared/constants/routes";
+import { MultiTicTacToe } from "./TicTacToe";
 
 export default function MultiGameRoomPage() {
   const { roomId } = useParams<{ roomId: string }>();
@@ -17,15 +18,12 @@ export default function MultiGameRoomPage() {
 
   const nickname = sessionStorage.getItem("nickname");
   const { playersInfos, setPlayersInfos, phase, setPhase } = useRoomState();
-  const mode = "multi" as const;
 
   const multiPlay = useMultiPlay({ setPlayersInfos, phase, setPhase });
 
   const { handleRestart } = useGameRestart({
     setPhase,
-    mode,
-    sendReady: multiPlay.sendReady,
-    handleReady: multiPlay.handleReady,
+    triggerReady: () => multiPlay.sendReady(true),
   });
 
   return (
@@ -34,10 +32,16 @@ export default function MultiGameRoomPage() {
       phase={phase}
       playersInfos={playersInfos}
       playersReadyStatus={multiPlay.playersReadyStatus}
-      mode={mode}
+      readyDisabled={playersInfos.length < 2}
       onReady={multiPlay.handleReady}
       onExit={multiPlay.handleExit}
-      onRestart={handleRestart}
+      playingView={
+        <MultiTicTacToe
+          playersInfos={playersInfos}
+          onExit={multiPlay.handleExit}
+          onRestart={handleRestart}
+        />
+      }
     />
   );
 }

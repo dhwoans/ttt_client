@@ -1,6 +1,5 @@
 import { Avatar } from "../../../shared/components/Avatar";
-import loadingImgSrc from "@assets/icons/Hourglass_Not_Done.webm";
-import verse from "@assets/icons/verse.webp";
+import { ImageManager } from "@/shared/utils/ImageManger";
 
 interface SideProps {
   name: string;
@@ -20,13 +19,13 @@ interface VersusBannerProps {
   dividerText?: string;
   className?: string;
 }
- // 첫번째 플레이어(나)가 아닌 경우 effectOnce로 등장 애니메이션 적용
+// 첫번째 플레이어(나)가 아닌 경우 effectOnce로 등장 애니메이션 적용
 const renderSide = (
   { name, imageSrc, emoji, isReady }: SideProps,
   idx: number,
 ) => {
   // imageSrc가 없으면 로딩 이미지 표시
-  const displaySrc = imageSrc || loadingImgSrc;
+  const displaySrc = imageSrc || ImageManager.hourglassNotDone;
   // 준비 상태에 따라 opacity 적용 (준비 안 함 = 반투명)
   const opacity = isReady !== false ? "opacity-100" : "opacity-50";
 
@@ -41,7 +40,7 @@ const renderSide = (
           muted
           playsInline
           onError={(e) => {
-            (e.target as HTMLVideoElement).src = loadingImgSrc;
+            (e.target as HTMLVideoElement).src = ImageManager.hourglassNotDone;
           }}
         />
       </Avatar>
@@ -80,22 +79,21 @@ export function VersusBanner({
       ? "grid grid-cols-2 gap-6 md:gap-8 px-4 py-6 rounded-xl"
       : "flex items-center justify-center gap-6 md:gap-10 px-4 py-6 rounded-xl";
 
- 
   return (
     <section className={`${base} ${className}`}>
       {participants.length === 1 ? (
         <>
           {renderSide(participants[0], 0)}
           <div className="text-white font-extrabold text-2xl md:text-3xl">
-            <img className="h-30 w-50" src={verse}></img>
+            <img className="h-30 w-50" src={ImageManager.verse}></img>
           </div>
-          <video className="w-30 h-30" src={loadingImgSrc} />
+          <video className="w-30 h-30" src={ImageManager.hourglassNotDone} />
         </>
       ) : isTwoPlayers ? (
         <>
           {renderSide(participants[0], 0)}
           <div className="text-white font-extrabold text-2xl md:text-3xl">
-            <img className="h-30 w-50" src={verse}></img>
+            <img className="h-30 w-50" src={ImageManager.verse}></img>
           </div>
           {renderSide(participants[1], 1)}
         </>

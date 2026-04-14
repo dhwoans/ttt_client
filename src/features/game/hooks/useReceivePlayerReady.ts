@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import type { PlayerReadyEvent } from "@share";
 
 /**

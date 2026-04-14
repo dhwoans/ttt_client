@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import { clearGameSession } from "@/shared/utils/playerStorage";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 import type { ReadyTimeoutExpiredEvent } from "@share";
@@ -28,7 +28,7 @@ export function useReadyTimeoutHandler() {
         setTimeout(() => {
           resetGame();
           clearGameSession();
-          navigate("/lobby");
+          navigate("/lobby", { replace: true });
         }, 1500);
       } else {
         // 다른 플레이어가 제거된 경우

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 
 const READY_TIMEOUT_SNAPSHOT_KEY = "readyTimeoutSnapshot";
 

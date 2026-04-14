@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import type { Socket } from "socket.io-client";
 import type { ServerEvents, ClientEvents } from "@share";
 
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import { GAME_EVENTS } from "@/shared/constants/eventList";
 
 const READY_TIMEOUT_SNAPSHOT_KEY = "readyTimeoutSnapshot";

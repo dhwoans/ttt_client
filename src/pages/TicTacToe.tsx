@@ -5,17 +5,10 @@ import Countdown from "@/shared/components/Countdown";
 import ExitModal from "@/shared/modals/ExitModal";
 import { useSingleTicTacToe } from "../features/game/hooks/useSingleTicTacToe";
 import { useMultiTicTacToe } from "../features/game/hooks/useMultiTicTacToe";
-
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-  userId?: string;
-}
+import type { GamePlayerInfo } from "../features/game/types/TicTacToeGameTypes";
 
 interface PlayingProps {
   playersInfos: GamePlayerInfo[];
-  mode?: "single" | "multi";
   onExit?: () => void;
   onRestart?: () => void;
 }
@@ -102,11 +95,11 @@ function TicTacToeView({
   );
 }
 
-function SingleTicTacToe({
+export function SingleTicTacToe({
   playersInfos,
   onExit,
   onRestart,
-}: Omit<PlayingProps, "mode">) {
+}: PlayingProps) {
   const {
     board,
     canSelectSquare,
@@ -146,11 +139,11 @@ function SingleTicTacToe({
   );
 }
 
-function MultiTicTacToe({
+export function MultiTicTacToe({
   playersInfos,
   onExit,
   onRestart,
-}: Omit<PlayingProps, "mode">) {
+}: PlayingProps) {
   const {
     board,
     canSelectSquare,
@@ -183,31 +176,6 @@ function MultiTicTacToe({
       winner={winner}
       countdownDurationMs={countdownDurationMs}
       countdownStartTime={countdownStartTime}
-      onRestart={onRestart}
-    />
-  );
-}
-
-export default function TicTacToe({
-  playersInfos,
-  mode = "single",
-  onExit,
-  onRestart,
-}: PlayingProps) {
-  if (mode === "multi") {
-    return (
-      <MultiTicTacToe
-        playersInfos={playersInfos}
-        onExit={onExit}
-        onRestart={onRestart}
-      />
-    );
-  }
-
-  return (
-    <SingleTicTacToe
-      playersInfos={playersInfos}
-      onExit={onExit}
       onRestart={onRestart}
     />
   );

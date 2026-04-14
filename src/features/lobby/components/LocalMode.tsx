@@ -1,11 +1,11 @@
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 import { useAudioStore } from "@/stores/audioStore";
-import { audioManager } from "@/shared/managers/AudioManager";
+import { audioManager } from "@/shared/utils/AudioManager";
 import Badge from "@/shared/components/Badge";
-import JoystickImg from "@assets/icons/Joystick.webp";
+import { ImageManager } from "@/shared/utils/ImageManger";
 import Subtitle from "./Subtitle";
-import { ROUTES } from "@/shared/constants/routes";
+
 
 const LocalMode = () => {
   const navigate = useNavigate();
@@ -14,7 +14,7 @@ const LocalMode = () => {
     if (!sfxMuted) audioManager.play("beep");
   };
   const handleLocalMode = () => {
-    // 구현
+    // navigate(ROUTES.game.)
   };
   return (
     <motion.div
@@ -23,7 +23,7 @@ const LocalMode = () => {
       className="flex-1 relative bg-[#fd5a46] rounded-2xl border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1.5 hover:translate-y-1.5 transition-all cursor-pointer p-6 flex flex-row items-center justify-center gap-4 h-full group hover-diagonal-stripes"
     >
       <img
-        src={JoystickImg}
+        src={ImageManager.joystick}
         alt="로컬 모드 아이콘"
         className="h-16 w-16 object-contain"
       />

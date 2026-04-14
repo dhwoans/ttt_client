@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 
 /**
  * GAME_OVER 이벤트 수신 훅

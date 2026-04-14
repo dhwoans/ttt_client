@@ -1,12 +1,5 @@
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
-import type { RoomPhase } from "../types";
-
-interface GameRestartConfig {
-  setPhase: (phase: RoomPhase) => void;
-  mode: "single" | "multi";
-  sendReady: (isReady: boolean) => void;
-  handleReady: (isReady: boolean) => void;
-}
+import type { GameRestartConfig } from "../types/GameHookTypes";
 
 /**
  * 게임 재시작 처리 훅
@@ -30,15 +23,9 @@ export function useGameRestart(config: GameRestartConfig) {
     // zustand 스토어 초기화
     resetGame();
 
-    // 멀티/싱글 공통: 즉시 자동 준비 처리
+    // 페이지가 선택한 준비 동작을 즉시 실행
     setTimeout(() => {
-      if (config.mode === "multi") {
-        // 멀티: 서버에 준비 상태 전송
-        config.sendReady(true);
-      } else {
-        // 싱글: ready 콜백 실행
-        config.handleReady(true);
-      }
+      config.triggerReady();
     }, 0);
   };
 

@@ -1,30 +1,22 @@
 import { useEffect } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
 import type { MoveMadeEvent } from "@share";
-
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-  userId?: string;
-}
+import type { GamePlayerInfo } from "../types/TicTacToeGameTypes";
+import type { UseReceiveMoveMadeConfig } from "../types/GameHookTypes";
 
 /**
  * MOVE_MADE 이벤트 수신 훅
  * - 누군가 수를 놨을 때 모두에게 브로드캐스트됨
  * - 대기 상태 해제, turn 추가
  */
-export function useReceiveMoveMade(
-  mode: "single" | "multi",
-  playersInfos: GamePlayerInfo[],
-  setIsWaitingForServer: (waiting: boolean) => void,
-) {
+export function useReceiveMoveMade({
+  playersInfos,
+  setIsWaitingForServer,
+}: UseReceiveMoveMadeConfig) {
   const addMove = useTicTacToeGameStore((state) => state.addMove);
 
   useEffect(() => {
-    if (mode !== "multi") return;
-
     const handleMoveMade = (data: MoveMadeEvent) => {
       console.log("[Playing] MOVE_MADE 수신:", data);
       const { connId, move, isAuto } = data;
@@ -69,5 +61,5 @@ export function useReceiveMoveMade(
     return () => {
       eventManager.off("MOVE_MADE", handleMoveMade);
     };
-  }, [mode, playersInfos, addMove, setIsWaitingForServer]);
+  }, [playersInfos, addMove, setIsWaitingForServer]);
 }

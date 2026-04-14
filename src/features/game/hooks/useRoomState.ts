@@ -1,14 +1,7 @@
 import { useState } from "react";
 import { getPlayerInfoFromStorage } from "@/shared/utils/playerStorage";
 import { animalList } from "@/shared/constants/randomAvatar";
-import type { RoomPhase } from "../types";
-
-export interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-  userId?: string;
-}
+import type { GamePlayerInfo, RoomPhase } from "../types/TicTacToeGameTypes";
 
 // 방 화면에서 공유하는 기본 상태를 관리한다.
 // 내 플레이어 정보와 현재 phase를 초기화하고 보관한다.

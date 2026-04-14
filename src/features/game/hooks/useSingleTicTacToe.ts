@@ -1,26 +1,15 @@
 import { useState, useCallback, useEffect } from "react";
 import { useBackExitModal } from "@/shared/hooks/useBackExitModal";
 import { useTicTacToeGameStore } from "@/stores/ticTacToeGameStore";
-import { calcBoard, whoIsWin } from "../util/ticTacToeUtils";
+import { calcBoard, whoIsWin } from "../../../shared/utils/ticTacToeUtils";
 import { useGameTimeout } from "./useGameTimeout";
-import { useNextTurn } from "./useNextTurn";
-
-interface GamePlayerInfo {
-  nickname: string;
-  avatar: string;
-  imageSrc: string;
-  userId?: string;
-}
-
-interface UseSingleTicTacToeProps {
-  playersInfos: GamePlayerInfo[];
-  onExit?: () => void;
-}
+import { useSingleNextTurn } from "./useNextTurn";
+import type { UseTicTacToeProps } from "../types/GameHookTypes";
 
 export function useSingleTicTacToe({
   playersInfos,
   onExit,
-}: UseSingleTicTacToeProps) {
+}: UseTicTacToeProps) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [showGameOverModal, setShowGameOverModal] = useState(false);
 
@@ -58,10 +47,8 @@ export function useSingleTicTacToe({
     setShowGameOverModal(false);
   }, [isGameOver]);
 
-  const { handleSquare } = useNextTurn({
-    mode: "single",
+  const { handleSquare } = useSingleNextTurn({
     isPlayerTurn,
-    currentTurnPlayerId: null,
     playersInfos,
     moveHistory,
     board,

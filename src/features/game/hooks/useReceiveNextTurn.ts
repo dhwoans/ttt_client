@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 
 /**
  * NEXT_TURN 이벤트 수신 훅

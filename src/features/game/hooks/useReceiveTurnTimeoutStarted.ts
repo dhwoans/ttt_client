@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { eventManager } from "@/shared/managers/EventManager";
+import { eventManager } from "@/shared/utils/EventManager";
 import type { TurnTimeoutStartedEvent } from "@share";
 
 const TURN_TIMEOUT_SNAPSHOT_KEY = "turnTimeoutSnapshot";
@@ -14,7 +14,6 @@ interface TurnTimeoutSnapshot {
  * - 멀티플레이 착수 제한 시간 시작 시각/지속시간을 서버 이벤트 기준으로 동기화
  */
 export function useReceiveTurnTimeoutStarted(
-  mode: "single" | "multi",
   setCurrentTurnPlayerId: (playerId: string) => void,
 ) {
   const [snapshot, setSnapshot] = useState<TurnTimeoutSnapshot | null>(() => {
@@ -44,10 +43,6 @@ export function useReceiveTurnTimeoutStarted(
   });
 
   useEffect(() => {
-    if (mode !== "multi") {
-      return;
-    }
-
     const handleTurnTimeoutStarted = (data: TurnTimeoutStartedEvent) => {
       const timeoutMs = Number(data.timeoutMs);
       if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
@@ -71,7 +66,7 @@ export function useReceiveTurnTimeoutStarted(
     return () => {
       eventManager.off("TURN_TIMEOUT_STARTED", handleTurnTimeoutStarted);
     };
-  }, [mode, setCurrentTurnPlayerId]);
+  }, [setCurrentTurnPlayerId]);
 
   return {
     turnTimeoutMs: snapshot?.timeoutMs,
