@@ -1,5 +1,9 @@
 import { Avatar } from "../../../shared/components/Avatar";
+import useAvatarRandomize from "../../../shared/hooks/useAvatarRandomize";
+import { avatarCandidates } from "../../../shared/constants/avatarCandidates";
 import { ImageManager } from "@/shared/utils/ImageManger";
+
+const FIRST_PLAYER_INDEX = 0;
 
 interface SideProps {
   name: string;
@@ -10,7 +14,6 @@ interface SideProps {
 }
 
 interface VersusBannerProps {
-  // 기존 left/right/sides 호환 + playersInfos 지원
   left?: SideProps;
   right?: SideProps;
   sides?: SideProps[];
@@ -19,34 +22,64 @@ interface VersusBannerProps {
   dividerText?: string;
   className?: string;
 }
-// 첫번째 플레이어(나)가 아닌 경우 effectOnce로 등장 애니메이션 적용
-const renderSide = (
-  { name, imageSrc, emoji, isReady }: SideProps,
-  idx: number,
-) => {
-  // imageSrc가 없으면 로딩 이미지 표시
+const randomAvatarSources = avatarCandidates.map((avatar) => avatar.videoSrc);
+
+interface AvatarRandomPreviewProps {
+  imageSrc: string;
+  shouldPlayIntro: boolean;
+  className: string;
+}
+
+function AvatarRandomPreview({
+  imageSrc,
+  shouldPlayIntro,
+  className,
+}: AvatarRandomPreviewProps) {
+  const { isRandomizing, randomIndex } = useAvatarRandomize({
+    enabled: shouldPlayIntro,
+    itemCount: randomAvatarSources.length,
+  });
+
+  const previewSrc =
+    isRandomizing && randomAvatarSources.length > 0
+      ? randomAvatarSources[randomIndex]
+      : imageSrc;
+
+  return (
+    <video
+      className={className}
+      src={previewSrc}
+      autoPlay
+      loop
+      muted
+      playsInline
+      onError={(e) => {
+        (e.target as HTMLVideoElement).src = ImageManager.hourglassNotDone;
+      }}
+    />
+  );
+}
+
+function VersusSide({
+  imageSrc,
+  isReady,
+  shouldPlayIntro,
+}: SideProps & { shouldPlayIntro: boolean }) {
   const displaySrc = imageSrc || ImageManager.hourglassNotDone;
-  // 준비 상태에 따라 opacity 적용 (준비 안 함 = 반투명)
   const opacity = isReady !== false ? "opacity-100" : "opacity-50";
 
   return (
     <div className="flex flex-col items-center gap-2">
-      <Avatar size="large" effectOnce={idx !== 0}>
-        <video
+      <Avatar size="large">
+        <AvatarRandomPreview
+          imageSrc={displaySrc}
+          shouldPlayIntro={shouldPlayIntro}
           className={`w-30 h-30 transition-opacity duration-300 ${opacity}`}
-          src={displaySrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-          onError={(e) => {
-            (e.target as HTMLVideoElement).src = ImageManager.hourglassNotDone;
-          }}
         />
       </Avatar>
     </div>
   );
-};
+}
 
 // 공용 VS 배너: 싱글/로컬/멀티 모두 사용 가능, 최대 4명까지 확장 가능
 export function VersusBanner({
@@ -83,7 +116,7 @@ export function VersusBanner({
     <section className={`${base} ${className}`}>
       {participants.length === 1 ? (
         <>
-          {renderSide(participants[0], 0)}
+          <VersusSide {...participants[0]} shouldPlayIntro={false} />
           <div className="text-white font-extrabold text-2xl md:text-3xl">
             <img className="h-30 w-50" src={ImageManager.verse}></img>
           </div>
@@ -91,15 +124,21 @@ export function VersusBanner({
         </>
       ) : isTwoPlayers ? (
         <>
-          {renderSide(participants[0], 0)}
+          <VersusSide {...participants[0]} shouldPlayIntro={false} />
           <div className="text-white font-extrabold text-2xl md:text-3xl">
             <img className="h-30 w-50" src={ImageManager.verse}></img>
           </div>
-          {renderSide(participants[1], 1)}
+          <VersusSide {...participants[1]} shouldPlayIntro={true} />
         </>
       ) : (
         // 3~4명일 때는 단순 그리드로 나열
-        participants.map((p, idx) => <div key={idx}>{renderSide(p, idx)}</div>)
+        participants.map((participant, idx) => (
+          <VersusSide
+            key={participant.userId ?? `${participant.name}-${idx}`}
+            {...participant}
+            shouldPlayIntro={idx !== FIRST_PLAYER_INDEX}
+          />
+        ))
       )}
     </section>
   );

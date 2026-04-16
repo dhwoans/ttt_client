@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { animalList } from "@/shared/constants/randomAvatar";
+import { animalList } from "@/shared/constants/avatarCandidates";
 import { useAudio } from "@/shared/hooks/useAudioEffect";
 
 export function useAvatarSelection() {
@@ -41,7 +41,11 @@ export function useAvatarSelection() {
   return {
     index,
     isRandomizing,
-    currentAvatar: animalList[index],
+    currentAvatar: {
+      nickname : animalList[index][0],
+      emoji : animalList[index][1],
+      videoSrc: animalList[index][2],
+    },
     randomize,
     navigate,
   };

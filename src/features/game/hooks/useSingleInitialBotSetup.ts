@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { randomBot } from "@/shared/constants/randomBot";
+import { randomBot } from "@/shared/constants/avatarCandidates";
 import type { UseSingleInitialBotSetupProps } from "../types/GameHookTypes";
 
 export function useSingleInitialBotSetup({

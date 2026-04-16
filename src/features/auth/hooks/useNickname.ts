@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { animalList, getRandomAdj } from "@/shared/constants/randomAvatar";
+import { animalList, getRandomAdj } from "@/shared/constants/avatarCandidates";
 
 export function useNickname(avatarIndex: number) {
   const [fullNickname, setFullNickname] = useState(() => {

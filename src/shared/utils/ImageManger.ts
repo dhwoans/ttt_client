@@ -2,8 +2,6 @@ import ticTacToe from "@assets/ticTacToe.webp";
 import click from "@assets/click.webp";
 import gameStart from "@assets/gameStart.webp";
 import notFound404 from "@assets/404.webp";
-import thoughtBalloon from "@assets/Thought_Balloon.png";
-import writingHand from "@assets/Writing_Hand.png";
 
 import robot from "@assets/bots/Robot.webm";
 
@@ -17,14 +15,16 @@ import handshake from "@assets/icons/Handshake.webm";
 import hourglassNotDone from "@assets/icons/Hourglass_Not_Done.webm";
 import verse from "@assets/icons/verse.webp";
 
+import single from "@assets/backgrounds/single.webp"
+import local from "@assets/backgrounds/local.webp"
+import multi from "@assets/backgrounds/multi.webp"
+
 // 에셋 이미지 리소스 단일 진입점
 export const ImageManager = {
   ticTacToe,
   click,
   gameStart,
   notFound404,
-  thoughtBalloon,
-  writingHand,
   robot,
   gear,
   wavingHand,
@@ -35,4 +35,7 @@ export const ImageManager = {
   handshake,
   hourglassNotDone,
   verse,
+  single,
+  local,
+  multi,
 } as const;

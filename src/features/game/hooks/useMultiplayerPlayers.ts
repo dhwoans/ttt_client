@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { eventManager } from "@/shared/utils/EventManager";
-import { animalList } from "@/shared/constants/randomAvatar";
+import { animalList } from "@/shared/constants/avatarCandidates";
 import type { PlayerJoinedEvent, ExistingPlayersEvent } from "@share";
 import type { GamePlayerInfo } from "../types/TicTacToeGameTypes";
 

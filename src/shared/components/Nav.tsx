@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/components/Avatar";
-import { animalList } from "@/shared/constants/randomAvatar";
+import { animalList } from "@/shared/constants/avatarCandidates";
 import SettingsModal from "@/shared/modals/SettingsModal";
 import { audioManager } from "@/shared/utils/AudioManager";
 import { useAudioStore } from "@/stores/audioStore";

@@ -1,4 +1,4 @@
-import { animalList } from "../constants/randomAvatar";
+import { animalList } from "../constants/avatarCandidates";
 import { getPlayerInfoFromStorage } from "./playerStorage";
 import type { IssueTicketRequest, IssueTicketResponse } from "@share";
 

@@ -6,6 +6,7 @@ import Bridge from "../../../shared/components/Bridge";
 import HeaderLayout from "../../../pages/layouts/HeaderLayout";
 import type { GamePlayerInfo, RoomPhase } from "../types/TicTacToeGameTypes";
 import { ImageManager } from "@/shared/utils/ImageManger";
+import LeftSideLayout from "@/pages/layouts/LeftSideLayout";
 
 interface GameRoomViewProps {
   nickname: string | null;
@@ -61,6 +62,15 @@ export default function GameRoomView({
           readyDisabled={readyDisabled}
         />
       )}
+      <LeftSideLayout className="-z-10 pointer-events-none">
+        {/* 데코 상단 좌 */}
+        <img
+          className="-rotate-20 -translate-20 translate-y-50 blur-xs"
+          src={ImageManager.ticTacToe}
+          alt=""
+          aria-hidden="true"
+        />
+      </LeftSideLayout>
       {phase === "bridge" && <Bridge imageSrc={ImageManager.gameStart} />}
       {phase === "playing" && playingView}
     </>

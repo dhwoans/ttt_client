@@ -1,6 +1,6 @@
 import { Avatar } from "@/shared/components/Avatar";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { useAudio } from "@/shared/hooks/useAudioEffect";
 import { useAvatarSelection } from "../hooks/useAvatarSelection";
 import { useNickname } from "../hooks/useNickname";
@@ -19,6 +19,10 @@ function shakeReducer(_: boolean, action: ShakeAction) {
       return false;
   }
 }
+const shakeClass = "animate__animated animate__shakeX";
+const brutalBox =
+  "border-[0.25rem] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
+const brutalBtn = `${brutalBox} hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px] transition-all active:scale-95`;
 
 export default function CharacterBoard() {
   const { playBeep } = useAudio();
@@ -27,6 +31,7 @@ export default function CharacterBoard() {
   const avatar = useAvatarSelection();
   const nickname = useNickname(avatar.index);
   const [isShaking, dispatchShake] = useReducer(shakeReducer, false);
+  const [isAvatarHovered, setIsAvatarHovered] = useState(false);
 
   const triggerShake = () => {
     dispatchShake({ type: "trigger" });
@@ -40,10 +45,7 @@ export default function CharacterBoard() {
     return <Bridge />;
   }
 
-  const shakeClass = "animate__animated animate__shakeX";
-  const brutalBox =
-    "border-[0.25rem] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]";
-  const brutalBtn = `${brutalBox} hover:shadow-none hover:translate-x-[5px] hover:translate-y-[5px] transition-all active:scale-95`;
+  
 
   return (
     <div
@@ -64,9 +66,35 @@ export default function CharacterBoard() {
         </button>
         <div className="flex flex-col items-center justify-center gap-4">
           {/* 아바타  */}
-          <Avatar onClick={avatar.randomize} imageSrc={avatar.currentAvatar[2]}>
-            {avatar.currentAvatar[0]}
-          </Avatar>
+          <button
+            type="button"
+            onClick={avatar.randomize}
+            onMouseEnter={() => setIsAvatarHovered(true)}
+            onMouseLeave={() => setIsAvatarHovered(false)}
+            className="relative rounded-full hover:cursor-pointer"
+          >
+            <div
+              className={`transition-all duration-200 ${
+                isAvatarHovered ? "blur-[2px]" : ""
+              }`}
+            >
+              <Avatar>
+                <video
+                  src={avatar.currentAvatar.videoSrc}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-40 h-40 object-cover"
+                />
+              </Avatar>
+            </div>
+            <div
+              className={`pointer-events-none absolute inset-0 grid place-items-center text-8xl transition-opacity ${isAvatarHovered ? "opacity-100" : "opacity-0"}`}
+            >
+              ❓
+            </div>
+          </button>
           {/* 닉네임 입력 */}
           <input
             type="text"
@@ -91,7 +119,7 @@ export default function CharacterBoard() {
         onClick={() =>
           handleCreateUser({
             nickname: nickname.fullNickname,
-            avatarName: avatar.currentAvatar[0],
+            avatarName: avatar.currentAvatar.nickname,
             avatarIndex: avatar.index,
             onError: triggerShake,
           })

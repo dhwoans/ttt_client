@@ -5,7 +5,7 @@ import LocalMode from "../../features/lobby/components/LocalMode";
 import MultiMode from "../../features/lobby/components/MultiMode";
 import SettingsAndLogout from "../../features/lobby/components/SettingsAndLogout";
 
-export default function LobbyMainLayout() {
+export default function LobbyContentsLayout() {
   const mainLayout = "flex flex-row gap-6 w-full h-[75vh]";
   const mobileLayout = "flex flex-col gap-6 w-full h-[75vh]";
   const [isPortrait, setIsPortrait] = useState<boolean>(false);
@@ -17,7 +17,7 @@ export default function LobbyMainLayout() {
     };
 
     updateOrientation();
-    // 창바뀔때마다 
+    // 창바뀔때마다
     window.addEventListener("resize", updateOrientation);
 
     return () => {
