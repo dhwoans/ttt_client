@@ -6,6 +6,7 @@ import { useAvatarSelection } from "../hooks/useAvatarSelection";
 import { useNickname } from "../hooks/useNickname";
 import { useCreateUserAndLobbyMove } from "../hooks/useCreateUserAndLobbyMove";
 import Bridge from "@/shared/components/Bridge";
+import { ImageManager } from "@/shared/utils/ImageManger";
 
 type ShakeAction = { type: "trigger" } | { type: "end" };
 
@@ -45,17 +46,16 @@ export default function CharacterBoard() {
     return <Bridge />;
   }
 
-  
-
   return (
     <div
-      className={`mx-auto my-12 max-w-120 rounded-2xl bg-linear-to-b from-dark-1 to-dark-2 p-8 border-4 border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] 
+      className={`relative mx-auto my-12 max-w-120 overflow-visible rounded-2xl bg-linear-to-b from-dark-1 to-dark-2 p-8 ${brutalBox} 
     ${isShaking ? shakeClass : ""}`}
       onAnimationEnd={handleShakeAnimationEnd}
     >
-      <h2 className="mb-8 text-center text-3xl font-bold text-accent drop-shadow-md">
-        CHARACTER SELECT
-      </h2>
+      <img
+        src={ImageManager.charater}
+        className="-mt-15 bg-yellow-50 -rotate-6 mb-10 p-3"
+      />
       <div className="mb-8 flex items-center justify-center gap-8">
         {/* 이전 버튼 */}
         <button
@@ -94,6 +94,13 @@ export default function CharacterBoard() {
             >
               ❓
             </div>
+            {/* 데코  */}
+            <img
+              src={ImageManager.spotlight}
+              alt=""
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-80 w-[400%] h-[400%] object-contain"
+            />
           </button>
           {/* 닉네임 입력 */}
           <input
@@ -101,7 +108,7 @@ export default function CharacterBoard() {
             name="nickname"
             value={nickname.fullNickname}
             onChange={nickname.handleChange}
-            className={`rounded-2xl w-50 text-center text-lg text-black outline-none py-1 bg-white `}
+            className={`rounded-2xl w-50 text-center text-lg text-black outline-none py-1 bg-white mt-10 z-10`}
             spellCheck="false"
           />
         </div>

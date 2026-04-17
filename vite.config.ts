@@ -49,11 +49,18 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: path.resolve(__dirname, "dist"),
     },
+
+    esbuild: {
+      drop: mode === "production" ? ["console", "debugger"] : [],
+    },
     resolve: {
       alias: [
         { find: "@", replacement: path.resolve(__dirname, "src") },
         { find: "@assets", replacement: path.resolve(__dirname, "assets") },
-        { find: "@share", replacement: path.resolve(__dirname, "src/share/index.ts") },
+        {
+          find: "@share",
+          replacement: path.resolve(__dirname, "src/share/index.ts"),
+        },
       ],
     },
   };
