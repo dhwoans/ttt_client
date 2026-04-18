@@ -1,0 +1,89 @@
+
+## 기술 스택
+
+| 항목        | 기술                                  |
+| ----------- | ------------------------------------- |
+| 프레임워크  | React 19                              |
+| 언어        | TypeScript                            |
+| 빌드 도구   | Vite 7                                |
+| 스타일      | Tailwind CSS 4                        |
+| 라우팅      | React Router 7                        |
+| 상태 관리   | Zustand                               |
+| 실시간 통신 | socket.io-client                      |
+| 테스트      | Vitest, @testing-library/react, jsdom |
+| 목업 API    | MSW                                   |
+
+
+## 프로젝트 구조
+
+```text
+.
+├─ assets/                     # 정적 리소스
+├─ public/                     
+└─ src/
+   ├─ features/
+   │  ├─ auth/                 # 로그인/아바타 선택 관련 기능
+   │  ├─ game/                 # 게임 UI/훅/유틸
+   │  └─ lobby/                # 로비 UI/훅
+   ├─ pages/                   # 라우트 단위 페이지
+   ├─ shared/
+   │  ├─ components/           # 공용 컴포넌트
+   │  ├─ constants/            # 라우트, 상수 정의
+   │  ├─ hooks/                # 공용 훅
+   │  ├─ modals/               # 공용 모달
+   │  └─ utils/                # 공용 유틸리티
+   ├─ stores/                  # Zustand 스토어
+   ├─ mock/                    # MSW 핸들러/브라우저 설정
+   ├─ App.tsx                  # 앱 라우팅 엔트리
+   └─ main.tsx                 # React 진입점
+```
+
+## 라우팅 개요
+
+- `/` : 인증 상태에 따라 `/login` 또는 `/lobby`로 리다이렉트
+- `/login` : 비인증 사용자 전용 화면
+- `/lobby` : 인증 사용자 전용 로비
+- `/game/single` : 싱글 플레이 게임 화면
+- `/game/room/:roomId` : 멀티 플레이 게임 화면
+- `/game/local/host/:sessionId` : 로컬 호스트 화면
+- `/game/local/guest/:sessionId` : 로컬 게스트 화면
+
+## 주요 패치 이력
+
+### v3 - 구조 개선 및 리팩토링
+
+아키텍처 안정화 및 코드 품질 개선에 중점을 둔 릴리스.
+
+- shared 컴포넌트 렌더링 테스트 추가 (Nav, Bridge, Badge)
+- 로비 레이아웃과 아바타 구조 정리
+- 게임 흐름 분리 및 utils 구조 정리
+- 게임 라우트 분리 및 경로 상수화
+- 게임룸 흐름 재구성 및 single/multi 페이지 분리
+- webm/webp 에셋 전환 및 404 페이지 추가
+- UI/플로우 업데이트 및 오래된 문서 제거
+
+### v2 - 멀티플레이 기능 구현
+
+실시간 다중플레이 게임 기능 완성.
+
+- 멀티플레이 게임 진행 기능 구현 및 안정성 개선
+- 다중플레이어 상태 관리 및 플레이어 통신 구현
+- 훅 네이밍 규칙 정립 및 준비 상태 시각화 구현
+- Socket.IO 연결 오류 및 asset 경로 수정
+- Socket.IO mock 추가
+- 멀티플레이 문서 업데이트 및 시각화 자료 추가
+
+### v1 - 기본 구조 및 초기 기능
+
+프론트엔드 기본 구조 구성 및 게임 로직 기초 마련.
+
+- 프로젝트 구조 개선 및 Zustand 상태 관리 도입
+- 패키지 매니저 npm -> pnpm 전환
+- Toastify 알림 흐름 도입 및 개선
+- 로딩 애니메이션 추가
+- 프로젝트 구조 변경 과정 오류 수정
+- 멀티플레이 페이지 이동 이슈 수정
+- 멀티 테스트 연결 오류 수정
+- MSW request delay 조정
+- 프로젝트 구조/네이밍 컨벤션 문서화
+
