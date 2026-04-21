@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/shared/components/Avatar";
 import { animalList } from "@/shared/constants/avatarCandidates";
 import SettingsModal from "@/shared/modals/SettingsModal";
-import { audioManager } from "@/shared/utils/AudioManager";
 import { useAudioStore } from "@/stores/audioStore";
 
 export default function Nav() {
@@ -11,17 +9,6 @@ export default function Nav() {
   const { bgmMuted, volume, setBgmMuted } = useAudioStore();
   const index = sessionStorage.getItem("avator") || 3;
   const nickname = sessionStorage.getItem("nickname");
-  const navigate = useNavigate();
-
-  const handleMute = () => {
-    const newMutedState = !bgmMuted;
-    if (newMutedState) {
-      audioManager.setOff("bgm");
-    } else {
-      audioManager.setOn("bgm");
-    }
-    setBgmMuted(newMutedState);
-  };
 
   return (
     <>

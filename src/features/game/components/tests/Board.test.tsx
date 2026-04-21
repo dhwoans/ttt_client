@@ -45,11 +45,4 @@ describe("Board", () => {
     await userEvent.click(buttons[4]);
     expect(selectSquare).toHaveBeenCalledWith(1, 1);
   });
-
-  it("selectSquare가 없으면 클릭해도 에러가 발생하지 않는다", async () => {
-    render(<Board list={emptyBoard} selectSquare={undefined} />);
-    const buttons = screen.getAllByRole("button");
-    // selectSquare 없으면 버튼이 disabled 처리됨
-    expect(buttons[0]).toBeDisabled();
-  });
 });

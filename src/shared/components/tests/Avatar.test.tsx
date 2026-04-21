@@ -1,4 +1,4 @@
-import { Avatar } from "@/shared/components/Avatar";
+import  {Avatar}  from "../Avatar";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";

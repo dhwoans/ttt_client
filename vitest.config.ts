@@ -5,15 +5,32 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: ["./src/shared/test-utils/setup.ts"],
-    css: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "json", "html"],
-      exclude: ["node_modules/", "src/test/"],
-    },
+    projects: [
+      {
+        test: {
+          name: "game components",
+          include: ["./src/features/game/**/*.test.{js,ts,tsx}"],
+          environment: "jsdom",
+          globals: true,
+        },
+      },
+      {
+        test: {
+          name: "lobby components",
+          include: ["./src/features/lobby/**/*.test.{js,ts,tsx}"],
+          environment: "jsdom",
+          globals: true,
+        },
+      },
+      {
+        test: {
+          name: "shared components",
+          include: ["./src/shared/**/*test.{js,ts,tsx}"],
+          environment: "jsdom",
+          globals: true,
+        },
+      },
+    ],
   },
   resolve: {
     alias: {

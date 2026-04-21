@@ -14,6 +14,7 @@ import thumbsDown from "@assets/icons/Thumbs_Down.webm";
 import handshake from "@assets/icons/Handshake.webm";
 import hourglassNotDone from "@assets/icons/Hourglass_Not_Done.webm";
 import verse from "@assets/icons/verse.webp";
+import thoughtBalloon from "@assets/icons/thoughtBalloon.webp";
 
 import single from "@assets/backgrounds/single.webp"
 import local from "@assets/backgrounds/local.webp"
@@ -46,4 +47,5 @@ export const ImageManager = {
   spotlight,
   toBeContinue,
   jojoEffect,
+  thoughtBalloon,
 } as const;
