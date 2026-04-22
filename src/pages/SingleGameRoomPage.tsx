@@ -1,7 +1,7 @@
 import { useRoomState } from "../features/game/hooks/useRoomState";
 import { useGameRestart } from "../features/game/hooks/useGameRestart";
 import { useSinglePlay } from "../features/game/hooks/useSinglePlay";
-import GameRoomView from "../features/game/components/GameRoomView";
+import GameRoomView from "./GameRoomView";
 import { SingleTicTacToe } from "./TicTacToe";
 
 export default function SingleGameRoomPage() {

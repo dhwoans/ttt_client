@@ -1,7 +1,7 @@
 import { useRoomState } from "../features/game/hooks/useRoomState";
 import { useGameRestart } from "../features/game/hooks/useGameRestart";
 import { useMultiPlay } from "../features/game/hooks/useMultiPlay";
-import GameRoomView from "../features/game/components/GameRoomView";
+import GameRoomView from "./GameRoomView";
 import { Navigate, useParams } from "react-router-dom";
 import { useGameSocketConnection } from "../features/game/hooks/useGameSocketConnection";
 import { ROUTES } from "@/shared/constants/routes";

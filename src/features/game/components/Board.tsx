@@ -1,6 +1,3 @@
-import { useEffect, useRef } from "react";
-import { eventManager } from "@/shared/utils/EventManager";
-
 export default function Board({ list = [], selectSquare }) {
   return (
     <ol className="flex flex-col gap-2 p-4">

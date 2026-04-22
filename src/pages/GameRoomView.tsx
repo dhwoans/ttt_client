@@ -1,10 +1,13 @@
 import type { ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 import Marquee from "react-fast-marquee";
-import Ready from "../../../pages/Ready";
-import Bridge from "../../../shared/components/Bridge";
-import HeaderLayout from "../../../pages/layouts/HeaderLayout";
-import type { GamePlayerInfo, RoomPhase } from "../types/TicTacToeGameTypes";
+import Ready from "./Ready";
+import Bridge from "../shared/components/Bridge";
+import HeaderLayout from "./layouts/HeaderLayout";
+import type {
+  GamePlayerInfo,
+  RoomPhase,
+} from "../features/game/types/TicTacToeGameTypes";
 import { ImageManager } from "@/shared/utils/ImageManger";
 import LeftSideLayout from "@/pages/layouts/LeftSideLayout";
 
