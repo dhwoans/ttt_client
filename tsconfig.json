@@ -23,6 +23,7 @@
     /* Path Mapping */
     "paths": {
       "@/*": ["./src/*"],
+      "@assets/*": ["./assets/*"],
       "@share": ["./src/share/index"],
       "@share/*": ["./src/share/*"]
     }
