@@ -1,49 +1,20 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
-import { fileURLToPath } from "url";
-import imagemin from "vite-plugin-imagemin";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.resolve(path.dirname(__filename));
+
 
 export default defineConfig(({ mode }) => {
   const enableImagemin = mode !== "production";
-
+  const commonPlugins = [
+    tailwindcss(),
+    react(),
+    tsconfigPaths(), // 여기서 tsconfig의 paths를 읽어옵니다.
+  ];
   return {
-    plugins: [
-      tailwindcss(),
-      react({
-        babel: {
-          plugins: [["babel-plugin-react-compiler"]],
-        },
-      }),
-      ...(enableImagemin
-        ? [
-            imagemin({
-              gifsicle: {
-                optimizationLevel: 3,
-              },
-              optipng: {
-                optimizationLevel: 7,
-              },
-              mozjpeg: {
-                quality: 65,
-              },
-              svgo: {
-                plugins: [
-                  {
-                    name: "removeViewBox",
-                    active: false,
-                  },
-                ],
-              },
-            }),
-          ]
-        : []),
-    ],
-
+    plugins: commonPlugins,
     root: path.resolve(__dirname),
 
     build: {
@@ -53,13 +24,35 @@ export default defineConfig(({ mode }) => {
     esbuild: {
       drop: mode === "production" ? ["console", "debugger"] : [],
     },
-    resolve: {
-      alias: [
-        { find: "@", replacement: path.resolve(__dirname, "src") },
-        { find: "@assets", replacement: path.resolve(__dirname, "assets") },
+
+    test: {
+      projects: [
         {
-          find: "@share",
-          replacement: path.resolve(__dirname, "src/share/index.ts"),
+          plugins: commonPlugins,
+          test: {
+            name: "game components",
+            include: ["./src/features/game/**/*.test.{js,ts,tsx}"],
+            environment: "jsdom",
+            globals: true,
+          },
+        },
+        {
+          plugins: commonPlugins,
+          test: {
+            name: "lobby components",
+            include: ["./src/features/lobby/**/*.test.{js,ts,tsx}"],
+            environment: "jsdom",
+            globals: true,
+          },
+        },
+        {
+          plugins: commonPlugins,
+          test: {
+            name: "shared components",
+            include: ["./src/shared/**/*test.{js,ts,tsx}"],
+            environment: "jsdom",
+            globals: true,
+          },
         },
       ],
     },
